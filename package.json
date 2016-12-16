@@ -3,7 +3,8 @@
   "version": "1.0.0-beta",
   "private": true,
   "scripts": {
-    "init": "npm run init_global && npm install && npm run init_server",
+    "init": "npm run init_global && npm run init_project",
+    "init_project": "npm install && npm run init_server",
     "init_server": "cd server && npm install && cd ..",
     "init_global": "npm install -g typescript typings webpack",
     "start": "node server/server.js",
