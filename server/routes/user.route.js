@@ -1,4 +1,4 @@
-var router = require('express').Router;
+var router = require('express').Router();
 var model = require('../models/user.model');
 
 //findOne
