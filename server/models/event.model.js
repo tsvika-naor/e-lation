@@ -2,10 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var eventSchema = new Schema({
-  ownerId: ObjectId,
-  providerId: ObjectId,
-  admins: [ObjectId],
-  members: [ObjectId],
+  ownerId: Schema.Types.ObjectId,
+  providerId: Schema.Types.ObjectId,
+  admins: [Schema.Types.ObjectId],
+  members: [Schema.Types.ObjectId],
   name: String,
   description: String,
   startDate: { type: Date, default: Date.now },
@@ -18,7 +18,7 @@ var eventSchema = new Schema({
              BuildingNum: String,
              City: String,
              Country: String },
-  comments: [ObjectId]
+  comments: [Schema.Types.ObjectId]
 });
 
 module.exports = mongoose.model('Event', eventSchema);

@@ -2,10 +2,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var groupSchema = new Schema({
-  ownerId: ObjectId,
-  providerId: ObjectId,
-  admins: [ObjectId],
-  members: [ObjectId],
+  ownerId: Schema.Types.ObjectId,
+  providerId: Schema.Types.ObjectId,
+  admins: [Schema.Types.ObjectId],
+  members: [Schema.Types.ObjectId],
   name: String,
   description: String,
   groupType: [String],

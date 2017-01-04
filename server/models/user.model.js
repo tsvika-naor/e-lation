@@ -14,7 +14,7 @@ var userSchema = new Schema({
             Country: String
           },
   isProvider: { type: Boolean, default: false },
-  providerId: ObjectId
+  providerId: Schema.Types.ObjectId
 });
 
-module.exports = mongoose.model('User', blogSchema);
+module.exports = mongoose.model('User', userSchema);
