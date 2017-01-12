@@ -92,3 +92,56 @@
 .app-progress {
   margin: 20px;
 }
+
+[md-card-video] {
+  width: calc(100% + 48px);
+  margin: 0 -24px 16px -24px;
+}
+
+[md-card-xl-video] {
+  width: 240px;
+  height: 240px;
+  margin: -8px;
+}
+
+[md-card-sm-video] {
+  margin: -8px 0;
+  width: 80px;
+  height: 80px;
+}
+
+[md-card-md-video] {
+  margin: -8px 0;
+  width: 112px;
+  height: 112px;
+}
+
+[md-card-lg-video] {
+  margin: -8px 0;
+  width: 152px;
+  height: 152px;
+}
+
+@media (max-width: 600px) {
+  [md-card-video] {
+    width: calc(100% + 32px);
+    margin: 16px -16px;
+  }
+
+  [md-card-xl-video] {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+[md-card-video]:first-child {
+  margin-top: -24px;
+}
+
+md-card > [md-card-xl-video]:first-child {
+  margin-top: -8px;
+}
+
+md-card > [md-card-xl-video]:last-child {
+  margin-bottom: -8px;
+}

@@ -1,55 +1,70 @@
 declare type ObjectId = any;
 
+declare enum MediaType {
+    Image,
+    Video
+}
+
+declare enum Gender {
+    Male,
+    Female
+}
+
 declare type MediaObject = {
-    mediatype: String,
+    mediaType: MediaType,
+    mimeType: String,
     name: String,
     data: String
 }
 
 declare type Address = {
-    Street: String,
-    BuildingNum: String,
-    City: String,
-    Country: String
+    street: String,
+    buildingNum: String,
+    city: String,
+    country: String
 }
 
 declare type User = {
     _id: ObjectId,
-    firstname: String,
-    lastname: String,
+    firstName: String,
+    lastName: String,
     email: String,
     phone: String,
-    gender: String,
+    gender: Gender,
     birthday: Date,
+    avatar: {
+        mimeType: String,
+        data: String
+    },
     address: Address,
     isProvider: Boolean,
-    providerId: ObjectId
+    provider?: Provider
 }
 
 declare type Provider = {
     _id: ObjectId,
     bio: String,
     rank: Number,
-    reviews: Array<ObjectId>,
+    reviews: Array<Review>,
     businessAddress: Address,
-    userId: ObjectId
+    user: User
 }
 
 declare type Post = {
     _id: ObjectId,
-    userId: ObjectId,
+    user: User,
     body: String,
     title: String,
     media: Array<MediaObject>,
     date: Date,
     tags: Array<String>,
     likes: Number,
-    comments: Array<ObjectId>
+    comments: Array<UserComment>
 }
 
 declare type Review = {
     _id: ObjectId,
-    userId: ObjectId,
+    user: User,
     text: String,
     date: Date,
     rating: Number
@@ -57,20 +72,21 @@ declare type Review = {
 
 declare type UserComment = {
     _id: ObjectId,
-    userId: ObjectId,
-    parentId: ObjectId,
+    user: User,
+    parent?: UserComment,
+    subject: Post,
     text: String,
     date: Date,
     likes: Number,
-    comments: Array<ObjectId>
+    comments?: Array<UserComment>
 }
 
 declare type Group = {
     _id: ObjectId,
-    ownerId: ObjectId,
-    providerId: ObjectId,
-    admins: [ObjectId],
-    members: [ObjectId],
+    owner: User,
+    provider: Provider,
+    admins: Array<User>,
+    members: Array<User>,
     name: String,
     description: String,
     groupType: [String],
@@ -79,10 +95,10 @@ declare type Group = {
 
 declare type GeoEvent = {
     _id: ObjectId,
-    ownerId: ObjectId,
-    providerId: ObjectId,
-    admins: Array<ObjectId>,
-    members: Array<ObjectId>,
+    owner: User,
+    provider: Provider,
+    admins: Array<User>,
+    members: Array<User>,
     name: String,
     description: String,
     startDate: Date,
@@ -90,5 +106,5 @@ declare type GeoEvent = {
     media: Array<MediaObject>,
     private: Boolean,
     address: Address,
-    comments: Array<ObjectId>
+    posts?: Array<Post>
 }
