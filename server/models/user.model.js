@@ -2,18 +2,18 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-  firstname: String,
-  lastname:   String,
+  firstName: String,
+  lastName:   String,
   email:   String,
   phone:   String,
   gender:   Number,
   birthday: Date,
-  avatar: { mimetype: String,
+  avatar: { mimeType: String,
             data: String },
-  address: {Street: String,
-            BuildingNum: String,
-            City: String,
-            Country: String
+  address: {street: String,
+            buildingNum: String,
+            city: String,
+            country: String
           },
   isProvider: { type: Boolean, default: false },
   provider: { type: Schema.Types.ObjectId, ref: 'Provider' }
