@@ -8,10 +8,12 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RouterStoreModule } from '@ngrx/router-store';
 
-import { routes, reducer } from './shared'
+import { routes, reducer } from './shared';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
+import { EventPageComponent } from './eventPage/eventPage.component';
+import { AddressPipe} from './shared/pipes/address.pipe';
 
 @NgModule({
   imports: [
@@ -26,7 +28,9 @@ import { LoginComponent } from './login/login.component';
   declarations: [
     AppComponent,
     NavComponent,
-    LoginComponent
+    LoginComponent,
+    EventPageComponent,
+    AddressPipe
   ],
   bootstrap: [AppComponent]
 })
