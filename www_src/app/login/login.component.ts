@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 
 @Component({
     selector: 'el-login',
-    templateUrl: 'login.component.html'
+    templateUrl: './login.component.html'
 })
 export class LoginComponent {
     private badUser : boolean;
