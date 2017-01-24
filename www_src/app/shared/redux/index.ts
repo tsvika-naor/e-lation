@@ -9,6 +9,7 @@ import { combineReducers } from '@ngrx/store';
 import { RouterState, routerReducer } from '@ngrx/router-store';
 
 import { State as AuthState, authReducer } from './auth';
+export { AuthEffects } from './auth';
 
 export interface State {
   auth: AuthState;

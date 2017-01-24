@@ -5,15 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { MaterialModule } from '@angular/material';
 
 import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RouterStoreModule } from '@ngrx/router-store';
 
-import { routes, reducer } from './shared';
+import { routes, reducer, AddressPipe, AuthEffects } from './shared';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
-import { EventPageComponent } from './eventPage/eventPage.component';
-import { AddressPipe} from './shared/pipes/address.pipe';
 
 @NgModule({
   imports: [
@@ -23,13 +22,13 @@ import { AddressPipe} from './shared/pipes/address.pipe';
     MaterialModule.forRoot(),
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
+    EffectsModule.run(AuthEffects),
     StoreDevtoolsModule.instrumentOnlyWithExtension()
   ],
   declarations: [
     AppComponent,
     NavComponent,
     LoginComponent,
-    EventPageComponent,
     AddressPipe
   ],
   bootstrap: [AppComponent]
