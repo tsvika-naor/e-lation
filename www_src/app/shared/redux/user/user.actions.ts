@@ -2,8 +2,8 @@ import { Action } from '@ngrx/store';
 import { type } from '../shared/util';
 
 export const ActionTypes = {
-  S_USER_UPDATE: type('User Update'),
-  L_USER_UPDATE: type('User Update')
+  S_USER_UPDATE: type('S User Update'),
+  L_USER_UPDATE: type('L User Update')
 };
 
 export class S_UserUpdateAction implements Action {

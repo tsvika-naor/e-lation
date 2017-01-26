@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 
 import { State } from '../shared/redux'
-import { ActionTypes as AuthActions } from '../shared/redux/auth'
+import { ActionTypes as AuthActions } from '../shared/redux/group'
 
 enum Gender {
     Male,

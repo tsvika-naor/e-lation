@@ -2,16 +2,16 @@ import { Action } from '@ngrx/store';
 import { type } from '../shared/util';
 
 export const ActionTypes = {
-  L_ADD_MEMBER: type('Add Member'),
-  L_ADD_ADMIN: type('Add Admin'),
-  L_REMOVE_MEMBER: type('Remove Member'),
-  L_REMOVE_ADMIN: type('Remove Admin'),
-  L_CHANGE_NAME: type('Remove Admin'),
-  S_ADD_MEMBER: type('Add Member'),
-  S_ADD_ADMIN: type('Add Admin'),
-  S_REMOVE_MEMBER: type('Remove Member'),
-  S_REMOVE_ADMIN: type('Remove Admin'),
-  S_CHANGE_NAME: type('Remove Admin')
+  L_ADD_MEMBER: type('L Add Member'),
+  L_ADD_ADMIN: type('L Add Admin'),
+  L_REMOVE_MEMBER: type('L Remove Member'),
+  L_REMOVE_ADMIN: type('L Remove Admin'),
+  L_CHANGE_NAME: type('L Remove Admin'),
+  S_ADD_MEMBER: type('S Add Member'),
+  S_ADD_ADMIN: type('S Add Admin'),
+  S_REMOVE_MEMBER: type('S Remove Member'),
+  S_REMOVE_ADMIN: type('S Remove Admin'),
+  S_CHANGE_NAME: type('S Remove Admin')
 };
 
 export class L_AddMemberAction implements Action {
