@@ -39,6 +39,14 @@
   -webkit-font-smoothing: antialiased;
 }
 
+.line-2 {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.wide {
+  width: 100%;
+}
+
 .app-content {
   padding: 20px;
 }

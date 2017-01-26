@@ -9,10 +9,11 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RouterStoreModule } from '@ngrx/router-store';
 
-import { routes, reducer, AddressPipe, AuthEffects } from './shared';
+import { routes, reducer, AddressPipe, IfTrimPipe, GenderPipe, ParamPipe, AuthEffects } from './shared';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
+import { PeopleListComponent } from './peopleList/peopleList.component'
 
 @NgModule({
   imports: [
@@ -29,7 +30,11 @@ import { LoginComponent } from './login/login.component';
     AppComponent,
     NavComponent,
     LoginComponent,
-    AddressPipe
+    PeopleListComponent,
+    AddressPipe,
+    IfTrimPipe,
+    GenderPipe,
+    ParamPipe
   ],
   bootstrap: [AppComponent]
 })

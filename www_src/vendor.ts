@@ -18,5 +18,9 @@ import 'ngrx-store-freeze';
 // RxJS
 import 'rxjs';
 
+// Source Maps
+import 'rxjs/scheduler/AnimationFrameScheduler.js.map';
+import '@angular/material/core/theming/prebuilt/deeppurple-amber.css.map';
+
 // Other vendors for example jQuery or Lodash
 // You can import js, ts, css, sass, ...

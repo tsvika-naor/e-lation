@@ -36,6 +36,14 @@ module.exports = {
         loader: 'html'
       },
       {
+        test: /\.js.map$/,
+        loader: 'file?name=[name].[ext]'
+      },
+      {
+        test: /\.css.map$/,
+        loader: 'file?name=styles/[name].[ext]'
+      },
+      {
         test: /\.(svg|woff|woff2|ttf|eot)$/,
         loader: 'file?name=fonts/[name].[ext]'
       },
