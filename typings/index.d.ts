@@ -10,6 +10,11 @@ declare enum Gender {
     Female
 }
 
+declare type HttpPayload = {
+    parent: ObjectId,
+    child: any
+}
+
 declare type MediaObject = {
     mediaType: MediaType,
     mimeType: String,
@@ -26,28 +31,28 @@ declare type Address = {
 
 declare type User = {
     _id?: ObjectId,
-    firstName: String,
-    lastName: String,
-    email: String,
-    phone: String,
-    gender: Gender,
-    birthday: Date,
-    avatar: {
+    firstName?: String,
+    lastName?: String,
+    email?: String,
+    phone?: String,
+    gender?: Gender,
+    birthday?: Date,
+    avatar?: {
         mimeType: String,
         data: String
     },
-    address: Address,
-    isProvider: Boolean,
+    address?: Address,
+    isProvider?: Boolean,
     provider?: Provider
 }
 
 declare type Provider = {
     _id?: ObjectId,
-    bio: String,
-    rank: Number,
-    reviews: Array<Review>,
-    businessAddress: Address,
-    user: User
+    bio?: String,
+    rank?: Number,
+    reviews?: Array<Review>,
+    businessAddress?: Address,
+    user?: User
 }
 
 declare type Post = {
@@ -83,14 +88,14 @@ declare type UserComment = {
 
 declare type Group = {
     _id?: ObjectId,
-    owner: User,
-    provider: Provider,
-    admins: Array<User>,
-    members: Array<User>,
-    name: String,
-    description: String,
-    groupType: [String],
-    address: Address,
+    owner?: User,
+    provider?: Provider,
+    admins?: Array<User>,
+    members?: Array<User>,
+    name?: String,
+    description?: String,
+    groupType?: Array<String>,
+    address?: Address
 }
 
 declare type GeoEvent = {

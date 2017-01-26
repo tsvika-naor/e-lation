@@ -8,13 +8,13 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RouterStoreModule } from '@ngrx/router-store';
-
 import { routes, reducer, AddressPipe, IfTrimPipe, GenderPipe, ParamPipe, AuthEffects } from './shared';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
 import { PeopleListComponent } from './peopleList/peopleList.component';
 import { UserPageComponent } from './userPage/userPage.component';
+import { GroupPageComponent } from './groupPage/groupPage.component';
 
 @NgModule({
   imports: [
@@ -32,6 +32,7 @@ import { UserPageComponent } from './userPage/userPage.component';
     NavComponent,
     LoginComponent,
     UserPageComponent,
+    GroupPageComponent,
     PeopleListComponent,
     AddressPipe,
     IfTrimPipe,
