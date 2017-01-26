@@ -1,0 +1,30 @@
+
+<md-card-title>
+    <span class="md-headline">{{name | async}}</span>
+</md-card-title>
+<md-card-subtitle>
+    {{startDate | async}}
+</md-card-subtitle>
+<md-card>
+    <table border="1" width="100%">
+        <tr>
+         <!--   <td>address: {{ event.address | address}} </td> -->
+        </tr>
+        <tr>
+            <td>admin: <!--{{ event.admins[0].firstName }} {{event.admins[0].lastName}}--></td>
+        </tr>
+    </table>
+</md-card>
+<md-card>
+    members:
+        <p>{{ description | async}}</p>ß
+
+</md-card>ß
+<!--
+<md-card>
+    members:
+    <div *ngFor="let member of members">
+    <p>{{ member.firstName }}</p>
+</div>
+</md-card>
+-->

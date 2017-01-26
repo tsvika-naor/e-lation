@@ -8,13 +8,15 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RouterStoreModule } from '@ngrx/router-store';
-import { routes, reducer, AddressPipe, IfTrimPipe, GenderPipe, ParamPipe, AuthEffects } from './shared';
+
+import { routes, reducer, AddressPipe, IfTrimPipe, GenderPipe, ParamPipe, AuthEffects, EventEffects } from './shared';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
 import { PeopleListComponent } from './peopleList/peopleList.component';
 import { UserPageComponent } from './userPage/userPage.component';
 import { GroupPageComponent } from './groupPage/groupPage.component';
+import { EventPageComponent } from './eventPage/eventPage.component';
 
 @NgModule({
   imports: [
@@ -25,7 +27,8 @@ import { GroupPageComponent } from './groupPage/groupPage.component';
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
     EffectsModule.run(AuthEffects),
-    StoreDevtoolsModule.instrumentOnlyWithExtension()
+      EffectsModule.run(EventEffects),
+      StoreDevtoolsModule.instrumentOnlyWithExtension()
   ],
   declarations: [
     AppComponent,
@@ -33,6 +36,7 @@ import { GroupPageComponent } from './groupPage/groupPage.component';
     LoginComponent,
     UserPageComponent,
     GroupPageComponent,
+    EventPageComponent,
     PeopleListComponent,
     AddressPipe,
     IfTrimPipe,
