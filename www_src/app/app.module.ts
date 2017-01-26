@@ -13,7 +13,8 @@ import { routes, reducer, AddressPipe, IfTrimPipe, GenderPipe, ParamPipe, AuthEf
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
-import { PeopleListComponent } from './peopleList/peopleList.component'
+import { PeopleListComponent } from './peopleList/peopleList.component';
+import { UserPageComponent } from './userPage/userPage.component';
 
 @NgModule({
   imports: [
@@ -30,6 +31,7 @@ import { PeopleListComponent } from './peopleList/peopleList.component'
     AppComponent,
     NavComponent,
     LoginComponent,
+    UserPageComponent,
     PeopleListComponent,
     AddressPipe,
     IfTrimPipe,

@@ -8,6 +8,7 @@
 
     e-lation
 
+    <a md-button routerLink="/user">User</a>
     <span class="app-toolbar-filler"></span>
     <a md-button routerLink="/Logout" *ngIf="(authenticated | async)">Logout</a>
     <button md-button (click)="login()" *ngIf="!(authenticated | async)">Login</button>
