@@ -24,10 +24,9 @@ export class AuthEffects {
         .ofType(Auth.ActionTypes.LOGIN)
         // Map the payload into JSON to use as the request body
         .map((action: Auth.LoginAction) => action.payload)
-        .switchMap(payload => this.http$.post('/auth/login', payload)
-            // If successful, dispatch success action with result
-            .map(res => ({ type: Auth.ActionTypes.AUTH_SUCCESS, payload: res.json() }))
-            // If request fails, dispatch failed action
-            .catch(err => Observable.of({ type: Auth.ActionTypes.AUTH_FAIL, payload: err }))
-        );
+        .switchMap(payload => this.http$.post('/api/auth/login', payload))
+        // If successful, dispatch success action with result
+        .map(res => ({ type: Auth.ActionTypes.AUTH_SUCCESS, payload: res.json() }))
+        // If request fails, dispatch failed action
+        .catch(err => Observable.of({ type: Auth.ActionTypes.AUTH_FAIL, payload: err }));
 }
