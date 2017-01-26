@@ -15,8 +15,7 @@ var userSchema = new Schema({
             city: String,
             country: String
           },
-  isProvider: { type: Boolean, default: false },
-  provider: { type: Schema.Types.ObjectId, ref: 'Provider' }
+  isProvider: { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('User', userSchema);

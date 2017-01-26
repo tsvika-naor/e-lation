@@ -25,7 +25,7 @@ declare type Address = {
 }
 
 declare type User = {
-    _id: ObjectId,
+    _id?: ObjectId,
     firstName: String,
     lastName: String,
     email: String,
@@ -42,7 +42,7 @@ declare type User = {
 }
 
 declare type Provider = {
-    _id: ObjectId,
+    _id?: ObjectId,
     bio: String,
     rank: Number,
     reviews: Array<Review>,
@@ -51,7 +51,7 @@ declare type Provider = {
 }
 
 declare type Post = {
-    _id: ObjectId,
+    _id?: ObjectId,
     user: User,
     body: String,
     title: String,
@@ -63,7 +63,7 @@ declare type Post = {
 }
 
 declare type Review = {
-    _id: ObjectId,
+    _id?: ObjectId,
     user: User,
     text: String,
     date: Date,
@@ -71,7 +71,7 @@ declare type Review = {
 }
 
 declare type UserComment = {
-    _id: ObjectId,
+    _id?: ObjectId,
     user: User,
     parent?: UserComment,
     subject: Post,
@@ -82,7 +82,7 @@ declare type UserComment = {
 }
 
 declare type Group = {
-    _id: ObjectId,
+    _id?: ObjectId,
     owner: User,
     provider: Provider,
     admins: Array<User>,
@@ -94,7 +94,7 @@ declare type Group = {
 }
 
 declare type GeoEvent = {
-    _id: ObjectId,
+    _id?: ObjectId,
     owner: User,
     provider: Provider,
     admins: Array<User>,
