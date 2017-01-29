@@ -17,13 +17,13 @@ export interface State {
 
 const initialState: State = {
   _id: null,
-  owner: null,
-  provider: null,
-  admins: null,
-  members: null,
+  owner: {firstName: "", lastName: ""},
+  provider: {user: {firstName: "", lastName: ""}},
+  admins: [],
+  members: [],
   name: null,
   description: null,
-  groupType: null,
+  groupType: [],
   address: null
 };
 

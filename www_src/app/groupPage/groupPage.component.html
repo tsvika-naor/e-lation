@@ -1,22 +1,24 @@
-
 <md-card>
-  <md-card-header>
-    <img md-card-avatar src="https://img.clipartfest.com/377cb8d0d8ddbb3467fb9ea2c6dd323a_soccer-team-clipart-soccer-team-clipart_1500-1107.jpeg">
-    <md-card-title>
-      <h1> {{name}} Group</h1>
-    </md-card-title>
-  </md-card-header>
+  <md-card-title-group>
+    <img md-card-lg-image src="https://img.clipartfest.com/377cb8d0d8ddbb3467fb9ea2c6dd323a_soccer-team-clipart-soccer-team-clipart_1500-1107.jpeg">
+    <md-card-title>{{name | async}}</md-card-title>
+    <md-card-subtitle>
+      <p>Location: {{ address | async | address }}</p>
+      <p>
+        <span>Topics: </span>
+        <md-chip-list>
+          <md-chip *ngFor="let type of groupType | async">{{ type }}</md-chip>
+        </md-chip-list>
+      </p>
+      <p>Created by: {{owner | async | param:'firstName'}} {{owner | async | param:'lastName'}}</p>
+      <p>Provider: {{provider | async | param:'user.firstName'}} {{provider | async | param:'user.lastName'}}</p>
+      <p>Description: {{description | async}}</p>
+    </md-card-subtitle>
+  </md-card-title-group>
+</md-card>
+<md-card>
+  <md-card-title>Participants</md-card-title>
   <md-card-content>
-    <md-chip-list>
-      <md-chip *ngFor="let type of groupType">{{ type }}</md-chip>
-    </md-chip-list>
-    <p> in {{address.country}} {{address.city}}</p>
-    <p> by {{owner.firstName}} {{owner.lastName}}</p>
-    <p> {{description}}</p>
-    <p>{{provider.user.firstName}} {{provider.user.lastName}}</p>
-
-    <el-people-list [members]="members" [admins]="admins"></el-people-list>
-
+    <el-people-list [members]="members | async" [admins]="admins | async"></el-people-list>
   </md-card-content>
 </md-card>
-

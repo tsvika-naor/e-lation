@@ -8,10 +8,11 @@
 
     e-lation
 
-    <a md-button routerLink="/user">User</a>
+    <a md-button routerLink="/feed">Feed</a>
     <a md-button routerLink="/group">Group</a>
     <a md-button routerLink="/event">Event</a>
-    <span class="app-toolbar-filler"></span>
+    <a md-button routerLink="/user">User</a>
+    <a md-button routerLink="/provider">Provider</a>
+    <span class="app-filler"></span>
     <a md-button routerLink="/logout" *ngIf="(authenticated | async)">Logout</a>
-    <button md-button (click)="login()" *ngIf="!(authenticated | async)">Login</button>
 </md-toolbar>

@@ -9,6 +9,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Effect, Actions } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
+import { go } from '@ngrx/router-store';
 import { Observable } from 'rxjs/Observable';
 import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
@@ -26,7 +27,7 @@ export class AuthEffects {
         .map((action: Auth.LoginAction) => action.payload)
         .switchMap(payload => this.http$.post('/api/auth/login', payload))
         // If successful, dispatch success action with result
-        .map(res => ({ type: Auth.ActionTypes.AUTH_SUCCESS, payload: res.json() }))
+        .mergeMap(res => Observable.from([{ type: Auth.ActionTypes.AUTH_SUCCESS, payload: res.json() }, go("/feed")]))
         // If request fails, dispatch failed action
         .catch(err => Observable.of({ type: Auth.ActionTypes.AUTH_FAIL, payload: err }));
 }

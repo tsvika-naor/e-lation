@@ -1,31 +1,30 @@
 var router = require('express').Router();
 var Event = require('../models/event.model');
-var http = require('http');
 
 
 router.get('/:id', function (req, res) {
-    User.findOne({ _id: req.params.id })
+    Event.findOne({ _id: req.params.id })
     //.populate('provider')
-        .exec(function (err, user) {
+        .exec(function (err, event) {
             if (err) {
                 console.error(err);
                 res.status(400).send(err);
             }
 
-            res.JSON(user);
+            res.JSON(event);
         });
 });
 
 router.post('/member/add', function (req, res) {
-    User.find(req.body)
+    Event.find(req.body)
     //.populate('provider')
-        .exec(function (err, users) {
+        .exec(function (err, events) {
             if (err) {
                 console.error(err);
                 res.status(400).send(err);
             }
 
-            res.JSON(users);
+            res.JSON(events);
         });
 });
 
@@ -33,7 +32,7 @@ router.post('/new', function (req, res) {
     var providerData = Object.assign(req.body.provider);
     delete req.body.provider;
 
-    User.create(req.body, function (err, doc) {
+    Event.create(req.body, function (err, doc) {
         if (err) {
             console.error(err);
             res.status(400).send(err);
@@ -43,7 +42,7 @@ router.post('/new', function (req, res) {
             res.JSON(doc);
         }
 
-        providerData.user = doc;
+        providerData.event = doc;
         var provider = new Provider(providerData);
         provider.save(function (err) {
             res.JSON(doc);
@@ -54,7 +53,7 @@ router.post('/new', function (req, res) {
 });
 
 router.post('/update', function (req, res) {
-    User.findOneAndUpdate({ _id: req.body._id }, req.body, function (err, obj) {
+    Event.findOneAndUpdate({ _id: req.body._id }, req.body, function (err, obj) {
         if (err) {
             console.error(err);
             res.status(400).send(err);
@@ -64,7 +63,7 @@ router.post('/update', function (req, res) {
 });
 
 router.delete('/:id', function (req, res) {
-    User.findByIdAndRemove(req.params._id, function (err) {
+    Event.findByIdAndRemove(req.params._id, function (err) {
         if (err) {
             console.error(err);
             res.status(400).send(err);

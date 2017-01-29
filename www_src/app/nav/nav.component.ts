@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 import { Store, Action } from '@ngrx/store';
+import { go } from '@ngrx/router-store';
 import { Observable } from 'rxjs/Observable';
 
 import { State } from '../shared/redux'
-import { ActionTypes as AuthActions } from '../shared/redux/auth'
+import { ActionTypes as Actions } from '../shared/redux/auth'
 
 @Component({
     selector: 'el-nav',
@@ -14,9 +15,5 @@ export class NavComponent {
 
     constructor(private store$: Store<State>) {
         this.authenticated = store$.select(state => state.auth.authenticated);
-    }
-
-    login() {
-        this.store$.dispatch({type: AuthActions.LOGIN});
     }
 }

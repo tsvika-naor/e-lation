@@ -59,8 +59,4 @@ export class EventEffects {
         .switchMap(payload => this.http$.post('/api/event/edit', payload))
         // If successful, dispatch success action with result
         .map(res => ({ type: Event.ActionTypes.L_EDIT_EVENT, payload: res.json() }));
-
-
-
-
 }

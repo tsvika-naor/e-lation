@@ -1,5 +1,5 @@
 // Load express
-var app     = require('express')();
+var app = require('express')();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 
@@ -13,8 +13,11 @@ var db = mongoose.connection;
 
 require('./routes/index')(app, __dirname);
 
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
+db.on('error', function (error) {
+    console.error(error.name + ": " + error.message);
+});
+
+db.once('open', function () {
     console.log("Connected to MongoDB");
 });
 

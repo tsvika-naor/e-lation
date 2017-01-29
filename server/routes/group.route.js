@@ -1,11 +1,7 @@
 var router = require('express').Router();
 var Group = require('../models/group.model');
 var User = require('../models/user.model');
-
-function handleError(err) {
-    console.error(err);
-    res.status(400).send(err);
-}
+var handleError = require('./utils');
 
 //findOne
 router.get('/:id', function (req, res) {
@@ -55,7 +51,7 @@ router.post('/member/add', function (req, res) {
 
             group.members.addToSet(member);
             group.save(function (err) {
-                handleError(err);
+                if (err) handleError(err);
 
                 res.JSON(member);
             });
@@ -72,7 +68,7 @@ router.post('/admin/add', function (req, res) {
 
             group.admins.addToSet(admin);
             group.save(function (err) {
-                handleError(err);
+                if (err) handleError(err);
 
                 res.JSON(admin);
             });
@@ -89,7 +85,7 @@ router.post('/member/remove', function (req, res) {
 
             group.members.pull(member._id);
             group.save(function (err) {
-                handleError(err);
+                if (err) handleError(err);
 
                 res.JSON(member);
             });
@@ -106,7 +102,7 @@ router.post('/admin/remove', function (req, res) {
 
             group.members.pull(admin._id);
             group.save(function (err) {
-                handleError(err);
+                if (err) handleError(err);
 
                 res.JSON(admin);
             });
@@ -116,10 +112,7 @@ router.post('/admin/remove', function (req, res) {
 
 router.delete('/:id', function (req, res) {
     Group.findByIdAndRemove(req.params._id, function (err) {
-        if (err) {
-            console.error(err);
-            res.status(400).send(err);
-        }
+        if (err) handleError(err);
 
         res.send(req.params._id);
     });

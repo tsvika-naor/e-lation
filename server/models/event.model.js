@@ -12,7 +12,6 @@ var eventSchema = new Schema({
   endDate: { type: Date, default: Date.now },
   media: [{ mediaType: Number,
             mimeType: String,
-            name: String,
             data: String }],
   private: { type: Boolean, default: false },
   address: { street: String,

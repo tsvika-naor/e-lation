@@ -10,6 +10,9 @@ export class GenderPipe implements PipeTransform {
             case 1: {
                 return "Female";
             }
+            default: {
+                return "";
+            }
         }
     }
 }

@@ -9,14 +9,18 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RouterStoreModule } from '@ngrx/router-store';
 
-import { routes, reducer, AddressPipe, IfTrimPipe, GenderPipe, ParamPipe, AuthEffects, EventEffects } from './shared';
+import { AuthEffects, EventEffects, FeedEffects, GroupEffects, ProviderEffects, UserEffects,
+         routes, reducer, AddressPipe, IfTrimPipe, GenderPipe, ParamPipe} from './shared';
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
-import { PeopleListComponent } from './peopleList/peopleList.component';
-import { UserPageComponent } from './userPage/userPage.component';
-import { GroupPageComponent } from './groupPage/groupPage.component';
 import { EventPageComponent } from './eventPage/eventPage.component';
+import { FeedComponent } from './feed/feed.component';
+import { GroupPageComponent } from './groupPage/groupPage.component';
+import { ProviderComponent } from './provider/provider.component';
+import { UserPageComponent } from './userPage/userPage.component';
+import { PeopleListComponent } from './peopleList/peopleList.component';
+import { PostComponent } from './post/post.component';
 
 @NgModule({
   imports: [
@@ -27,20 +31,27 @@ import { EventPageComponent } from './eventPage/eventPage.component';
     StoreModule.provideStore(reducer),
     RouterStoreModule.connectRouter(),
     EffectsModule.run(AuthEffects),
-      EffectsModule.run(EventEffects),
-      StoreDevtoolsModule.instrumentOnlyWithExtension()
+    EffectsModule.run(EventEffects),
+    EffectsModule.run(FeedEffects),
+    EffectsModule.run(GroupEffects),
+    EffectsModule.run(ProviderEffects),
+    EffectsModule.run(UserEffects),
+    StoreDevtoolsModule.instrumentOnlyWithExtension()
   ],
   declarations: [
     AppComponent,
     NavComponent,
     LoginComponent,
-    UserPageComponent,
-    GroupPageComponent,
     EventPageComponent,
+    FeedComponent,
+    GroupPageComponent,
+    ProviderComponent,
+    UserPageComponent,
     PeopleListComponent,
+    PostComponent,
     AddressPipe,
-    IfTrimPipe,
     GenderPipe,
+    IfTrimPipe,
     ParamPipe
   ],
   bootstrap: [AppComponent]

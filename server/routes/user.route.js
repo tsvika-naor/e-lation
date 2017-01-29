@@ -1,12 +1,9 @@
 var router = require('express').Router();
 var User = require('../models/user.model');
 var Provider = require('../models/provider.model');
-var http = require('http');
 
-//findOne
 router.get('/:id', function (req, res) {
     User.findOne({ _id: req.params.id })
-        //.populate('provider')
         .exec(function (err, user) {
             if (err) {
                 console.error(err);
@@ -19,7 +16,6 @@ router.get('/:id', function (req, res) {
 
 router.post('/find', function (req, res) {
     User.find(req.body)
-        //.populate('provider')
         .exec(function (err, users) {
             if (err) {
                 console.error(err);

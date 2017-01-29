@@ -6,29 +6,40 @@ import { ActionReducer } from '@ngrx/store';
 import { storeFreeze } from 'ngrx-store-freeze';
 import { combineReducers } from '@ngrx/store';
 import { RouterState, routerReducer } from '@ngrx/router-store';
+
 import { State as AuthState, authReducer } from './auth';
-import { State as UserState, userReducer } from './user';
-import { State as GroupState, groupReducer } from './group';
 import { State as EventState, eventReducer } from './event';
+import { State as FeedState, feedReducer } from './feed';
+import { State as GroupState, groupReducer } from './group';
+import { State as ProviderState, providerReducer } from './provider';
+import { State as UserState, userReducer } from './user';
+
 export { AuthEffects } from './auth';
-export { GroupEffects } from "./group";
 export { EventEffects } from './event';
+export { FeedEffects } from './feed';
+export { GroupEffects } from "./group";
+export { ProviderEffects } from './provider';
+export { UserEffects } from './user';
 
 
 export interface State {
   auth: AuthState;
-  user: UserState;
-  group: GroupState;
   event: EventState;
+  feed: FeedState;
+  group: GroupState;
+  provider: ProviderState;
   router: RouterState;
+  user: UserState;
 }
 
 const reducers = {
   auth: authReducer,
-  user: userReducer,
   event: eventReducer,
+  feed: feedReducer,
   group: groupReducer,
+  provider: providerReducer,
   router: routerReducer,
+  user: userReducer
 };
 
 const developmentReducer: ActionReducer<State> = compose(storeFreeze, combineReducers)(reducers);

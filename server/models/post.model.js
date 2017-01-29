@@ -7,7 +7,6 @@ var postSchema = new Schema({
   title: String,
   media: [{ mediaType: Number,
             mimeType: String,
-            name: String,
             data: String }],
   date: { type: Date, default: Date.now },
   tags: [String],

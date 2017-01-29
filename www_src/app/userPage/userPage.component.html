@@ -1,65 +1,25 @@
-<!--<<h1>My Group-Site</h1>
-<md-list>
-      <h3 md-subheader>A</h3>
-      <md-list-item *ngFor="let message of messages">
-        <img md-list-avatar [src]="message.image" alt="Image of {{message.from}}">
-        <h4 md-line>{{message.from}}</h4>
-        <p md-line>
-          <span>{{message.subject}} -- </span>
-          <span class="demo-secondary-text">{{message.message}}</span>
-        </p>
-      </md-list-item>>-->
-
-
 <md-card>
-    <h1>My Profile</h1>
-  <md-card-header>
-    <img md-card-avatar src="https://lh3.googleusercontent.com/v5NLA-uq-EFu_dfA3gqsdujqDbBXBuJtbOWlj1ZQUvrUil6kzSuzRYkgFH-xtczCYHeG">
+  <md-card-title-group>
+    <img md-card-lg-image src="https://lh3.googleusercontent.com/v5NLA-uq-EFu_dfA3gqsdujqDbBXBuJtbOWlj1ZQUvrUil6kzSuzRYkgFH-xtczCYHeG">
     <md-card-title>{{firstName | async}} {{lastname | async}}</md-card-title>
-      <md-card-subtitle>{{firstName | async}} {{lastname | async}}</md-card-subtitle>
-  </md-card-header>
+  </md-card-title-group>
   <md-card-content>
-   <img md-card-md-image src="https://lh3.googleusercontent.com/v5NLA-uq-EFu_dfA3gqsdujqDbBXBuJtbOWlj1ZQUvrUil6kzSuzRYkgFH-xtczCYHeG">  
-  <p>E-mail:{{email | async}}</p> 
-  <p>Phone:{{phone | async}}</p>
-  <p>Gender:{{gender | async}}</p>
-   <p>Date Of Birth:{{birthday | async}}</p>
-   <p>{{address.Street }}</p>
-   <p>street:{{address.street}} building-Num:{{address.BuildingNum}} City:{{address.city}} Country:{{address.country}} </p> 
-   <p>Is Provider:{{isProvider | async}}</p>
-   </md-card-content>
+    <md-list>
+      <md-list-item>
+        <p>Email: {{email | async}}</p>
+      </md-list-item>
+      <md-list-item>
+        <p>Phone: {{phone | async}}</p>
+      </md-list-item>
+      <md-list-item>
+        <p>Gender: {{gender | async | gender}}</p>
+      </md-list-item>
+      <md-list-item>
+        <p>Date Of Birth: {{birthday | async | date:'medium'}}</p>
+      </md-list-item>
+      <md-list-item>
+        <p>Address: {{ address | async | address }}</p>
+      </md-list-item>
+    </md-list>
+  </md-card-content>
 </md-card>
-<!--{{name}} {{address.Street}} {{address.BuildingNum}} {{address.City}rpm } {{address.Country}} {{description}}-->
-<!--<p>
-    <span *ngFor="let type of groupType">
-        {{type}}
-    </span>
-</p>
-
-<p>
-    {{owner.firstname}} {{owner.lastname}}
-</p>
-<p>
-    {{provider.user.firstname}} {{provider.user.lastname}}
-</p>-->
-
-<!--<list-component [admins]="admins" [members]="members"></list-component>
-<md-list>
- <h3 Admin>A</h3>
-  <md-list-item *ngFor="let message of messages">
-    <h3 md-line> {{Members.}} </h3>
-    <p md-line>
-      <span> {{Members.subject}} </span>
-      <span class="demo-2"> -- {{message.message}} </span>
-    </p>
-  </md-list-item>
-</md-list>
-
-<md-list>
-    <h3 Members>A</h3>
-  <md-list-item *ngFor="let message of messages">
-    <h3 md-line> {{message.from}} </h3>
-    <p md-line> {{message.subject}} </p>
-    <p md-line class="demo-2"> {{message.message}} </p>
-  </md-list-item>
-</md-list>-->

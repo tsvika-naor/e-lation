@@ -1,30 +1,20 @@
-
-<md-card-title>
-    <span class="md-headline">{{name | async}}</span>
-</md-card-title>
-<md-card-subtitle>
-    {{startDate | async}}
-</md-card-subtitle>
 <md-card>
-    <table border="1" width="100%">
-        <tr>
-         <!--   <td>address: {{ event.address | address}} </td> -->
-        </tr>
-        <tr>
-            <td>admin: <!--{{ event.admins[0].firstName }} {{event.admins[0].lastName}}--></td>
-        </tr>
-    </table>
+  <md-card-title-group>
+    <img md-card-lg-image src="https://img.clipartfest.com/377cb8d0d8ddbb3467fb9ea2c6dd323a_soccer-team-clipart-soccer-team-clipart_1500-1107.jpeg">
+    <md-card-title>{{name | async}}</md-card-title>
+    <md-card-subtitle>
+      <p>Location: {{ address | async | address }}</p>
+      <p>From: {{startDate | async | date:'medium'}} To: {{endDate | async | date:'medium'}}</p>
+      <p>Created by: {{owner | async | param:'firstName'}} {{owner | async | param:'lastName'}}</p>
+      <p>Provider: {{provider | async | param:'user.firstName'}} {{provider | async | param:'user.lastName'}}</p>
+      <p>Description: {{description | async}}</p>
+    </md-card-subtitle>
+  </md-card-title-group>
 </md-card>
 <md-card>
-    members:
-        <p>{{ description | async}}</p>ß
-
-</md-card>ß
-<!--
-<md-card>
-    members:
-    <div *ngFor="let member of members">
-    <p>{{ member.firstName }}</p>
-</div>
+  <md-card-title>Participants</md-card-title>
+  <md-card-content>
+    <el-people-list [members]="members | async" [admins]="admins | async"></el-people-list>
+  </md-card-content>
 </md-card>
--->
+<!--<el-post [post]="post" *ngFor="let post of posts | async"></el-post>-->

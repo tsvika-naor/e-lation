@@ -1,0 +1,49 @@
+<md-card>
+    <md-card-header>
+        <img md-card-avatar>
+        <md-card-title>{{post.title}}</md-card-title>
+        <md-card-subtitle>{{post.date}}</md-card-subtitle>
+    </md-card-header>
+    <!--<img md-card-image [src]="post.media">-->
+    <md-card-content>
+        <p>{{post.body}}</p>
+        <md-chip-list>
+            <md-chip *ngFor="let tag of post.tags">
+                {{tag}}
+            </md-chip>
+        </md-chip-list>
+    </md-card-content>
+    <md-card-actions>
+        <button md-button (click)="showComments()">Comment</button>
+        <button md-button (click)="likePost(post._id)">Like</button>
+        <button md-button (click)="sharePost(post._id)">Share</button>
+    </md-card-actions>
+    <md-card-footer *ngIf="!hideComments">
+        <md-list>
+            <md-list-item *ngFor="let comment of comments | ifTrim:trim:max">
+                <p md-line><em>{{comment.user.firstName}} {{comment.user.firstName}}</em></p>
+                <p md-line>{{comment.text}}</p>
+                <p md-line>
+                    <span>{{comment.date}}</span>
+                    <span class="app-filler"></span>
+                    <span md-button (click)="likeComment(comment._id)">{{comment.likes}} Likes</span>
+                    <span md-button (click)="showChildren(comment._id)" *ngIf="comment.comments.length > 0">{{comment.comments.length | 0}} Comments</span>
+                </p>
+                <md-list *ngIf="comment.showChildren || !trim">
+                    <md-list-item *ngFor="let subcomment of comment.comments | ifTrim:true:3">
+                        <p md-line><em>{{subcomment.user.firstName}} {{subcomment.user.firstName}}</em></p>
+                        <p md-line>{{subcomment.text}}</p>
+                        <p md-line>
+                            <span>{{subcomment.date}}</span>
+                            <span class="app-filler"></span>
+                            <span md-button (click)="likeSubComment(comment._id, subcomment._id)">{{subcomment.likes}} Likes</span>
+                        </p>
+                    </md-list-item>
+                    <md-list-item>
+                        <p md-line *ngIf="comment.comments.length > max">See more comments...</p>
+                    </md-list-item>
+                </md-list>
+            </md-list-item>
+        </md-list>
+    </md-card-footer>
+</md-card>
