@@ -27,7 +27,7 @@
                     <span>{{comment.date}}</span>
                     <span class="app-filler"></span>
                     <span md-button (click)="likeComment(comment._id)">{{comment.likes}} Likes</span>
-                    <span md-button (click)="showChildren(comment._id)" *ngIf="comment.comments.length > 0">{{comment.comments.length | 0}} Comments</span>
+                    <span md-button (click)="showChildren(comment._id)" *ngIf="comment.comments">{{comment.comments.length || 0}} Comments</span>
                 </p>
                 <md-list *ngIf="comment.showChildren || !trim">
                     <md-list-item *ngFor="let subcomment of comment.comments | ifTrim:true:3">
