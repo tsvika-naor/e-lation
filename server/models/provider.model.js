@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var providerSchema = new Schema({
   bio: String,
   rank: Number,
+  fields: [String],
   reviews: [{ type: Schema.Types.ObjectId, ref: 'Review' }],
   businessAddress: { street: String,
                      buildingNum: String,

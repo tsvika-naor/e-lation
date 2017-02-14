@@ -3,13 +3,16 @@ var Provider = require('../models/provider.model');
 var Review = require('../models/review.model');
 
 router.get('/:id', function (req, res) {
-    Provider.findOne({ _id: req.params.id }, function (err, user) {
+    Provider.findOne({ _id: req.params.id })
+        .populate({ path: 'user', select: 'firstName lastName avatar phone email' })
+        .populate({ path: 'reviews', populate: { path: 'user', select: 'firstName lastName' } })
+        .exec(function (err, user) {
             if (err) {
                 console.error(err);
                 res.status(400).send(err);
             }
 
-            res.JSON(user);
+            res.json(user);
         });
 });
 
@@ -20,7 +23,7 @@ router.post('/review/new', function (req, res) {
             res.status(400).send(err);
         }
 
-        res.JSON(doc);
+        res.json(doc);
     });
 });
 
@@ -31,7 +34,7 @@ router.post('/review/edit', function (req, res) {
             res.status(400).send(err);
         }
 
-        res.JSON(obj);
+        res.json(obj);
     });
 });
 

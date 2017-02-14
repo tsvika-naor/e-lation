@@ -4,34 +4,55 @@ var Event = require('../models/event.model');
 
 router.get('/:id', function (req, res) {
     Event.findOne({ _id: req.params.id })
-    //.populate('provider')
+        .populate({ path: 'owner admins members', select: '_id firstName lastName' })
+        .populate({ path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } })
+        .populate({
+            path: 'posts', populate: [
+                { path: 'user', select: '_id firstName lastName' },
+                {
+                    path: 'comments', populate: [
+                        { path: 'user', select: '_id firstName lastName' },
+                        { path: 'comments' }
+                    ]
+                }
+            ]
+        })
         .exec(function (err, event) {
             if (err) {
                 console.error(err);
                 res.status(400).send(err);
             }
 
-            res.JSON(event);
+            res.json(event);
         });
 });
 
-router.post('/member/add', function (req, res) {
+router.post('/find', function (req, res) {
     Event.find(req.body)
-    //.populate('provider')
+        .populate({ path: 'owner admins members', select: '_id firstName lastName' })
+        .populate({ path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } })
+        .populate({
+            path: 'posts', populate: [
+                { path: 'user', select: '_id firstName lastName' },
+                {
+                    path: 'comments', populate: [
+                        { path: 'user', select: '_id firstName lastName' },
+                        { path: 'comments' }
+                    ]
+                }
+            ]
+        })
         .exec(function (err, events) {
             if (err) {
                 console.error(err);
                 res.status(400).send(err);
             }
 
-            res.JSON(events);
+            res.json(events);
         });
 });
 
 router.post('/new', function (req, res) {
-    var providerData = Object.assign(req.body.provider);
-    delete req.body.provider;
-
     Event.create(req.body, function (err, doc) {
         if (err) {
             console.error(err);
@@ -39,16 +60,8 @@ router.post('/new', function (req, res) {
         }
 
         if (!doc.isProvider) {
-            res.JSON(doc);
+            res.json(doc);
         }
-
-        providerData.event = doc;
-        var provider = new Provider(providerData);
-        provider.save(function (err) {
-            res.JSON(doc);
-        });
-
-
     });
 });
 
@@ -58,7 +71,75 @@ router.post('/update', function (req, res) {
             console.error(err);
             res.status(400).send(err);
         }
-        res.JSON(obj);
+        res.json(obj);
+    });
+});
+
+router.post('/member/add', function (req, res) {
+    Event.findOne({ _id: req.body.parent }, function (err, event) {
+        if (err) handleError(err);
+
+        User.findOne({ _id: req.body.child._id }, function (err, member) {
+            if (err) handleError(err);
+
+            event.members.addToSet(member);
+            event.save(function (err) {
+                if (err) handleError(err);
+
+                res.json(member);
+            });
+        });
+    });
+});
+
+router.post('/admin/add', function (req, res) {
+    Event.findOne({ _id: req.body.parent }, function (err, event) {
+        if (err) handleError(err);
+
+        User.findOne({ _id: req.body.child._id }, function (err, admin) {
+            if (err) handleError(err);
+
+            event.admins.addToSet(admin);
+            event.save(function (err) {
+                if (err) handleError(err);
+
+                res.json(admin);
+            });
+        });
+    });
+});
+
+router.post('/member/remove', function (req, res) {
+    Event.findOne({ _id: req.body.parent }, function (err, event) {
+        if (err) handleError(err);
+
+        User.findOne({ _id: req.body.child._id }, function (err, member) {
+            if (err) handleError(err);
+
+            event.members.pull(member._id);
+            event.save(function (err) {
+                if (err) handleError(err);
+
+                res.json(member);
+            });
+        });
+    });
+});
+
+router.post('/admin/remove', function (req, res) {
+    Event.findOne({ _id: req.body.parent }, function (err, event) {
+        if (err) handleError(err);
+
+        User.findOne({ _id: req.body.child._id }, function (err, admin) {
+            if (err) handleError(err);
+
+            event.members.pull(admin._id);
+            event.save(function (err) {
+                if (err) handleError(err);
+
+                res.json(admin);
+            });
+        });
     });
 });
 

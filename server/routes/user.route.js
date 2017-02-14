@@ -10,7 +10,7 @@ router.get('/:id', function (req, res) {
                 res.status(400).send(err);
             }
 
-            res.JSON(user);
+            res.json(user);
         });
 });
 
@@ -22,7 +22,7 @@ router.post('/find', function (req, res) {
                 res.status(400).send(err);
             }
 
-            res.JSON(users);
+            res.json(users);
         });
 });
 
@@ -37,16 +37,14 @@ router.post('/new', function (req, res) {
         }
 
         if (!doc.isProvider) {
-            res.JSON(doc);
+            res.json(doc);
         }
 
         providerData.user = doc;
         var provider = new Provider(providerData);
         provider.save(function (err) {
-            res.JSON(doc);
+            res.json(doc);
         });
-
-
     });
 });
 
@@ -56,7 +54,7 @@ router.post('/update', function (req, res) {
             console.error(err);
             res.status(400).send(err);
         }
-        res.JSON(obj);
+        res.json(obj);
     });
 });
 

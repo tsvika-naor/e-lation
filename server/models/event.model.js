@@ -8,6 +8,8 @@ var eventSchema = new Schema({
   members: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   name: String,
   description: String,
+  avatar: { mimeType: String,
+            data: String },
   startDate: { type: Date, default: Date.now },
   endDate: { type: Date, default: Date.now },
   media: [{ mediaType: Number,

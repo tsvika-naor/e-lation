@@ -7,7 +7,7 @@ var commentSchema = new Schema({
   subject: { type: Schema.Types.ObjectId, ref: 'Post' },
   text: String,
   date: { type: Date, default: Date.now },
-  likes: {type: Number, default: 0},
+  likes: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 });
 

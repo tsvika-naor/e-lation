@@ -7,7 +7,7 @@ router.post('/get', function (req, res) {
     Post.find(req.body, function (err, posts) {
         if (err) handleError(err);
 
-        res.JSON(posts);
+        res.json(posts);
     });
 });
 
@@ -15,7 +15,7 @@ router.post('/post/like', function (req, res) {
     Post.findOneAndUpdate({ _id: req.body._id }, { likes: req.body.likes }, function (err, obj) {
         if (err) handleError(err);
 
-        res.JSON(obj);
+        res.json(obj);
     });
 });
 
@@ -23,7 +23,7 @@ router.post('/comment/like', function (req, res) {
     Comment.findOneAndUpdate({ _id: req.body._id }, { likes: req.body.likes }, function (err, obj) {
         if (err) handleError(err);
 
-        res.JSON(obj);
+        res.json(obj);
     });
 });
 
@@ -39,7 +39,7 @@ router.post('/comment/post', function (req, res) {
                 post.save(function (err) {
                     if (err) handleError(err);
 
-                    res.JSON(doc);
+                    res.json(doc);
                 });
             });
         } else {
@@ -50,7 +50,7 @@ router.post('/comment/post', function (req, res) {
                 comment.save(function (err) {
                     if (err) handleError(err);
 
-                    res.JSON(doc);
+                    res.json(doc);
                 });
             });
         }

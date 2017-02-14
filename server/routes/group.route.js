@@ -7,22 +7,22 @@ var handleError = require('./utils');
 router.get('/:id', function (req, res) {
     Group.findOne({ _id: req.params.id })
         .populate({ path: 'owner admins members', select: '_id firstName lastName' })
-        .populate({ path: 'provider', select: '_id Group', populate: { path: 'Group', select: '_id firstName lastName' } })
+        .populate({ path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } })
         .exec(function (err, Group) {
             if(err) handleError(err);
 
-            res.JSON(Group);
+            res.json(Group);
         });
 });
 
 router.post('/find', function (req, res) {
     Group.find(req.body)
         .populate({ path: 'owner admins members', select: '_id firstName lastName' })
-        .populate({ path: 'provider', select: '_id Group', populate: { path: 'Group', select: '_id firstName lastName' } })
+        .populate({ path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } })
         .exec(function (err, groups) {
             if(err) handleError(err);
 
-            res.JSON(groups);
+            res.json(groups);
         });
 });
 
@@ -30,7 +30,7 @@ router.post('/new', function (req, res) {
     Group.create(req.body, function (err, doc) {
         if(err) handleError(err);
 
-        res.JSON(doc);
+        res.json(doc);
     });
 });
 
@@ -38,7 +38,7 @@ router.post('/update', function (req, res) {
     Group.findOneAndUpdate({ _id: req.body._id }, req.body, function (err, obj) {
         if(err) handleError(err);
 
-        res.JSON(obj);
+        res.json(obj);
     });
 });
 
@@ -53,7 +53,7 @@ router.post('/member/add', function (req, res) {
             group.save(function (err) {
                 if (err) handleError(err);
 
-                res.JSON(member);
+                res.json(member);
             });
         });
     });
@@ -70,7 +70,7 @@ router.post('/admin/add', function (req, res) {
             group.save(function (err) {
                 if (err) handleError(err);
 
-                res.JSON(admin);
+                res.json(admin);
             });
         });
     });
@@ -87,7 +87,7 @@ router.post('/member/remove', function (req, res) {
             group.save(function (err) {
                 if (err) handleError(err);
 
-                res.JSON(member);
+                res.json(member);
             });
         });
     });
@@ -104,7 +104,7 @@ router.post('/admin/remove', function (req, res) {
             group.save(function (err) {
                 if (err) handleError(err);
 
-                res.JSON(admin);
+                res.json(admin);
             });
         });
     });
