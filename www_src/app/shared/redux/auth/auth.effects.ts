@@ -15,6 +15,7 @@ import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 
 import * as Auth from './auth.actions';
+import * as User from '../user/user.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -27,7 +28,7 @@ export class AuthEffects {
         .map((action: Auth.LoginAction) => action.payload)
         .switchMap(payload => this.http$.post('/api/auth/login', payload))
         // If successful, dispatch success action with result
-        .mergeMap(res => Observable.from([{ type: Auth.ActionTypes.AUTH_SUCCESS, payload: res.json() }, go("/feed")]))
+        .mergeMap(res => Observable.from([{ type: Auth.ActionTypes.AUTH_SUCCESS, payload: res.json().token }, { type: User.L_GetUserAction, payload: res.json().user } , go("/feed")]))
         // If request fails, dispatch failed action
         .catch(err => Observable.of({ type: Auth.ActionTypes.AUTH_FAIL, payload: err }));
 }

@@ -4,6 +4,7 @@ import { type } from '../shared/util';
 export const ActionTypes = {
   AUTH_SUCCESS: type('Auth Success'),
   AUTH_FAIL: type('Auth Fail'),
+  TOGGLE_ACTION: type('Toggle Action'),
   LOGIN: type('Login'),
   LOGOUT: type('Logout')
 };
@@ -18,6 +19,12 @@ export class AuthFailAction implements Action {
   type = ActionTypes.AUTH_FAIL;
 
   constructor(public payload: Error) { }
+}
+
+export class ToggleActionAction implements Action {
+  type = ActionTypes.TOGGLE_ACTION;
+
+  constructor(public payload: any) { }
 }
 
 export class LoginAction implements Action {
@@ -39,5 +46,6 @@ export class LogoutAction implements Action {
 export type Actions = 
   AuthSuccessAction |
   AuthFailAction |
+  ToggleActionAction |
   LoginAction |
   LogoutAction;

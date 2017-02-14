@@ -5,8 +5,8 @@
     <md-card-subtitle>
       <p>Location: {{ address | async | address }}</p>
       <p>From: {{startDate | async | date:'medium'}} To: {{endDate | async | date:'medium'}}</p>
-      <p>Created by: {{owner | async | param:'firstName'}} {{owner | async | param:'lastName'}}</p>
-      <p>Provider: {{provider | async | param:'user.firstName'}} {{provider | async | param:'user.lastName'}}</p>
+      <p>Created by: <a routerLink="/user/{{(owner | async)?._id}}">{{(owner | async)?.firstName}} {{(owner | async)?.lastName}}</a></p>
+      <p>Provider: <a routerLink="/provider/{{(provider | async)?._id}}">{{(provider | async)?.user.firstName}} {{(provider | async)?.user.lastName}}</a></p>
       <p>Description: {{description | async}}</p>
     </md-card-subtitle>
   </md-card-title-group>
@@ -17,4 +17,4 @@
     <el-people-list [members]="members | async" [admins]="admins | async"></el-people-list>
   </md-card-content>
 </md-card>
-<!--<el-post [post]="post" *ngFor="let post of posts | async"></el-post>-->
+<el-post [post]="post" max=2 *ngFor="let post of posts | async"></el-post>

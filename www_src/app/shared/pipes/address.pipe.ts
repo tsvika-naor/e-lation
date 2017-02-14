@@ -6,6 +6,6 @@ export class AddressPipe implements PipeTransform {
         if (address === null || typeof address === "undefined")
             return "";
 
-        return address.street + ' ' + address.buildingNum + ',' + address.city + '-' + address.country;
+        return address.street + ' ' + address.buildingNum + ' - ' + address.city + ', ' + address.country;
     }
 }

@@ -9,8 +9,12 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RouterStoreModule } from '@ngrx/router-store';
 
-import { AuthEffects, EventEffects, FeedEffects, GroupEffects, ProviderEffects, UserEffects,
-         routes, reducer, AddressPipe, IfTrimPipe, GenderPipe, ParamPipe} from './shared';
+import {
+  AuthEffects, EventEffects, FeedEffects, GroupEffects, ProviderEffects, UserEffects,
+  routes, reducer, AddressPipe, IfTrimPipe, GenderPipe,
+  FacebookService, INIT_PARAMS, GoogleService, GOOG_ID
+} from './shared';
+
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
@@ -21,6 +25,15 @@ import { ProviderComponent } from './provider/provider.component';
 import { UserPageComponent } from './userPage/userPage.component';
 import { PeopleListComponent } from './peopleList/peopleList.component';
 import { PostComponent } from './post/post.component';
+
+var fbParams = {
+  appId: '1246381665456070',
+  cookie: true,
+  xfbml: false,
+  version: 'v2.8'
+};
+
+var googId = '142084885382-lr0fajuthv25m2oc98107ete22lqe5h2';
 
 @NgModule({
   imports: [
@@ -51,10 +64,14 @@ import { PostComponent } from './post/post.component';
     PostComponent,
     AddressPipe,
     GenderPipe,
-    IfTrimPipe,
-    ParamPipe
+    IfTrimPipe
+  ],
+  providers: [
+    FacebookService,
+    { provide: INIT_PARAMS, useValue: fbParams },
+    GoogleService,
+    { provide: GOOG_ID, useValue: googId}
   ],
   bootstrap: [AppComponent]
 })
-
 export class AppModule { }

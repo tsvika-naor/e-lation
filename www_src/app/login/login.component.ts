@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { State } from '../shared/redux'
 import { ActionTypes as Actions } from '../shared/redux/auth'
+import { FacebookService, GoogleService } from '../shared/services'
 
 @Component({
     selector: 'el-login',
@@ -11,13 +12,23 @@ import { ActionTypes as Actions } from '../shared/redux/auth'
     styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
-    private error: Observable<String>;
+    error: Observable<string>;
+    isNewUser: Observable<boolean>;
 
-    constructor(private store$: Store<State>) {
+    constructor(private store$: Store<State>, private fb: FacebookService, private goog: GoogleService) {
         this.error = store$.select(state => { return (state.auth.err !== null) ? state.auth.err.message : "" });
+        this.isNewUser = store$.select(state => state.auth.newUser);
     }
 
-    login() {
-        this.store$.dispatch({ type: Actions.LOGIN });
+    toggleAction() {
+        this.store$.dispatch({ type: Actions.TOGGLE_ACTION });
+    }
+
+    flogin() {
+        this.fb.login((response: LoginResponse) => this.store$.dispatch({ type: Actions.LOGIN, payload: response.authResponse }));
+    }
+
+    glogin() {
+        this.goog.signin({}).then((response: any) => this.store$.dispatch({ type: Actions.LOGIN, payload: response }));
     }
 }

@@ -20,11 +20,19 @@ export class UserEffects {
 
     constructor(private actions$: Actions, private http$: Http) { }
 
-    @Effect() login$ = this.actions$
+    @Effect() getUser$ = this.actions$
+        .ofType(User.ActionTypes.S_GET_USER)
+        // Map the payload into JSON to use as the request body
+        .map((action: User.S_GetUserAction) => action.payload)
+        .switchMap(payload => this.http$.get('/api/user/'+payload))
+        // If successful, dispatch success action with result
+        .map(res => ({ type: User.ActionTypes.L_GET_USER, payload: res.json() }));
+
+    @Effect() userUpdate$ = this.actions$
         .ofType(User.ActionTypes.S_USER_UPDATE)
         // Map the payload into JSON to use as the request body
         .map((action: User.S_UserUpdateAction) => action.payload)
         .switchMap(payload => this.http$.post('/api/user/update', payload))
         // If successful, dispatch success action with result
-        .map(res => ({ type: User.ActionTypes.S_USER_UPDATE, payload: res.json() }));
+        .map(res => ({ type: User.ActionTypes.L_USER_UPDATE, payload: res.json() }));
 }

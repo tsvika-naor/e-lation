@@ -24,19 +24,19 @@ export class S_GetFeedAction implements Action {
 export class S_LikePostAction implements Action {
   type = ActionTypes.S_LIKE_POST;
 
-  constructor(public payload: ObjectId) { }
+  constructor(public payload: HttpPayload) { }
 }
 
 export class S_LikeCommentAction implements Action {
   type = ActionTypes.S_LIKE_COMMENT;
 
-  constructor(public payload: ObjectId) { }
+  constructor(public payload: HttpPayload) { }
 }
 
 export class S_LikeSubCommentAction implements Action {
   type = ActionTypes.S_LIKE_SUBCOMMENT;
 
-  constructor(public payload: ObjectId) { }
+  constructor(public payload: HttpPayload) { }
 }
 
 export class S_PostCommentAction implements Action {

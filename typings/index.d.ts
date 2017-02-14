@@ -17,7 +17,7 @@ declare type HttpPayload = {
 
 declare type MediaObject = {
     mediaType?: MediaType,
-    mimeType: String,
+    mimeType?: String,
     data: String
 }
 
@@ -35,9 +35,11 @@ declare type User = {
     email?: String,
     phone?: String,
     gender?: Gender,
+    interests?: Array<String>,
     birthday?: Date,
     avatar?: MediaObject,
     address?: Address,
+    friends?: Array<User>,
     isProvider?: Boolean
 }
 
@@ -45,6 +47,7 @@ declare type Provider = {
     _id?: ObjectId,
     bio: String,
     rank: Number,
+    fields: Array<String>,
     reviews: Array<Review>,
     businessAddress: Address,
     user?: User
@@ -58,7 +61,7 @@ declare type Post = {
     media?: Array<MediaObject>,
     date: Date,
     tags?: Array<String>,
-    likes: Number,
+    likes: Array<ObjectId>, //ref: User
     comments: Array<UserComment>
 }
 
@@ -77,7 +80,7 @@ declare type UserComment = {
     subject: ObjectId, //ref: Post
     text: String,
     date: Date,
-    likes: number,
+    likes: Array<ObjectId>, //ref: User
     showChildren?: Boolean,
     comments: Array<UserComment>
 }
@@ -90,8 +93,10 @@ declare type Group = {
     members: Array<User>,
     name: String,
     description: String,
+    avatar?: MediaObject,
     groupType: Array<String>,
     address: Address,
+    posts: Array<Post>
 }
 
 declare type GeoEvent = {
@@ -102,6 +107,7 @@ declare type GeoEvent = {
     members: Array<User>,
     name: String,
     description: String,
+    avatar?: MediaObject,
     startDate: Date,
     endDate: Date,
     media?: Array<MediaObject>,

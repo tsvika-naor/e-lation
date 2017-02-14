@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
-import { Store, Action } from '@ngrx/store';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 import { State } from '../shared/redux'
 import { ActionTypes as Actions } from '../shared/redux/provider'
@@ -15,8 +17,9 @@ export class ProviderComponent {
     reviews: Observable<Array<Review>>;
     user: Observable<User>;
     showContact: Observable<boolean>;
+    sub: Subscription;
 
-    constructor(private store$: Store<State>) {
+    constructor(private store$: Store<State>, private route: ActivatedRoute) {
         this.bio = store$.select(state => state.provider.bio);
         this.rank = store$.select(state => state.provider.rank);
         this.businessAddress = store$.select(state => state.provider.businessAddress);
@@ -27,5 +30,15 @@ export class ProviderComponent {
 
     toggleContact() {
         this.store$.dispatch({type: Actions.TOGGLE_CONTACT});
+    }
+
+    ngOnInit() {
+        this.sub = this.route.params.subscribe(params => {
+            this.store$.dispatch({type: Actions.S_GET_PROVIDER, payload: params['id']});
+        });
+    }
+
+    ngOnDestroy() {
+        this.sub.unsubscribe();
     }
 }

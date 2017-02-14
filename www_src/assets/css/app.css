@@ -43,6 +43,10 @@
   color: rgba(0, 0, 0, 0.54);
 }
 
+[md-multi-line] {
+  margin-bottom: 2em;
+}
+
 .wide {
   width: 100%;
 }

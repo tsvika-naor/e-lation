@@ -4,19 +4,21 @@ import { Actions, ActionTypes } from './provider.actions';
 
 
 export interface State {
-  _id: ObjectId,
-  bio: String,
-  rank: Number,
-  reviews: Array<Review>,
-  businessAddress: Address,
-  user: User,
-  showContact: boolean
+  _id: ObjectId;
+  bio: String;
+  rank: Number;
+  fields: Array<String>;
+  reviews: Array<Review>;
+  businessAddress: Address;
+  user: User;
+  showContact: boolean;
 };
 
 const initialState: State = {
   _id: null,
   bio: "",
   rank: 0,
+  fields: [],
   reviews: [],
   businessAddress: null,
   user: {firstName: "", lastName: "", avatar: {data: ""}},

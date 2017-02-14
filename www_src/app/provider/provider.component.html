@@ -1,10 +1,10 @@
 <md-card>
   <md-card-title-group>
-    <img md-card-lg-image src="{{user | async | param:'avatar.data'}}">
+    <img md-card-lg-image src="{{(user | async).avatar?.data}}">
     <md-card-title>
-      <span>{{user | async | param:'firstName'}} {{user | async | param:'lastName'}}</span>
+      <span>{{(user | async)?.firstName }} {{(user | async)?.lastName}}</span>
       <md-chip-list>
-        <md-chip>{{ rank | async }}</md-chip>
+        <md-chip>Rank: {{ rank | async }}</md-chip>
       </md-chip-list>
     </md-card-title>
     <md-card-subtitle>Address: {{businessAddress | async | address}}</md-card-subtitle>
@@ -12,16 +12,18 @@
   <md-card-content>
     <md-list>
       <md-list-item>
-        <p md-line>About: <span class="line-2">{{bio | async}}</span></p>
+        <div md-multi-line>About:
+          <p class="line-2">{{bio | async}}</p>
+        </div>
       </md-list-item>
       <md-list-item>
         <button md-raised-button (click)="toggleContact()">{{(showContact | async) ? "Hide" : "Show"}} Contact Details</button>
       </md-list-item>
       <md-list-item *ngIf="showContact | async">
-        <p md-line>Phone: {{user | async | param:'phone'}}</p>
+        <p md-line>Phone: <span class="line-2">{{(user | async)?.phone}}</span></p>
       </md-list-item>
       <md-list-item *ngIf="showContact | async">
-        <p md-line>Email: {{user | async | param:'email'}}</p>
+        <p md-line>Email: <span class="line-2">{{(user | async)?.email}}</span></p>
       </md-list-item>
     </md-list>
   </md-card-content>
@@ -32,7 +34,7 @@
     <md-list>
       <md-list-item *ngFor="let review of reviews | async">
         <p md-line>
-          <em>{{review.user.firstName}} {{review.user.lastName}}</em>
+          <em><a routerLink="/user/{{review.user?._id}}">{{review.user?.firstName}} {{review.user?.lastName}}</a></em>
           <span class="app-filler"></span>
           <span class="line-2">{{review.date | date:'medium' }}</span>
         </p>

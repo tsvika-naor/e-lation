@@ -1,6 +1,6 @@
 <md-card>
   <md-card-title-group>
-    <img md-card-lg-image src="https://lh3.googleusercontent.com/v5NLA-uq-EFu_dfA3gqsdujqDbBXBuJtbOWlj1ZQUvrUil6kzSuzRYkgFH-xtczCYHeG">
+    <img md-card-lg-image src="{{(user | async).avatar?.data}}">
     <md-card-title>{{firstName | async}} {{lastname | async}}</md-card-title>
   </md-card-title-group>
   <md-card-content>

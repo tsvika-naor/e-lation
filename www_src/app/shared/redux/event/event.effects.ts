@@ -20,6 +20,14 @@ export class EventEffects {
 
     constructor(private actions$: Actions, private http$: Http) { }
 
+    @Effect() getEvent$ = this.actions$
+        .ofType(Event.ActionTypes.S_GET_EVENT)
+        // Map the payload into JSON to use as the request body
+        .map((action: Event.S_GetEventAction) => action.payload)
+        .switchMap(payload => this.http$.get('/api/event/'+payload))
+        // If successful, dispatch success action with result
+        .map(res => ({ type: Event.ActionTypes.L_GET_EVENT, payload: res.json() }));
+
     @Effect() addMember$ = this.actions$
         .ofType(Event.ActionTypes.S_ADD_MEMBER)
         // Map the payload into JSON to use as the request body
@@ -56,7 +64,7 @@ export class EventEffects {
         .ofType(Event.ActionTypes.S_EDIT_EVENT)
         // Map the payload into JSON to use as the request body
         .map((action: Event.S_RemoveAdminAction) => action.payload)
-        .switchMap(payload => this.http$.post('/api/event/edit', payload))
+        .switchMap(payload => this.http$.post('/api/event/update', payload))
         // If successful, dispatch success action with result
         .map(res => ({ type: Event.ActionTypes.L_EDIT_EVENT, payload: res.json() }));
 }

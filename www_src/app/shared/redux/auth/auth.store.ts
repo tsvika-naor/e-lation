@@ -4,14 +4,16 @@ import { Actions, ActionTypes } from './auth.actions';
 
 
 export interface State {
-  token: string | null;
+  token: string;
   authenticated: boolean;
-  err: Error | null;
+  newUser: boolean;
+  err: Error;
 };
 
 const initialState: State = {
   token: null,
   authenticated: false,
+  newUser: false,
   err: null
 };
 
@@ -19,8 +21,9 @@ export function authReducer (state = initialState, action: Actions): State {
   switch (action.type) {
     case ActionTypes.AUTH_SUCCESS: {
       return {
-        token: action.payload as string,
+        token: action.payload,
         authenticated: true,
+        newUser: state.newUser,
         err: null
       };
     }
@@ -29,8 +32,16 @@ export function authReducer (state = initialState, action: Actions): State {
       return {
         token: null,
         authenticated: false,
-        err: action.payload as Error
+        newUser: state.newUser,
+        err: action.payload
       };
+    }
+
+    case ActionTypes.TOGGLE_ACTION: {
+      return {
+        ...state,
+        newUser: !state.newUser
+      }
     }
 
     default: {

@@ -17,19 +17,19 @@ export const routes: Routes = [
         component: LoginComponent
     },
     {
-        path: 'user',
+        path: 'user/:id',
         component: UserPageComponent
     },
     {
-        path: 'group',
+        path: 'group/:id',
         component: GroupPageComponent
     },
     {
-        path: 'event',
+        path: 'event/:id',
         component: EventPageComponent
     },
     {
-        path: 'provider',
+        path: 'provider/:id',
         component: ProviderComponent
     },
     {

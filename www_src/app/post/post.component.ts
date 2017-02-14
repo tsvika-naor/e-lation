@@ -25,9 +25,10 @@ export class PostComponent {
             subject: this.post,
             text: "",
             date: null,
-            likes: 0,
+            likes: [],
             comments: []
         }
+        console.log(this.post);
     }
 
     showComments(id: ObjectId) {

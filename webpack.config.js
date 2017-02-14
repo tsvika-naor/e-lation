@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var HtmlWebpackExternalsPlugin = require('html-webpack-externals-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var path = require('path');
 
@@ -48,7 +49,7 @@ module.exports = {
         loader: 'file?name=fonts/[name].[ext]'
       },
       {
-        test: /\.(png|jpe?g|gif|svg|ico)$/,
+        test: /\.(png|jpe?g|gif|ico)$/,
         exclude: /(bootstrap)/,
         loader: 'file?name=assets/[name].[ext]'
       },
@@ -73,17 +74,33 @@ module.exports = {
     new ExtractTextPlugin('styles/[name].css'),
 
     new HtmlWebpackPlugin({
-            title: 'e-lation',
-            template: './www_src/index.ejs',
-            appMountId: 'el-app',
-            filename: 'index.html',
-            minify: {
-                caseSensitive: true,
-                keepClosingSlash: true,
-                collapseWhitespace: true,
-                conservativeCollapse: true,
-                preserveLineBreaks: true
-            }
-        })
+      title: 'e-lation',
+      template: './www_src/index.ejs',
+      appMountId: 'el-app',
+      filename: 'index.html',
+      minify: {
+        caseSensitive: true,
+        keepClosingSlash: true,
+        collapseWhitespace: true,
+        conservativeCollapse: true,
+        preserveLineBreaks: true
+      }
+    }),
+
+    new HtmlWebpackExternalsPlugin(
+      [
+        {
+          name: 'facebook',
+          url: 'https://connect.facebook.net/en_US/sdk.js'
+        },
+        {
+          name: 'google',
+          url: 'https://apis.google.com/js/platform.js'},
+        {
+          name: 'fontawesome',
+          url: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+        }
+      ]
+    )
   ]
 };

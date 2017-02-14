@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
 import { State } from '../shared/redux';
 import { ActionTypes as Actions } from '../shared/redux/event';
@@ -22,9 +24,10 @@ export class EventPageComponent {
     private: Observable<Boolean>;
     address: Observable<Address>;
     posts: Observable<Array<Post>>;
+    rSub: Subscription;
 
 
-    constructor(private store$: Store<State>) {
+    constructor(private store$: Store<State>, private route: ActivatedRoute) {
         this._id = store$.select(state => state.event._id);
         this.owner = store$.select(state => state.event.owner);
         this.provider = store$.select(state => state.event.provider);
@@ -46,6 +49,16 @@ export class EventPageComponent {
 
     addAdmin(user: User) {
         this.store$.dispatch({ type: Actions.S_ADD_ADMIN, payload: user })
+    }
+
+    ngOnInit() {
+        this.rSub = this.route.params.subscribe(params => {
+            this.store$.dispatch({type: Actions.S_GET_EVENT, payload: params['id']});
+        });
+    }
+
+    ngOnDestroy() {
+        this.rSub.unsubscribe();
     }
 }
 
