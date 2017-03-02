@@ -12,6 +12,9 @@ mongoose.connect('mongodb://heroku_7h2r3npw:s4i8a900gf6p41bt1me1gru0u6@ds151228.
 var db = mongoose.connection;
 
 require('./routes/index')(app, __dirname);
+require('./algorithm/feed/Feeduser')(app);
+require('./algorithm/ProviderFeed/ProviderSearch')(app);
+
 
 db.on('error', function (error) {
     console.error(error.name + ": " + error.message);
