@@ -11,9 +11,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 mongoose.connect('mongodb://heroku_7h2r3npw:s4i8a900gf6p41bt1me1gru0u6@ds151228.mlab.com:51228/heroku_7h2r3npw');
 var db = mongoose.connection;
 
-require('./routes/index')(app, __dirname);
 require('./algorithm/feed/Feeduser')(app);
 require('./algorithm/ProviderFeed/ProviderSearch')(app);
+require('./routes/index')(app, __dirname);
 
 
 db.on('error', function (error) {

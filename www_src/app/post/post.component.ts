@@ -28,7 +28,6 @@ export class PostComponent {
             likes: [],
             comments: []
         }
-        console.log(this.post);
     }
 
     showComments(id: ObjectId) {

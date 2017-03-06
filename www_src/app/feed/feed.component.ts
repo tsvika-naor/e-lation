@@ -42,7 +42,7 @@ export class FeedComponent {
     ngOnInit() {
         this.sub = this.store$.select(state => state.user._id).subscribe(id => {
             this.userId = id || '588dabd60e4ae2358cb66263';
-            this.store$.dispatch({ type: Actions.S_GET_FEED, payload: id });
+            this.store$.dispatch({ type: Actions.S_GET_FEED, payload: this.userId });
         });
     }
 
