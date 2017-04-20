@@ -4,9 +4,7 @@
 <md-toolbar color="primary">
     <button class="app-icon-button" (click)="sidenav.toggle()">
       <i class="material-icons app-toolbar-menu">menu</i>
-    </button>
-
-    e-lation
+    </button> e-lation
 
     <a md-button routerLink="/feed">Feed</a>
     <a md-button routerLink="/group">Group</a>
@@ -14,5 +12,27 @@
     <a md-button routerLink="/user">User</a>
     <a md-button routerLink="/provider">Provider</a>
     <span class="app-filler"></span>
+    <md-input-container>
+        <input type="text" mdInput [formControl]="searchBar" [mdAutocomplete]="auto">
+    </md-input-container>
     <a md-button routerLink="/logout" *ngIf="(authenticated | async)">Logout</a>
 </md-toolbar>
+
+
+<md-autocomplete #auto="mdAutocomplete" class="search-results">
+   <md-option *ngFor="let result of (results | async).providers" (onSelect)="goToProvider(result)" [value]="result">
+      {{ result }}
+   </md-option>
+   <md-option *ngFor="let result of (results | async).users" (onSelect)="goToUser(result)" [value]="result">
+      {{ result }}
+   </md-option>
+   <md-option *ngFor="let result of (results | async).groups" (onSelect)="goToGroup(result)" [value]="result">
+      {{ result }}
+   </md-option>
+   <md-option *ngFor="let result of (results | async).events" (onSelect)="goToEvent(result)" [value]="result">
+      {{ result }}
+   </md-option>
+   <!--<md-option *ngFor="let result of (results | async).posts" (onSelect)="goToPost(result)" [value]="result">
+      {{ result }}
+   </md-option>-->
+</md-autocomplete>

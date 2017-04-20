@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '@angular/material';
 
 import { StoreModule } from '@ngrx/store';
@@ -10,7 +10,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { RouterStoreModule } from '@ngrx/router-store';
 
 import {
-  AuthEffects, EventEffects, FeedEffects, GroupEffects, ProviderEffects, UserEffects,
+  AuthEffects, EventEffects, FeedEffects, GroupEffects, InfoEffects, ProviderEffects, UserEffects,
   routes, reducer, AddressPipe, IfTrimPipe, GenderPipe,
   FacebookService, INIT_PARAMS, GoogleService, GOOG_ID
 } from './shared';
@@ -38,7 +38,7 @@ var googId = '142084885382-lr0fajuthv25m2oc98107ete22lqe5h2';
 @NgModule({
   imports: [
     BrowserModule,
-    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot(routes),
     MaterialModule.forRoot(),
     StoreModule.provideStore(reducer),
@@ -47,6 +47,7 @@ var googId = '142084885382-lr0fajuthv25m2oc98107ete22lqe5h2';
     EffectsModule.run(EventEffects),
     EffectsModule.run(FeedEffects),
     EffectsModule.run(GroupEffects),
+    EffectsModule.run(InfoEffects),
     EffectsModule.run(ProviderEffects),
     EffectsModule.run(UserEffects),
     StoreDevtoolsModule.instrumentOnlyWithExtension()

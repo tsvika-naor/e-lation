@@ -15,6 +15,14 @@ declare type HttpPayload = {
     child: any
 }
 
+declare type SearchResult = {
+    providers?: Array<Provider>,
+    users?: Array<User>,
+    groups?: Array<Group>,
+    events?: Array<GeoEvent>,
+    posts?: Array<Post>
+}
+
 declare type MediaObject = {
     mediaType?: MediaType,
     mimeType?: String,
