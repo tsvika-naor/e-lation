@@ -2,77 +2,48 @@
  * Created by mac on 1/29/17.
  */
 
-var express = require('express');
-var cheerio = require('cheerio');
-var request = require('request');
-var mongoose = require('mongoose');
+var app = require('express')();
+var request = require('request-promise');
 var exphbs = require('express-handlebars');
-var app = express();
+var schedule = require('node-schedule')
+var cheerio = require('./services/cheerio-loader.service');
+var postArticles = require('./services/poster.service').postArticles;
 
 var hbs = exphbs.create({});
-
-mongoose.connect('mongodb://heroku_78mgh6c4:le1ethf1qt6h5qj1o0lv4epqea@ds151049.mlab.com:51049/heroku_78mgh6c4');
-var db = mongoose.connection;
-
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-
-var crawlSchema = new Schema({
-    title: String,
-    image: String,
-    link: String,
-    date: Date,
-    desc: String,
-});
-
-var Crawl = mongoose.model('Crawled', crawlSchema);
-
 app.engine('handlebars', hbs.engine);
-
-var server = app.listen(3000);
 app.set('view engine', 'handlebars');
+app.set('port', process.env.PORT || 3000);
 
 var products = [];
 
-request('http://galtzhayek.com/%D7%91%D7%9C%D7%95%D7%92/page/7/', function (err, res, body) {
-    var $ = cheerio.load(body);
-    var productcolxn = {
-        source: "Gal",
-        link: 'http://galtzhayek.com/%D7%91%D7%9C%D7%95%D7%92/page/7/',
-        items: []
-    };
+var sites = {
+    galtzhayek: require('./modules/gal-tzhayek.module'),
+};
 
-    $("[class^='media small']").each(function (i, obj) {
-        var title = $(obj).find('.media-heading').text();//text();
-        var image = $(obj).find('.media-object').attr('src');
-        var link = $(obj).find('.pull-left.image-link').attr('href');
-        var desc = $(obj).find('.entry-excerpt').text();
-        var fromDay = $(obj).find('.entry-date').text().split("/");
-        var fromHour = $(obj).find('.entry-time').text().split(":");
-        var date = new Date(fromDay[2], fromDay[1] - 1, fromDay[0], fromHour[0], fromHour[1], 0, 0);
-
-        var item = {
-        title: title,
-            image: image,
-            link: link,
-            date: date,
-        desc: desc
-
-
-    };
-
-        Crawl.create(item, function (err, doc) {
-            if (err) handleError(err);
-        });
-
-        productcolxn.items.push(item);
-    });
-
-    products.push(productcolxn);
-    console.log(products);
+var job = schedule.scheduleJob({ hour: 17, minute: 3 }, function () {
+    for (var site in sites) {
+        if (!sites.hasOwnProperty(site))
+            continue;
+        console.log("Crawling " + sites[site].source + " - started.");
+        request({ uri: sites[site].link, transform: cheerio })
+            .then(sites[site].getLastDate)
+            .then(sites[site].parse)
+            .then(postArticles)
+            .then(function (siteData) {
+                products.push(siteData); //concat items arrays
+                console.log("Crawling " + sites[site].source + " - finished successfully (" + siteData.newItems + " posts added).");
+            })
+            .catch(function (err) {
+                console.log("Crawling " + sites[site].source + " - failed.");
+                console.error(err.stack.match(/^(.+\n.+\n.+\n)/)[0] + "...");
+            });
+    }
 });
-
 
 app.get('/', function (req, res) {
     res.render('index', { products: products });
+});
+
+app.listen(app.get('port'), function () {
+    console.log("Express server listening on port %d in %s mode", app.get('port'), app.settings.env);
 });
