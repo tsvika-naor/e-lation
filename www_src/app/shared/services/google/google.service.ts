@@ -12,23 +12,6 @@ export class GoogleService {
 
     constructor(@Inject(GOOG_ID) client_id: string) {
         this.client_id = client_id + client_id.endsWith(".apps.googleusercontent.com") ? "" : ".apps.googleusercontent.com";
-
-        if (typeof(gapi) == 'undefined' || gapi == null) {
-            console.warn("gapi not preloaded");
-            // Asynchronously load the G+ SDK.
-            var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true; po.defer = true; po.id = "gapi";
-            po.src = 'https://apis.google.com/js/platform.js?onload=init';
-            var s = document.getElementById('gapi'); s.parentNode.insertBefore(po, s);
-        } else {
-            init();
-        }
-
-        function init() {
-            this.auth2 = gapi.auth2.init({
-                client_id: this.client_id,
-                fetch_basic_profile: true
-            });
-        }
     }
 
     public initCustomLogin(buttonID: string, onSuccess: LoginSuccessCallback, onFailure: FailureCallback) {
