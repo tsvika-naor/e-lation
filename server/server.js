@@ -7,7 +7,7 @@ app.set('port', process.env.PORT || 5000);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-
+mongoose.Promise = require('q').Promise;
 mongoose.connect('mongodb://heroku_7h2r3npw:s4i8a900gf6p41bt1me1gru0u6@ds151228.mlab.com:51228/heroku_7h2r3npw');
 var db = mongoose.connection;
 

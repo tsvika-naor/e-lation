@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms'
-import { Store, Action } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { go } from '@ngrx/router-store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
@@ -11,11 +11,12 @@ import { ActionTypes as InfoActions } from '../shared/redux/info';
 
 @Component({
     selector: 'el-nav',
-    templateUrl: './nav.component.html'
+    templateUrl: './nav.component.html',
+    styleUrls: ['./nav.component.css']
 })
 export class NavComponent {
     authenticated: Observable<boolean>;
-    results: Observable<Array<String>>;
+    results: Observable<SearchResult>;
     searchBar: FormControl;
     sub: Subscription;
 
@@ -48,9 +49,13 @@ export class NavComponent {
 
     ngOnInit() {
         this.sub = this.searchBar.valueChanges
-            .startWith(null)
             .debounceTime(500)
-            .subscribe(val => this.store$.dispatch({ type: InfoActions.S_GET_RESULTS, payload: val }));
+            .subscribe(val => {
+                if (val !== "")
+                    this.store$.dispatch({ type: InfoActions.S_GET_RESULTS, payload: val})
+                else
+                    this.store$.dispatch({type: InfoActions.L_CLEAR_RESULTS})
+            });
     }
 
     ngOnDestroy() {

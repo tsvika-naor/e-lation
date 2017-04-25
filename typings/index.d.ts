@@ -53,24 +53,24 @@ declare type User = {
 
 declare type Provider = {
     _id?: ObjectId,
-    bio: String,
-    rank: Number,
-    fields: Array<String>,
-    reviews: Array<Review>,
-    businessAddress: Address,
+    bio?: String,
+    rank?: Number,
+    fields?: Array<String>,
+    reviews?: Array<Review>,
+    businessAddress?: Address,
     user?: User
 }
 
 declare type Post = {
     _id?: ObjectId,
     user?: User,
-    body: String,
+    body?: String,
     title: String,
     media?: Array<MediaObject>,
     date: Date,
     tags?: Array<String>,
-    likes: Array<ObjectId>, //ref: User
-    comments: Array<UserComment>
+    likes?: Array<ObjectId>, //ref: User
+    comments?: Array<UserComment>
 }
 
 declare type Review = {
@@ -97,29 +97,29 @@ declare type Group = {
     _id?: ObjectId,
     owner?: User,
     provider?: Provider,
-    admins: Array<User>,
-    members: Array<User>,
-    name: String,
-    description: String,
+    admins?: Array<User>,
+    members?: Array<User>,
+    name?: String,
+    description?: String,
     avatar?: MediaObject,
-    groupType: Array<String>,
-    address: Address,
-    posts: Array<Post>
+    groupType?: Array<String>,
+    address?: Address,
+    posts?: Array<Post>
 }
 
 declare type GeoEvent = {
     _id?: ObjectId,
     owner?: User,
     provider?: Provider,
-    admins: Array<User>,
-    members: Array<User>,
-    name: String,
-    description: String,
+    admins?: Array<User>,
+    members?: Array<User>,
+    name?: String,
+    description?: String,
     avatar?: MediaObject,
-    startDate: Date,
-    endDate: Date,
+    startDate?: Date,
+    endDate?: Date,
     media?: Array<MediaObject>,
-    private: Boolean,
-    address: Address,
-    posts: Array<Post>
+    private?: Boolean,
+    address?: Address,
+    posts?: Array<Post>
 }

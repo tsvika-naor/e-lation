@@ -1,4 +1,4 @@
-var Q = require("q");
+var Q = require('q');
 
 var Post = require('../../models/post.model');
 var User = require('../../models/user.model');
@@ -16,9 +16,12 @@ module.exports = function (app) {
             .spread(groupSearch)
             .spread(eventSearch)
             .spread(function (query, result) {
+                console.log(result);
                 res.json(result);
             })
-            .catch(handleError);
+            .catch(function (err) {
+                handleError(res, err);
+            });
     });
 
     app.post('/api/search/provider', function (req, res) {
@@ -77,29 +80,35 @@ function init(query) {
 
 function providerSearch(query, result) {
     var deferred = Q.defer();
-
-    if (typeof query == "string") {
-        return providerSearchByName;
+    if (typeof query === "string") {
+        providerSearchByName(query, result)
+            .spread(function (query, result) {
+                deferred.resolve([query, result]);
+            });
+    } else {
+        providerSearchByName(query, result)
+            .spread(providerSearchByParams)
+            .spread(function (query, result) {
+                result.providers = dedup(result.providers);
+                deferred.resolve([query, result]);
+            });
     }
-    
-    return providerSearchByName
-        .spread(providerSearchByParams)
-        .spread(function (query, result) {
-            result.providers = dedup(result.providers);
-        });
+
+    return deferred.promise;
 }
 
 function providerSearchByName(query, result) {
     var deferred = Q.defer();
 
-    User.find({
-        isProvider: true,
-        $where: function () { var name = this.firstName + ' ' + this.lastName; return name.includes(query); }
-    })
-        .sort({ rank: "desc" })
-        .exec(function (err, providers) {
-            if (err) deferred.reject(err);
-
+    User.aggregate([
+        { $project: { firstName: "$firstName", lastName: "$lastName", name: { $concat: ["$firstName"," ", "$lastName"] } } },
+        { $match: { isProvider: true, name: { $regex: ".*" + query + ".*" } } },
+        { $sort: { rank: -1 } }
+    ], function (err, providers) {
+            if (err)
+                deferred.reject(err);
+            if (typeof result.providers === "undefined")
+                result.providers = [];
             result.providers = result.providers.concat(providers);
             deferred.resolve([query, result]);
         });
@@ -113,7 +122,10 @@ function providerSearchByParams(query, result) {
     Provider.find(query)
         .sort({ rank: "desc" })
         .exec(function (err, providers) {
-            if (err) deferred.reject(err);
+            if (err)
+                deferred.reject(err);
+            if (typeof result.providers === "undefined")
+                result.providers = [];
 
             result.providers = result.providers.concat(providers);
             deferred.resolve([query, result]);
@@ -124,18 +136,16 @@ function providerSearchByParams(query, result) {
 
 function userSearch(query, result) {
     var deferred = Q.defer();
-    if (typeof query == "string") {
-        query = { name: query };
-    }
+    User.aggregate([
+        { $project: { firstName: "$firstName", lastName: "$lastName", name: { $concat: ["$firstName"," ", "$lastName"] } } },
+        { $match: { name: { $regex: ".*" + query + ".*" } } },
+        { $sort: { rank: -1 } }
+    ], function (err, users) {
+        if (err) deferred.reject(err);
 
-    User.find(query)
-        .sort({ rank: "desc" })
-        .exec(function (err, users) {
-            if (err) deferred.reject(err);
-
-            result.users = users;
-            deferred.resolve([query, result]);
-        });
+        result.users = users;
+        deferred.resolve([query, result]);
+    });
 
     return deferred.promise;
 }
@@ -145,9 +155,8 @@ function interestSearch(query, result) {
 
     Post.find({ tags: { "$in": [query] } }, function (err, posts) {
         if (err) deferred.reject(err);
-        Array.prototype.push.apply(feed, posts);
 
-        result.posts = feed;
+        result.posts = posts;
         deferred.resolve([query, result]);
     });
 
@@ -157,11 +166,13 @@ function interestSearch(query, result) {
 function groupSearch(query, result) {
     var deferred = Q.defer();
     if (typeof query == "string") {
-        query = { name: query };
+        query = { name: { $regex: ".*" + query + ".*" } };
     }
 
     Group.find(query)
         .sort({ rank: "desc" })
+        .populate({ path: 'owner admins members', select: '_id firstName lastName' })
+        .populate({ path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } })
         .exec(function (err, groups) {
             if (err) deferred.reject(err);
 
@@ -175,11 +186,24 @@ function groupSearch(query, result) {
 function eventSearch(query, result) {
     var deferred = Q.defer();
     if (typeof query == "string") {
-        query = { name: query };
+        query = { name: { $regex: ".*" + query + ".*" } };
     }
 
     Event.find(query)
         .sort({ rank: "desc" })
+        .populate({ path: 'owner admins members', select: '_id firstName lastName' })
+        .populate({ path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } })
+        .populate({
+            path: 'posts', populate: [
+                { path: 'user', select: '_id firstName lastName' },
+                {
+                    path: 'comments', populate: [
+                        { path: 'user', select: '_id firstName lastName' },
+                        { path: 'comments' }
+                    ]
+                }
+            ]
+        })
         .exec(function (err, events) {
             if (err) deferred.reject(err);
 

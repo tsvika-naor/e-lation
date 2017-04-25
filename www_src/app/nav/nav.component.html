@@ -12,27 +12,31 @@
     <a md-button routerLink="/user">User</a>
     <a md-button routerLink="/provider">Provider</a>
     <span class="app-filler"></span>
-    <md-input-container>
+    <md-input-container class="app-search-bar">
         <input type="text" mdInput [formControl]="searchBar" [mdAutocomplete]="auto">
     </md-input-container>
-    <a md-button routerLink="/logout" *ngIf="(authenticated | async)">Logout</a>
+    <a md-button routerLink="/logout" *ngIf="!(authenticated | async)">Logout</a>
 </md-toolbar>
 
-
-<md-autocomplete #auto="mdAutocomplete" class="search-results">
-   <md-option *ngFor="let result of (results | async).providers" (onSelect)="goToProvider(result)" [value]="result">
-      {{ result }}
-   </md-option>
-   <md-option *ngFor="let result of (results | async).users" (onSelect)="goToUser(result)" [value]="result">
-      {{ result }}
-   </md-option>
-   <md-option *ngFor="let result of (results | async).groups" (onSelect)="goToGroup(result)" [value]="result">
-      {{ result }}
-   </md-option>
-   <md-option *ngFor="let result of (results | async).events" (onSelect)="goToEvent(result)" [value]="result">
-      {{ result }}
-   </md-option>
-   <!--<md-option *ngFor="let result of (results | async).posts" (onSelect)="goToPost(result)" [value]="result">
-      {{ result }}
-   </md-option>-->
+<md-autocomplete #auto="mdAutocomplete">
+    <p md-subheader *ngIf="(results | async)?.providers.length > 0">Providers</p>
+    <md-option *ngFor="let result of (results | async)?.providers" (onSelect)="goToProvider(result)" value="">
+        <span>{{ result.user.firstName }} {{ result.user.lastName }}</span>
+    </md-option>
+    <p md-subheader *ngIf="(results | async)?.users.length > 0">Users</p>
+    <md-option *ngFor="let result of (results | async)?.users" (onSelect)="goToUser(result)" value="">
+        <span>{{ result.firstName }} {{ result.lastName }}</span>
+    </md-option>
+    <p md-subheader *ngIf="(results | async)?.groups.length > 0">Groups</p>
+    <md-option *ngFor="let result of (results | async)?.groups" (onSelect)="goToGroup(result)" value="">
+        <span>{{ result.name }}</span>
+    </md-option>
+    <p md-subheader *ngIf="(results | async)?.events.length > 0">Events</p>
+    <md-option *ngFor="let result of (results | async)?.events" (onSelect)="goToEvent(result)" value="">
+        <span>{{ result.name }}</span>
+    </md-option>
+    <!--<p md-subheader *ngIf="(results | async)?.posts.length > 0">Posts</p>
+    <md-option *ngFor="let result of (results | async)?.posts" (onSelect)="goToPost(result)" [value]="result">
+        <span>{{ result.title }}</span>
+    </md-option>-->
 </md-autocomplete>

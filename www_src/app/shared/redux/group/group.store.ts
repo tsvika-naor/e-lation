@@ -40,6 +40,7 @@ const initialState: State = {
 export function groupReducer(state = initialState, action: Actions): State {
   switch (action.type) {
     case ActionTypes.L_GET_GROUP: {
+      console.log(action.payload);
       return action.payload;
     }
 

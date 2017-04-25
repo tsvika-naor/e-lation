@@ -11,9 +11,3 @@ md-toolbar, md-toolbar > :not([md-button]) {
 .logo-icon {
   margin-right: 15px;
 }
-
-.search-results {
-  position: absolute;
-  right: 60px;
-  top: 48px;
-}

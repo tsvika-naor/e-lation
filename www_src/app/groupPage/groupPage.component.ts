@@ -38,6 +38,7 @@ export class GroupPageComponent {
 
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
+            console.log(params['id']);
             this.store$.dispatch({type: Actions.S_GET_GROUP, payload: params['id']});
         });
     }

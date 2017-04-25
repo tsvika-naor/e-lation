@@ -25,6 +25,10 @@ export function infoReducer(state = initialState, action: Actions): State {
       return newState;
     }
 
+    case ActionTypes.L_CLEAR_RESULTS: {
+      return initialState;
+    }
+
     default: {
       return state;
     }
