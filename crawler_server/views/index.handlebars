@@ -1,0 +1,12 @@
+<link rel="stylesheet" href="https://metdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+<div class="container">
+    {{#each products}}
+        <h1>{{this.source}}</h1>
+        <ul>
+            {{#each this.items}}
+                <li><a href="{{this.link}}"><img src="{{this.image}}"></a>---{{this.title}}- <span class="text-danger">==={{this.date}}===</span></li>
+            {{/each}}
+        </ul>
+    {{/each}}
+</div>

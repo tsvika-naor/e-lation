@@ -43,6 +43,49 @@
   color: rgba(0, 0, 0, 0.54);
 }
 
+.rtl {
+  direction: rtl;
+}
+
+md-card-title-group.rtl {
+  direction: ltr;
+}
+
+md-card-title-group.rtl div {
+  direction: rtl;
+  padding-right: 15px;
+}
+
+md-card-title-group.rtl * { 
+  -webkit-touch-callout: none;
+    -webkit-user-select: none;
+     -khtml-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+md-card-title-group.app-hypercard {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #F5F1FB;
+  background-color: #F5F1FB;
+  padding: 15px 10px 5px 10px;
+  cursor: pointer;
+}
+
+md-card-title-group.app-hypercard:hover {
+  border-color: #673AB7; 
+}
+
+md-card-actions button[md-button], md-card-header md-card-title {
+  color: #673AB7; 
+}
+
+md-card-title-group.app-hypercard.rtl img {
+  min-width: 112px;
+}
+
 [md-multi-line] {
   margin-bottom: 2em;
 }
@@ -51,12 +94,18 @@
   width: 100%;
 }
 
+a.app-hypercard-wrapper {
+  text-decoration: none;
+  color: black!important;
+}
+
 .app-content {
   padding: 20px;
 }
 
 .app-content md-card {
-  margin: 20px;
+  margin: 20px 20px 20px 28%;
+  width: 40%
 }
 
 .app-sidenav {
