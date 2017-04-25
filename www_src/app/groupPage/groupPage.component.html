@@ -1,6 +1,6 @@
 <md-card>
   <md-card-title-group>
-    <img md-card-lg-image src="https://img.clipartfest.com/377cb8d0d8ddbb3467fb9ea2c6dd323a_soccer-team-clipart-soccer-team-clipart_1500-1107.jpeg">
+    <img md-card-md-image src="https://img.clipartfest.com/377cb8d0d8ddbb3467fb9ea2c6dd323a_soccer-team-clipart-soccer-team-clipart_1500-1107.jpeg">
     <md-card-title>{{name | async}}</md-card-title>
     <md-card-subtitle>
       <p>Location: {{ address | async | address }}</p>
@@ -11,7 +11,7 @@
         </md-chip-list>
       </p>
       <p>Created by: <a routerLink="/user/{{(owner | async)?._id}}">{{(owner | async)?.firstName}} {{(owner | async)?.lastName}}</a></p>
-      <p>Provider: <a routerLink="/user/{{(provider | async).user?._id}}">{{(provider | async).user?.firstName}} {{(provider | async).user?.lastName}}</a></p>
+      <p>Provider: <a routerLink="/user/{{(provider | async)?.user?._id}}">{{(provider | async)?.user?.firstName}} {{(provider | async)?.user?.lastName}}</a></p>
       <p>Description: {{description | async}}</p>
     </md-card-subtitle>
   </md-card-title-group>

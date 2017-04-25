@@ -11,6 +11,7 @@ import { State as AuthState, authReducer } from './auth';
 import { State as EventState, eventReducer } from './event';
 import { State as FeedState, feedReducer } from './feed';
 import { State as GroupState, groupReducer } from './group';
+import { State as InfoState, infoReducer } from './info';
 import { State as ProviderState, providerReducer } from './provider';
 import { State as UserState, userReducer } from './user';
 
@@ -18,6 +19,7 @@ export { AuthEffects } from './auth';
 export { EventEffects } from './event';
 export { FeedEffects } from './feed';
 export { GroupEffects } from "./group";
+export { InfoEffects } from './info';
 export { ProviderEffects } from './provider';
 export { UserEffects } from './user';
 
@@ -27,6 +29,7 @@ export interface State {
   event: EventState;
   feed: FeedState;
   group: GroupState;
+  info: InfoState;
   provider: ProviderState;
   router: RouterState;
   user: UserState;
@@ -37,6 +40,7 @@ const reducers = {
   event: eventReducer,
   feed: feedReducer,
   group: groupReducer,
+  info: infoReducer,
   provider: providerReducer,
   router: routerReducer,
   user: userReducer

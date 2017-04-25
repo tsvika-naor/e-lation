@@ -23,6 +23,43 @@
   }
 }
 
+.app-search-bar > .mat-input-wrapper > .mat-input-table > .mat-input-infix {
+  padding-right: 10px!important; 
+}
+
+.app-search-bar > .mat-input-wrapper > .mat-input-table > .mat-input-infix > input {
+  padding-top: 5px!important;
+  padding-left: 5px!important;
+  padding-right: 5px!important; 
+}
+
+.mat-input-wrapper {
+  background-color: #F5F1FB;
+  color: #673AB7;
+}
+
+.mat-autocomplete-panel .mat-subheader {
+  display: block;
+  box-sizing: border-box;
+  height: 31px;
+  padding: 8px;
+  margin: 0;
+  font-family: Roboto,"Helvetica Neue",sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(0,0,0,.54)
+}
+
+.mat-option {
+  line-height: normal;
+  height: auto;
+  padding: 0px 16px 8px 16px;
+}
+
+md-option + [md-subheader] {
+  border-top: 1px solid  rgba(0,0,0,.12);
+}
+
 .material-icons {
   font-family: 'Material Icons';
   font-weight: normal;

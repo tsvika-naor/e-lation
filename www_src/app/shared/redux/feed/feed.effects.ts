@@ -25,9 +25,9 @@ export class FeedEffects {
         .ofType(Feed.ActionTypes.S_GET_FEED)
         // Map the payload into JSON to use as the request body
         .map((action: Feed.S_GetFeedAction) => action.payload)
-        .switchMap(payload => this.http$.post('/api/feed/get', payload))
+        .switchMap(payload => this.http$.get('/api/feed/get/'+ payload))
         // If successful, dispatch success action with result
-        .map(res => ({ type: Feed.ActionTypes.L_GET_FEED, payload: res.json() }));
+        .map(res => ({ type: Feed.ActionTypes.L_GET_FEED, payload: res.json().posts }));
 
     @Effect() likePost$ = this.actions$
         .ofType(Feed.ActionTypes.S_LIKE_POST)
