@@ -1,0 +1,61 @@
+<md-sidenav mode="side" [opened]="isAuthenticated | async" class="app-sidenav">
+    <md-list>
+        <h3 md-subheader>User</h3>
+        <md-list-item class="app-list-button" (click)="goTo('feed')">
+            <md-icon md-list-icon>person</md-icon>
+            <p md-line>My Feed</p>
+            <div class="app-list-item-focus-overlay"></div>
+        </md-list-item>
+        <md-list-item class="app-list-button" (click)="goTo('user', userId)">
+            <md-icon md-list-icon>person</md-icon>
+            <p md-line>Profile</p>
+            <div class="app-list-item-focus-overlay"></div>
+        </md-list-item>
+        <!--<md-list-item *ngFor="let link of userLinks | async" class="app-list-button" (click)="goTo(link?.type, link?._id)">
+            <md-icon md-list-icon>person</md-icon>
+            <p md-line>{{link.name}}</p>
+            <div class="app-list-item-focus-overlay"></div>
+        </md-list-item>-->
+        <md-divider></md-divider>
+        <h3 md-subheader>Providers</h3>
+        <md-list-item *ngFor="let provider of providers | async" class="app-list-button" (click)="goTo('provider', provider._id)">
+            <md-icon md-list-icon>person_outline</md-icon>
+            <p md-line>{{provider?.user.firstName}} {{provider?.user.lastName}}</p>
+            <div class="app-list-item-focus-overlay"></div>
+        </md-list-item>
+        <md-list-item *ngIf="(providers | async)?.length == 0">
+            <p>
+                <!-- Empty item for conditional spacing -->
+            </p>
+        </md-list-item>
+        <md-divider></md-divider>
+        <h3 md-subheader>Groups</h3>
+        <md-list-item (click)="goTo('group', 'new')">
+            <md-icon md-list-icon>add</md-icon>
+            <p md-line>New Group</p>
+            <div class="app-list-item-focus-overlay"></div>
+        </md-list-item>
+        <md-list-item *ngFor="let group of groups | async" class="app-list-button" (click)="goTo('group', group._id)">
+            <md-icon md-list-icon>group</md-icon>
+            <p md-line>{{group?.name}}</p>
+            <div class="app-list-item-focus-overlay"></div>
+        </md-list-item>
+        <md-list-item *ngIf="(groups | async)?.length == 0">
+            <p>
+                <!-- Empty item for conditional spacing -->
+            </p>
+        </md-list-item>
+        <md-divider></md-divider>
+        <h3 md-subheader>Events</h3>
+        <md-list-item (click)="goTo('event', 'new')">
+            <md-icon md-list-icon>add</md-icon>
+            <p md-line>New Event</p>
+            <div class="app-list-item-focus-overlay"></div>
+        </md-list-item>
+        <md-list-item *ngFor="let event of events | async" class="app-list-button" (click)="goTo('event', event._id)">
+            <md-icon md-list-icon>event</md-icon>
+            <p md-line>{{event?.name}}</p>
+            <div class="app-list-item-focus-overlay"></div>
+        </md-list-item>
+    </md-list>
+</md-sidenav>

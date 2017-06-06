@@ -6,19 +6,45 @@ var handleError = require('./utils');
 //findOne
 router.get('/:id', function (req, res) {
     Group.findOne({ _id: req.params.id })
-        .populate({ path: 'owner admins members', select: '_id firstName lastName' })
-        .populate({ path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } })
-        .exec(function (err, Group) {
+        .populate([
+            { path: 'owner admins members', select: '_id firstName lastName' },
+            { path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } },
+            {
+                path: 'posts', populate: [
+                    { path: 'user', select: '_id firstName lastName avatar' },
+                    {
+                        path: 'comments', populate: [
+                            { path: 'user', select: '_id firstName lastName' },
+                            { path: 'comments' }
+                        ]
+                    }
+                ]
+            }
+        ])
+        .exec(function (err, groups) {
             if(err) handleError(err);
 
-            res.json(Group);
+            res.json(groups);
         });
 });
 
 router.post('/find', function (req, res) {
     Group.find(req.body)
-        .populate({ path: 'owner admins members', select: '_id firstName lastName' })
-        .populate({ path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } })
+        .populate([
+            { path: 'owner admins members', select: '_id firstName lastName' },
+            { path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } },
+            {
+                path: 'posts', populate: [
+                    { path: 'user', select: '_id firstName lastName avatar' },
+                    {
+                        path: 'comments', populate: [
+                            { path: 'user', select: '_id firstName lastName' },
+                            { path: 'comments' }
+                        ]
+                    }
+                ]
+            }
+        ])
         .exec(function (err, groups) {
             if(err) handleError(err);
 

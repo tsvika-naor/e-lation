@@ -4,19 +4,21 @@ var Event = require('../models/event.model');
 
 router.get('/:id', function (req, res) {
     Event.findOne({ _id: req.params.id })
-        .populate({ path: 'owner admins members', select: '_id firstName lastName' })
-        .populate({ path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } })
-        .populate({
-            path: 'posts', populate: [
-                { path: 'user', select: '_id firstName lastName' },
-                {
-                    path: 'comments', populate: [
-                        { path: 'user', select: '_id firstName lastName' },
-                        { path: 'comments' }
-                    ]
-                }
-            ]
-        })
+        .populate([
+            { path: 'owner admins members', select: '_id firstName lastName' },
+            { path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } },
+            {
+                path: 'posts', populate: [
+                    { path: 'user', select: '_id firstName lastName avatar' },
+                    {
+                        path: 'comments', populate: [
+                            { path: 'user', select: '_id firstName lastName' },
+                            { path: 'comments' }
+                        ]
+                    }
+                ]
+            }
+        ])
         .exec(function (err, event) {
             if (err) {
                 console.error(err);
@@ -29,19 +31,21 @@ router.get('/:id', function (req, res) {
 
 router.post('/find', function (req, res) {
     Event.find(req.body)
-        .populate({ path: 'owner admins members', select: '_id firstName lastName' })
-        .populate({ path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } })
-        .populate({
-            path: 'posts', populate: [
-                { path: 'user', select: '_id firstName lastName' },
-                {
-                    path: 'comments', populate: [
-                        { path: 'user', select: '_id firstName lastName' },
-                        { path: 'comments' }
-                    ]
-                }
-            ]
-        })
+        .populate([
+            { path: 'owner admins members', select: '_id firstName lastName' },
+            { path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } },
+            {
+                path: 'posts', populate: [
+                    { path: 'user', select: '_id firstName lastName avatar' },
+                    {
+                        path: 'comments', populate: [
+                            { path: 'user', select: '_id firstName lastName' },
+                            { path: 'comments' }
+                        ]
+                    }
+                ]
+            }
+        ])
         .exec(function (err, events) {
             if (err) {
                 console.error(err);

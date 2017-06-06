@@ -1,0 +1,13 @@
+<md-list>
+   <h3 md-subheader>Admins</h3>
+   <md-list-item *ngFor="let admin of admins" (click)="navigate(admin._id)">
+      <md-icon md-list-avatar>person</md-icon>
+      <h4 md-line>{{admin?.firstName}} {{admin?.lastName}}</h4>
+   </md-list-item>
+   <md-divider></md-divider>
+   <h3 md-subheader>Members</h3>
+   <md-list-item *ngFor="let member of members" (click)="navigate(member._id)">
+      <md-icon md-list-avatar>person_outline</md-icon>
+      <h4 md-line>{{member?.firstName}} {{member?.lastName}}</h4>
+   </md-list-item>
+</md-list>

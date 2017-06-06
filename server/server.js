@@ -15,7 +15,6 @@ require('./algorithm/feed/Feeduser')(app);
 require('./algorithm/ProviderFeed/ProviderSearch')(app);
 require('./routes/index')(app, __dirname);
 
-
 db.on('error', function (error) {
     console.error(error.name + ": " + error.message);
 });

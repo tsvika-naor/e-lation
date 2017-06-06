@@ -16,7 +16,7 @@ module.exports = {
     getLastDate: function ($) {
         return getLastDate(siteData.source)
             .then(function (date) {
-                lastDate = date;
+                siteData.lastDate = date;
                 return $;
             });
     },
@@ -41,7 +41,7 @@ module.exports = {
                 body: desc
             };
 
-            if (lastDate === null || item.date > lastDate) {
+            if (siteData.lastDate === null || item.date > siteData.lastDate) {
                 console.log("Crawling " + siteData.source + " - entry found: " + dateObj + ".");
                 foundItems.push(item);
             }

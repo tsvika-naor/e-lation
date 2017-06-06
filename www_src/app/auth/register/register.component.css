@@ -1,0 +1,23 @@
+.background {
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background-image: url("/assets/background.jpg");
+  background-color: #cccccc;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.registration-card {
+  width: 500px;
+  padding: 24px 48px;
+  position: absolute;
+  box-sizing: border-box;
+}
+
+.mat-radio-button {
+  margin: 0 0 0 10px;
+}

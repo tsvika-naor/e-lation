@@ -1,0 +1,62 @@
+<div class="background">
+  <md-card class="registration-card">
+    <md-card-header>
+      <md-card-title>
+        <h1>Registration</h1>
+      </md-card-title>
+    </md-card-header>
+    <md-card-content>
+      <p>Please verify your information and click register below...</p>
+      <form #form="ngForm">
+        <div>
+          <md-input-container floatPlaceholder="always">
+            <input type="text" mdInput placeholder="First Name" [ngModel]="firstName | async" name="firstName">
+          </md-input-container>
+          <md-input-container floatPlaceholder="always">
+            <input type="text" mdInput placeholder="Last Name" [ngModel]="lastName | async" name="lastName">
+          </md-input-container>
+        </div>
+        <div>
+          <md-input-container floatPlaceholder="always">
+            <input type="email" mdInput placeholder="E-Mail" [ngModel]="email | async" name="email">
+          </md-input-container>
+          <md-input-container floatPlaceholder="always">
+            <input type="tel" mdInput placeholder="Phone" [ngModel]="phone | async" name="phone">
+          </md-input-container>
+        </div>
+        <div>
+          <md-select floatPlaceholder="always" placeholder="Gender" [ngModel]="gender | async"  name="gender">
+            <md-option value="0">Male</md-option>
+            <md-option value="1">Female</md-option>
+          </md-select>
+          <md-input-container floatPlaceholder="always">
+            <input type="date" mdInput placeholder="Birthday" [ngModel]="birthday | async | dateOnly" name="birthday">
+          </md-input-container>
+        </div>
+        <fieldset ngModelGroup="address">
+          <p>Address:</p>
+          <div>
+            <md-input-container floatPlaceholder="always">
+              <input type="text" mdInput placeholder="Street" [ngModel]="(address | async)?.street" name="street">
+            </md-input-container>
+            <md-input-container floatPlaceholder="always">
+              <input type="text" mdInput placeholder="Building Number" [ngModel]="(address | async)?.buildingNum" name="buildingNum">
+            </md-input-container>
+          </div>
+          <div>
+            <md-input-container floatPlaceholder="always">
+              <input type="text" mdInput placeholder="City" [ngModel]="(address | async)?.city" name="city">
+            </md-input-container>
+            <md-input-container floatPlaceholder="always">
+              <input type="text" mdInput placeholder="Country" [ngModel]="(address | async)?.country" name="country">
+            </md-input-container>
+          </div>
+        </fieldset>
+      </form>
+    </md-card-content>
+    <md-card-actions>
+      <span class="app-filler"></span>
+      <button md-raised-button color="primary" (click)="register(form)">Register</button>
+    </md-card-actions>
+  </md-card>
+</div>

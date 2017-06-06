@@ -22,26 +22,29 @@ router.post('/find', function (req, res) {
 });
 
 router.post('/new', function (req, res) {
-    var providerData = Object.assign(req.body.provider);
-    delete req.body.provider;
-
-    User.create(req.body, function (err, doc) {
+    req.body.user.auth_id = {
+        kind: req.get('provider'),
+        value: req.token
+    }
+    User.create(req.body.user, function (err, doc) {
         if (err) handleError(res, err);
 
         if (!doc.isProvider) {
             res.json(doc);
         }
 
-        providerData.user = doc;
-        var provider = new Provider(providerData);
-        provider.save(function (err) {
-            res.json(doc);
-        });
+        if (req.body.provider) {
+            req.body.provider.user = doc;
+            var provider = new Provider(req.body.provider);
+            provider.save(function (err) {
+                res.json(doc);
+            });
+        }
     });
 });
 
 router.post('/update', function (req, res) {
-    User.findOneAndUpdate({ _id: req.body._id }, req.body, function (err, obj) {
+    User.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, function (err, obj) {
         if (err) handleError(res, err);
 
         res.json(obj);

@@ -1,7 +1,12 @@
 var router = require('express').Router();
+var user = require('../services/user.service');
 
-router.post('/login', function(req, res) {
-    res.send("21231551351");
+router.post('/login', user.verifyToken, user.verifyUser, user.getUserData, function (req, res) {
+    res.json({token: req.token, userData: req.body.userData});
+});
+
+router.post('/register', user.verifyToken, user.getProfile, function (req, res) {
+    res.json(req.body.profile);
 });
 
 module.exports = router;

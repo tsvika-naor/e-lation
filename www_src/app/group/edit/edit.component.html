@@ -1,0 +1,53 @@
+  <md-card>
+    <md-card-header>
+      <md-card-title>
+        <h1 *ngIf="isNew">New Group</h1>
+        <h1 *ngIf="!isNew">Edit Group</h1>
+      </md-card-title>
+    </md-card-header>
+    <md-card-content>
+      <form #form="ngForm">
+        <input type="hidden" [ngModel]="_id | async"  name="_id">
+        <div>
+          <md-input-container>
+            <input type="text" mdInput placeholder="Name" [ngModel]="name | async" name="name">
+          </md-input-container>
+        </div>
+        <div>
+          <md-input-container>
+            <textarea rows="4" cols="50" mdInput placeholder="Description" [ngModel]="email | async" name="description"></textarea>
+          </md-input-container>
+        </div>
+        <div>
+          <p>List the things the group is about in a comma seperated list</p>
+          <md-input-container>
+            <textarea rows="4" cols="50" mdInput placeholder="Group Type" [ngModel]="groupType | async | spread" name="groupType"></textarea>
+          </md-input-container>
+        </div>
+        <fieldset ngModelGroup="address">
+          <p>Address:</p>
+          <div>
+            <md-input-container>
+              <input type="text" mdInput placeholder="Street" [ngModel]="(address | async)?.street" name="street">
+            </md-input-container>
+            <md-input-container>
+              <input type="text" mdInput placeholder="Building Number" [ngModel]="(address | async)?.buildingNum" name="buildingNum">
+            </md-input-container>
+          </div>
+          <div>
+            <md-input-container>
+              <input type="text" mdInput placeholder="City" [ngModel]="(address | async)?.city" name="city">
+            </md-input-container>
+            <md-input-container>
+              <input type="text" mdInput placeholder="Country" [ngModel]="(address | async)?.country" name="country">
+            </md-input-container>
+          </div>
+        </fieldset>
+      </form>
+    </md-card-content>
+    <md-card-actions>
+      <span class="app-filler"></span>
+      <button md-raised-button (click)="cancel(form)">Cancel</button>
+      <button md-raised-button color="primary" (click)="save(form)">Save</button>
+    </md-card-actions>
+  </md-card>

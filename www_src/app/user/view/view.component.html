@@ -1,0 +1,31 @@
+<md-card>
+  <md-card-header>
+    <img md-card-md-image src="{{(avatar | async)?.data}}">
+    <input type="hidden" #id [ngModel]="_id | async"  name="_id">
+    <md-card-title>
+      <h1>{{firstName | async}} {{lastName | async}}</h1>
+      <button md-icon-button (click)="edit(id.value)"><md-icon>mode_edit</md-icon></button>
+    </md-card-title>
+    <md-card-subtitle>
+      <p><b>Address: </b>{{ address | async | address }}</p>
+    </md-card-subtitle>
+  </md-card-header>
+  <md-card-content>
+    <p>
+      <b>Email: </b>
+      <span class="line-2">{{ email | async }}</span>
+    </p>
+    <p>
+      <b>Phone: </b>
+      <span class="line-2">{{ phone | async }}</span>
+    </p>
+    <p>
+      <b>Gender: </b>
+      <span class="line-2">{{ gender | async | gender }}</span>
+    </p>
+    <p>
+      <b>Date Of Birth: </b>
+      <span class="line-2">{{ birthday | async | date:'mediumDate' }}</span>
+    </p>
+  </md-card-content>
+</md-card>

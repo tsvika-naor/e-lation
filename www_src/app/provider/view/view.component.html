@@ -1,0 +1,48 @@
+<md-card>
+  <md-card-header>
+    <img md-card-md-image src="{{(user | async).avatar?.data}}">
+    <md-card-title>
+      <h1>{{(user | async)?.firstName }} {{(user | async)?.lastName}}</h1>
+      <md-chip-list>
+        <md-chip>Rank: {{ rank | async }}</md-chip>
+      </md-chip-list>
+    </md-card-title>
+    <md-card-subtitle>
+      <p><b>Address:</b> {{ businessAddress | async | address }}</p>
+    </md-card-subtitle>
+  </md-card-header>
+  <md-card-content>
+    <button md-raised-button (click)="toggleContact()">{{(showContact | async) ? "Hide" : "Show"}} Contact Details</button>
+    <div *ngIf="showContact | async" >
+      <p>
+        <b>Phone: </b>
+        <span class="line-2">{{(user | async)?.phone}}</span>
+      </p>
+      <p>
+        <b>Email: </b>
+        <span class="line-2">{{(user | async)?.email}}</span>
+      </p>
+    </div>
+    <br>
+    <p>
+      <b>About:</b>
+    </p>
+    <p>{{bio | async}}</p>
+  </md-card-content>
+</md-card>
+<md-card>
+  <md-card-title>Reviews</md-card-title>
+  <md-card-content>
+    <md-list>
+      <md-list-item *ngFor="let review of reviews | async">
+        <p md-line>
+          <em><a routerLink="/user/{{review.user?._id}}">{{review.user?.firstName}} {{review.user?.lastName}}</a></em>
+          <span class="app-filler"></span>
+          <span class="line-2">{{review.date | date:'mediumDate' }}</span>
+        </p>
+        <p md-line>{{review.text}}</p>
+        <p md-line><span class="app-filler"></span><span class="line-2">{{review.rating}}</span></p>
+      </md-list-item>
+    </md-list>
+  </md-card-content>
+</md-card>

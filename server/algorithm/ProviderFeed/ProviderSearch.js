@@ -171,8 +171,21 @@ function groupSearch(query, result) {
 
     Group.find(query)
         .sort({ rank: "desc" })
-        .populate({ path: 'owner admins members', select: '_id firstName lastName' })
-        .populate({ path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } })
+        .populate([
+            { path: 'owner admins members', select: '_id firstName lastName' },
+            { path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } },
+            {
+                path: 'posts', populate: [
+                    { path: 'user', select: '_id firstName lastName avatar' },
+                    {
+                        path: 'comments', populate: [
+                            { path: 'user', select: '_id firstName lastName' },
+                            { path: 'comments' }
+                        ]
+                    }
+                ]
+            }
+        ])
         .exec(function (err, groups) {
             if (err) deferred.reject(err);
 
@@ -191,19 +204,21 @@ function eventSearch(query, result) {
 
     Event.find(query)
         .sort({ rank: "desc" })
-        .populate({ path: 'owner admins members', select: '_id firstName lastName' })
-        .populate({ path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } })
-        .populate({
-            path: 'posts', populate: [
-                { path: 'user', select: '_id firstName lastName' },
-                {
-                    path: 'comments', populate: [
-                        { path: 'user', select: '_id firstName lastName' },
-                        { path: 'comments' }
-                    ]
-                }
-            ]
-        })
+        .populate([
+            { path: 'owner admins members', select: '_id firstName lastName' },
+            { path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } },
+            {
+                path: 'posts', populate: [
+                    { path: 'user', select: '_id firstName lastName avatar' },
+                    {
+                        path: 'comments', populate: [
+                            { path: 'user', select: '_id firstName lastName' },
+                            { path: 'comments' }
+                        ]
+                    }
+                ]
+            }
+        ])
         .exec(function (err, events) {
             if (err) deferred.reject(err);
 

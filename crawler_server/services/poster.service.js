@@ -17,10 +17,16 @@ module.exports = {
     postArticles: function (siteData) {
         return new Promise(function (resolve, reject) {
             Post.create(siteData.items, function (err) {
-                if (err) reject(err);
+                if (err) {
+                    err.site = siteData;
+                    reject(err);
+                }
 
                 Post.findOne({ source: siteData.source }).sort('-date').exec(function (err, post) { //test needed
-                    if (err) reject(err);
+                    if (err) {
+                        err.site = siteData;
+                        reject(err);
+                    }
 
                     resolve(siteData);
                 });
@@ -31,7 +37,11 @@ module.exports = {
     getLastDate: function (source) {
         return new Promise(function (resolve, reject) {
             Post.findOne({ source: source }).sort('-date').exec(function (err, post) { //test needed
-                if (err) reject(err);
+                if (err) {
+                    err.site = siteData;
+                    reject(err);
+                }
+
                 if (post === null) resolve(null);
                 else resolve(post.date);
             });

@@ -1,0 +1,21 @@
+md-card-title-group.app-hypercard {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #F5F1FB;
+  background-color: #F5F1FB;
+  padding: 15px 10px 5px 10px;
+  cursor: pointer;
+}
+
+md-card-title-group.app-hypercard:hover {
+  border-color: #673AB7; 
+}
+
+md-card-title-group.app-hypercard.rtl img {
+  min-width: 112px;
+}
+
+a.app-hypercard-wrapper {
+  text-decoration: none;
+  color: black!important;
+}

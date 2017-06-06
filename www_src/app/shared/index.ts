@@ -1,7 +1,7 @@
-export * from './constants';
+export * from './shared.module';
 
-export * from './redux';
+export * from './store/shared.effects';
 
-export * from './pipes';
+export * from './providers/http.service';
 
-export * from './services';
+export * from './utils';

@@ -1,0 +1,28 @@
+.app-content {
+  padding: 20px;
+}
+
+.app-content md-card {
+  margin: 20px 20px 20px 28%;
+  width: 40%
+}
+
+.app-content md-checkbox {
+  margin: 10px;
+}
+
+.mat-sidenav-container[fullscreen] {
+  top: 64px;
+}
+
+@media (max-width:600px) and (orientation:portrait) {
+  .mat-sidenav-container[fullscreen] {
+    top: 56px;
+  }
+}
+
+@media (max-width:960px) and (orientation:landscape) {
+  .mat-sidenav-container[fullscreen] {
+    top: 48px;
+  }
+}

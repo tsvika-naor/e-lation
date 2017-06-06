@@ -18,23 +18,25 @@ var products = [];
 
 var sites = {
     galtzhayek: require('./modules/gal-tzhayek.module'),
+    beshape: require('./modules/beshape.module'),
 };
 
-var job = schedule.scheduleJob({ hour: 17, minute: 3 }, function () {
+var job = schedule.scheduleJob({ hour: 1, minute: 0 }, function () {
     for (var site in sites) {
         if (!sites.hasOwnProperty(site))
             continue;
+
         console.log("Crawling " + sites[site].source + " - started.");
         request({ uri: sites[site].link, transform: cheerio })
             .then(sites[site].getLastDate)
             .then(sites[site].parse)
             .then(postArticles)
             .then(function (siteData) {
-                products.push(siteData); //concat items arrays
-                console.log("Crawling " + sites[site].source + " - finished successfully (" + siteData.newItems + " posts added).");
+                products.push(siteData); //TODO: Insert => Upsert || If exists already, edit; else push
+                console.log("Crawling " + siteData.source + " - finished successfully (" + siteData.newItems + " posts added).");
             })
             .catch(function (err) {
-                console.log("Crawling " + sites[site].source + " - failed.");
+                console.log("Crawling " + (err.site.source || sites[site].source) + " - failed.");
                 console.error(err.stack.match(/^(.+\n.+\n.+\n)/)[0] + "...");
             });
     }
