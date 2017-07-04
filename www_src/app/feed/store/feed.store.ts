@@ -4,12 +4,12 @@ import { safeAction } from '../../shared/utils';
 
 export interface State {
     posts: Array<Post>;
-    filters: Array<string>;
+    post: Post;
 };
 
 const initialState: State = {
     posts: [],
-    filters: []
+    post: null
 };
 
 function reducer(state = initialState, action: Actions): State {
@@ -17,6 +17,13 @@ function reducer(state = initialState, action: Actions): State {
         case ActionTypes.L_GET_FEED: {
             return safeAction(action, state, (payload: Array<Post>, newState) => {
                 newState.posts = payload.slice();
+                return newState;
+            });
+        }
+
+        case ActionTypes.L_GET_POST: {
+            return safeAction(action, state, (payload: Array<Post>, newState) => {
+                newState.post = Object.assign(payload);
                 return newState;
             });
         }
@@ -52,7 +59,6 @@ function reducer(state = initialState, action: Actions): State {
         case ActionTypes.L_POST_COMMENT: {
             return safeAction(action, state, (payload: UserComment, newState) => {
                 const postIndex = newState.posts.findIndex(post => post._id === payload.subject);
-
                 if (payload.parent === null || typeof payload.parent === 'undefined') {
                     newState.posts[postIndex].comments.push(payload);
                 } else {

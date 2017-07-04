@@ -7,17 +7,16 @@ import { MdSidenavModule } from '@angular/material';
 import { AppRoutingModule } from './app-routing.module';
 import { AppStoreModule } from './app-store.module';
 import { AppComponent } from './app.component';
-import { LoginService } from './login-service.token';
 
 import { SharedModule } from './shared';
-import { AuthModule, ProviderLoginService } from './auth';
+import { AuthModule } from './auth';
 import { EventModule } from './event';
 import { FeedModule } from './feed';
 import { GroupModule } from './group';
 import { NavModule } from './nav';
 import { ProviderModule } from './provider';
 import { UserModule } from './user';
-import { INIT_PARAMS, GOOG_ID } from './auth/providers/sources';
+import { INIT_PARAMS, GOOG_ID } from './auth/providers';
 
 const fbParams = {
     appId: '1246381665456070',
@@ -50,8 +49,7 @@ const googId = '142084885382-lr0fajuthv25m2oc98107ete22lqe5h2';
     ],
     providers: [
         { provide: GOOG_ID, useValue: googId },
-        { provide: INIT_PARAMS, useValue: fbParams },
-        { provide: LoginService, useExisting: ProviderLoginService }
+        { provide: INIT_PARAMS, useValue: fbParams }
     ],
     bootstrap: [AppComponent]
 })

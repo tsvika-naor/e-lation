@@ -1,16 +1,33 @@
 <md-card>
   <md-card-header>
-    <img md-card-md-image src="{{(avatar | async)?.data}}">
-    <input type="hidden" #id [ngModel]="_id | async"  name="_id">
+    <img md-card-md-image [src]="(avatar | async)?.data">
+    <input type="hidden" #id [ngModel]="_id | async" name="_id">
     <md-card-title>
       <h1>{{firstName | async}} {{lastName | async}}</h1>
       <button md-icon-button (click)="edit(id.value)"><md-icon>mode_edit</md-icon></button>
     </md-card-title>
-    <md-card-subtitle>
-      <p><b>Address: </b>{{ address | async | address }}</p>
-    </md-card-subtitle>
   </md-card-header>
+  <md-card-actions>
+    <button md-button (click)="tab(0)" [ngClass]="{'active-tab': activeTab == 0}">Posts</button>
+    <button md-button (click)="tab(1)" [ngClass]="{'active-tab': activeTab == 1}">About</button>
+    <button md-button (click)="tab(2)" [ngClass]="{'active-tab': activeTab == 2}" *ngIf="(_id | async) === userId">Followers</button>
+    <span class="app-filler"></span>
+    <button md-raised-button (click)="post()" *ngIf="(_id | async) === userId" [disabled]="writePost">New Post</button>
+    <button md-raised-button (click)="follow()" *ngIf="(_id | async) !== userId" disabled>Follow</button>
+  </md-card-actions>
+</md-card>
+<md-card *ngIf="activeTab == 0">
   <md-card-content>
+    <el-post-feed [posts]="posts | async" [userId]="userId" [show]="writePost" (newPost)="newPost($event)" (newComment)="postComment($event)"
+    (postLiked)="likePost($event)" (commentLiked)="likeComment($event)" (subCommentLiked)="likeSubComment($event)"></el-post-feed>
+  </md-card-content>
+</md-card>
+<md-card *ngIf="activeTab == 1">
+  <md-card-content>
+    <p>
+      <b>Address: </b>
+      <span class="line-2">{{ address | async | address }}</span>
+    </p>
     <p>
       <b>Email: </b>
       <span class="line-2">{{ email | async }}</span>
@@ -27,5 +44,17 @@
       <b>Date Of Birth: </b>
       <span class="line-2">{{ birthday | async | date:'mediumDate' }}</span>
     </p>
+  </md-card-content>
+</md-card>
+<md-card *ngIf="activeTab == 2">
+  <md-card-content>
+    <md-list>
+      <md-list-item *ngFor="let person of followers | async" (click)="navigate(person._id)">
+        <img md-list-avatar *ngIf="person?.avatar" [src]="person?.avatar?.data" alt="{{person?.firstName}} {{person?.lastName}}">
+        <md-icon md-list-icon class="avatar-icon" *ngIf="!(person?.avatar)">person</md-icon>
+        <p md-line>{{person?.firstName}} {{person?.lastName}}</p>
+        <div class="app-list-item-focus-overlay"></div>
+      </md-list-item>
+    </md-list>
   </md-card-content>
 </md-card>

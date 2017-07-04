@@ -1,21 +1,59 @@
 <md-card>
   <md-card-header>
-    <img md-card-md-image src="https://img.clipartfest.com/377cb8d0d8ddbb3467fb9ea2c6dd323a_soccer-team-clipart-soccer-team-clipart_1500-1107.jpeg">
-    <input type="hidden" #id [ngModel]="_id | async"  name="_id">
+    <img md-card-md-image [src]="(avatar | async)?.data">
+    <input type="hidden" #id [ngModel]="_id | async" name="_id">
     <md-card-title>
       <h1>{{name | async}}</h1>
       <button md-icon-button (click)="edit(id.value)"><md-icon>mode_edit</md-icon></button>
     </md-card-title>
-    <md-card-subtitle>
-      <p><b>Location: </b>{{ address | async | address }}</p>
-    </md-card-subtitle>
   </md-card-header>
+  <md-card-actions>
+    <button md-button (click)="tab(0)" [ngClass]="{'active-tab': activeTab == 0}">Details</button>
+    <button md-button (click)="tab(1)" [ngClass]="{'active-tab': activeTab == 1}">Members</button>
+    <button md-button (click)="tab(2)" [ngClass]="{'active-tab': activeTab == 2}">Posts</button>
+    <button md-button (click)="tab(3)" [ngClass]="{'active-tab': activeTab == 3}">About</button>
+    <span class="app-filler"></span>
+    <button md-raised-button *ngIf="(members | async).indexOf(userId) > -1 || (admins | async).indexOf(userId) > -1"
+      (click)="post()" [disabled]="writePost">New Post</button>
+    <button md-raised-button *ngIf="(members | async).indexOf(userId) == -1 && (admins | async).indexOf(userId) == -1"
+      (click)="join(id.value)">Join</button>
+  </md-card-actions>
+</md-card>
+<md-card *ngIf="activeTab == 0">
   <md-card-content>
-    <p><b>Starts: </b><span class="line-2">{{startDate | async | date:'yMMMdjm'}}</span></p>
-    <p><b>Ends: </b><span class="line-2">{{endDate | async | date:'yMMMdjm'}}</span></p>
-    <br>
-    <p><b>Created by: </b><a class="app-link" routerLink="/user/{{(owner | async)?._id}}">{{(owner | async)?.firstName}} {{(owner | async)?.lastName}}</a></p>
-    <p><b>Provider: </b><a class="app-link" routerLink="/provider/{{(provider | async)?._id}}">{{(provider | async)?.user.firstName}} {{(provider | async)?.user.lastName}}</a></p>
+    <p>
+      <b>Location: </b>
+      <span>{{ address | async | address }}</span>
+    </p>
+    <p>
+      <b>Starts: </b>
+      <span class="line-2">{{startDate | async | date:'MMM d, y, H:mm'}}</span>
+    </p>
+    <p>
+      <b>Ends: </b>
+      <span class="line-2">{{endDate | async | date:'MMM d, y, H:mm'}}</span>
+    </p>
+  </md-card-content>
+</md-card>
+<md-card *ngIf="activeTab == 1">
+  <md-card-content>
+    <el-people-detail-list [members]="members | async" [admins]="admins | async"></el-people-detail-list>
+  </md-card-content>
+</md-card>
+<div *ngIf="activeTab == 2">
+  <el-post-feed [posts]="posts | async" [userId]="userId" [show]="writePost" (newPost)="newPost($event)" (newComment)="postComment($event)"
+    (postLiked)="likePost($event)" (commentLiked)="likeComment($event)" (subCommentLiked)="likeSubComment($event)"></el-post-feed>
+</div>
+<md-card *ngIf="activeTab == 3">
+  <md-card-content>
+    <p>
+      <b>Created by: </b>
+      <a class="app-link" routerLink="/user/{{(owner | async)?._id}}">{{(owner | async)?.firstName}} {{(owner | async)?.lastName}}</a>
+    </p>
+    <p>
+      <b>Provider: </b>
+      <a class="app-link" routerLink="/provider/{{(provider | async)?._id}}">{{(provider | async)?.user.firstName}} {{(provider | async)?.user.lastName}}</a>
+    </p>
     <br>
     <p>
       <b>Description:</b>
@@ -23,10 +61,3 @@
     <p>{{description | async}}</p>
   </md-card-content>
 </md-card>
-<md-card>
-  <md-card-title>Participants</md-card-title>
-  <md-card-content>
-    <el-people-list [members]="members | async" [admins]="admins | async"></el-people-list>
-  </md-card-content>
-</md-card>
-<el-post [post]="post" max=2 *ngFor="let post of posts | async"></el-post>

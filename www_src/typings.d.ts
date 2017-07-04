@@ -22,7 +22,13 @@ declare enum Gender {
 
 declare type HttpPayload = {
     parent: ObjectId,
+    type?: string,
     child: any
+}
+
+declare type GenericAction = {
+    action: string,
+    data: any
 }
 
 declare type MediaObject = {
@@ -38,6 +44,22 @@ declare type Address = {
     country: String
 }
 
+declare type Customer = {
+    user: User,
+    confirmed: Boolean
+}
+
+declare type Field = {
+    name: String,
+    description: String,
+    customers: Array<Customer>
+}
+
+declare type CommentRef = {
+    commentId: ObjectId,
+    subCommentId: ObjectId
+}
+
 declare type User = {
     _id?: ObjectId
     firstName: String,
@@ -50,6 +72,8 @@ declare type User = {
     avatar?: MediaObject,
     address?: Address,
     friends?: Array<User>,
+    followers?: Array<User>,
+    posts?: Array<Post>,
     isProvider?: Boolean
 }
 
@@ -57,7 +81,7 @@ declare type Provider = {
     _id?: ObjectId,
     bio?: String,
     rank?: Number,
-    fields?: Array<String>,
+    fields?: Array<Field>,
     reviews?: Array<Review>,
     businessAddress?: Address,
     user?: User

@@ -5,6 +5,7 @@ export const ActionTypes = {
   AUTH_SUCCESS: type('Auth Success'),
   AUTH_FAIL: type('Auth Fail'),
   LOAD_USER_DATA: type('Load User Data'),
+  SAVE_USER_ID: type('Save User ID'),
   SAVE_USER: type('Save User'),
   LOAD_USER: type('Load User'),
   TOGGLE_ACTION: type('Toggle Action'),
@@ -16,7 +17,7 @@ export const ActionTypes = {
 export class AuthSuccessAction implements Action {
   type = ActionTypes.AUTH_SUCCESS;
 
-  constructor(public payload: string) { }
+  constructor(public payload: ObjectId) { }
 }
 
 export class AuthFailAction implements Action {
@@ -29,6 +30,12 @@ export class LoadUserDataAction implements Action {
   type = ActionTypes.LOAD_USER_DATA;
 
   constructor(public payload: {user: User, links: UserPages}) { }
+}
+
+export class SaveUserIdAction implements Action {
+  type = ActionTypes.SAVE_USER_ID;
+
+  constructor(public payload: ObjectId) { }
 }
 
 export class SaveUserAction implements Action {
@@ -75,6 +82,7 @@ export type Actions =
   AuthSuccessAction |
   AuthFailAction |
   LoadUserDataAction |
+  SaveUserIdAction |
   SaveUserAction |
   LoadUserAction |
   ToggleActionAction |

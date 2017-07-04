@@ -1,29 +1,122 @@
 var router = require('express').Router();
 var Post = require('../models/post.model');
 var Comment = require('../models/comment.model');
+var Group = require('../models/group.model');
+var Event = require('../models/event.model');
+var User = require('../models/user.model');
+var lang = require('../services/lang.service');
 var handleError = require('./utils');
 
 router.post('/get', function (req, res) {
-    Post.find(req.body, null, { sort: { date: -1 } }, function (err, posts) {
+    Post.find(req.body, null, { sort: { date: -1 } })
+        .populate([
+            { path: 'user', select: 'firstName lastName avatar' },
+            {
+                path: 'comments', populate: [
+                    { path: 'user', select: 'firstName lastName' },
+                    { path: 'comments' }
+                ]
+            }
+        ])
+        .exec(function (err, posts) {
+            if (err) handleError(res, err);
+
+            res.json(posts);
+        });
+});
+
+router.get('/post/:id', function (req, res) {
+    Post.findById(req.params.id)
+        .populate([
+            { path: 'user', select: 'firstName lastName avatar' },
+            {
+                path: 'comments', populate: [
+                    { path: 'user', select: 'firstName lastName' },
+                    { path: 'comments' }
+                ]
+            }
+        ])
+        .exec(function (err, post) {
+            if (err) handleError(res, err);
+
+            res.json(post);
+        });
+});
+
+router.post('/post', function (req, res) {
+    req.body.child.rtl = lang.isRTL(req.body.child.body);
+
+    Post.create(req.body.child, function (err, post) {
         if (err) handleError(res, err);
 
-        res.json(posts);
+        post.populate([
+            { path: 'user', select: 'firstName lastName avatar' },
+            {
+                path: 'comments', populate: [
+                    { path: 'user', select: 'firstName lastName' },
+                    { path: 'comments' }
+                ]
+            }
+        ]);
+
+        if (req.body.parent !== null && typeof req.body.parent !== undefined) {
+            if (req.body.type === 'event') {
+                Event.findByIdAndUpdate(req.body.parent, { $addToSet: { posts: post } }, function (err, doc) {
+                    if (err) handleError(res, err);
+
+                    res.json(post);
+                });
+            } else if (req.body.type === 'group') {
+                Group.findByIdAndUpdate(req.body.parent, { $addToSet: { posts: post } }, function (err, doc) {
+                    if (err) handleError(res, err);
+
+                    res.json(post);
+                });
+            } else if (req.body.type === 'user') {
+                User.findByIdAndUpdate(req.body.parent, { $addToSet: { posts: post } }, function (err, doc) {
+                    if (err) handleError(res, err);
+
+                    res.json(post);
+                });
+            }
+        } else {
+            res.json(post);
+        }
     });
 });
 
 router.post('/post/like', function (req, res) {
-    Post.findOneAndUpdate({ _id: req.body._id }, { likes: req.body.likes }, function (err, obj) {
-        if (err) handleError(res, err);
+    Post.findById(req.body.parent)
+        .populate([
+            { path: 'user', select: 'firstName lastName avatar' },
+            {
+                path: 'comments', populate: [
+                    { path: 'user', select: 'firstName lastName' },
+                    { path: 'comments' }
+                ]
+            }
+        ])
+        .exec(function (err, post) {
+            if (err) handleError(res, err);
 
-        res.json(obj);
-    });
+            if (post.likes.indexOf(req.body.child) > -1)
+                post.likes.pull(req.body.child);
+            else
+                post.likes.addToSet(req.body.child);
+
+            post.save(function (err, doc) {
+                if (err) handleError(res, err);
+
+                res.json(doc);
+            });
+        });
 });
 
 router.post('/comment/like', function (req, res) {
-    Comment.findOneAndUpdate({ _id: req.body._id }, { likes: req.body.likes }, function (err, obj) {
+    Comment.findByIdAndUpdate(req.body.parent, { $addToSet: { likes: req.body.child } }, { new: true }, function (err, comment) {
         if (err) handleError(res, err);
 
-        res.json(obj);
+        res.json(comment);
     });
 });
 
@@ -32,26 +125,16 @@ router.post('/comment/post', function (req, res) {
         if (err) handleError(res, err);
 
         if (req.body.parent === null || typeof req.body.parent === undefined) {
-            Post.findOne({ _id: req.body.subject }, function (err, post) {
+            Post.findByIdAndUpdate(req.body.subject, { $addToSet: { comments: doc } }, function (err, user) {
                 if (err) handleError(res, err);
 
-                post.comments.addToSet(doc);
-                post.save(function (err) {
-                    if (err) handleError(res, err);
-
-                    res.json(doc);
-                });
+                res.json(doc);
             });
         } else {
-            Comment.findOne({ _id: req.body.parent }, function (err, comment) {
+            Comment.findByIdAndUpdate(req.body.parent, { $addToSet: { comments: doc } }, function (err, comment) {
                 if (err) handleError(res, err);
 
-                comment.comments.addToSet(doc);
-                comment.save(function (err) {
-                    if (err) handleError(res, err);
-
-                    res.json(doc);
-                });
+                res.json(doc);
             });
         }
     });

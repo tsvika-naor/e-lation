@@ -1,28 +1,48 @@
-.app-content {
-  padding: 20px;
+#app-content {
+  padding: 20px 5px 20px 5px;
+  margin-left: 5px;
+  margin-right: 40px;
+  flex: 1 1 auto;
 }
 
-.app-content md-card {
-  margin: 20px 20px 20px 28%;
-  width: 40%
+#app-sidebar {
+  background-color: white;
 }
 
-.app-content md-checkbox {
-  margin: 10px;
+#app-advert {
+  min-width: 200px;
+  padding-left: 10px;
+  border-left: 1px solid rgba(0,0,0,0.2);
 }
 
-.mat-sidenav-container[fullscreen] {
-  top: 64px;
+.app-col {
+  align-items: stretch;
+}
+
+#app-container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  min-height: calc(100vh - 64px);
+  background-color: rgb(250,249,253);
 }
 
 @media (max-width:600px) and (orientation:portrait) {
-  .mat-sidenav-container[fullscreen] {
-    top: 56px;
+  #app-sidebar {
+    display: none;
+  }
+
+  #app-advert {
+    display: none;
   }
 }
 
 @media (max-width:960px) and (orientation:landscape) {
-  .mat-sidenav-container[fullscreen] {
-    top: 48px;
+  #app-sidebar {
+    display: none;
+  }
+
+  #app-advert {
+    display: none;
   }
 }

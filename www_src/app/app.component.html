@@ -1,7 +1,12 @@
 <el-nav-titlebar></el-nav-titlebar>
-<md-sidenav-container fullscreen>
-    <el-nav-sidebar></el-nav-sidebar>
-    <div class="app-content">
+<div id="app-container">
+    <div id="app-sidebar" class="app-col">
+        <el-nav-sidebar></el-nav-sidebar>
+    </div>
+    <div id="app-content" class="app-col">
         <router-outlet></router-outlet>
     </div>
-</md-sidenav-container>
+    <div id="app-advert" class="app-col">
+        <h1>AD SPACE</h1>
+    </div>
+</div>

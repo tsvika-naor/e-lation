@@ -30,6 +30,7 @@ export class EditComponent implements OnInit, OnDestroy {
     posts: Observable<Array<Post>>;
     sub: Subscription;
     isNew: Boolean;
+    userId: ObjectId;
 
     constructor(private store$: Store<State>, private route: ActivatedRoute) {
         this._id = store$.select(state => state.event._id);
@@ -63,12 +64,19 @@ export class EditComponent implements OnInit, OnDestroy {
         this.sub = this.route.params
             .switchMap(params => this.store$
                 .select(state => state.event._id)
-                .map(id => ({ paramId: params['id'], storeId: id })))
+                .map(id => ({ paramId: params['id'], storeId: id, userId: null })))
+            .switchMap(postData => this.store$
+                .select(state => state.auth.userId)
+                .map(id => {
+                    postData.userId = id;
+                    return postData;
+                }))
             .subscribe(data => {
-                if (data.storeId !== data.paramId) {
+                if (data.paramId && data.storeId !== data.paramId) {
                     this.store$.dispatch({ type: actions.S_GET_EVENT, payload: data.paramId });
                 }
 
+                this.userId = data.userId || '591b456fac3a880004d698fa';
                 this.isNew = (typeof data.paramId === 'undefined' || data.paramId === null);
             });
     }

@@ -12,6 +12,7 @@ export class GoogleService {
 
     constructor( @Inject(GOOG_ID) client_id: string) {
         this._client_id = client_id + (client_id.endsWith('.apps.googleusercontent.com') ? '' : '.apps.googleusercontent.com');
+        console.log('init: ' + this._client_id);
         gapi.load('auth2', () => {
             this.GoogleAuth = gapi.auth2.init({ client_id: this._client_id });
         });

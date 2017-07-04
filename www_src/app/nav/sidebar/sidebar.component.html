@@ -1,4 +1,4 @@
-<md-sidenav mode="side" [opened]="isAuthenticated | async" class="app-sidenav">
+<div class="app-sidenav">
     <md-list>
         <h3 md-subheader>User</h3>
         <md-list-item class="app-list-button" (click)="goTo('feed')">
@@ -6,16 +6,11 @@
             <p md-line>My Feed</p>
             <div class="app-list-item-focus-overlay"></div>
         </md-list-item>
-        <md-list-item class="app-list-button" (click)="goTo('user', userId)">
-            <md-icon md-list-icon>person</md-icon>
-            <p md-line>Profile</p>
-            <div class="app-list-item-focus-overlay"></div>
-        </md-list-item>
-        <!--<md-list-item *ngFor="let link of userLinks | async" class="app-list-button" (click)="goTo(link?.type, link?._id)">
+        <md-list-item *ngFor="let link of userLinks | async" class="app-list-button" (click)="goTo(link?.type, link?._id)">
             <md-icon md-list-icon>person</md-icon>
             <p md-line>{{link.name}}</p>
             <div class="app-list-item-focus-overlay"></div>
-        </md-list-item>-->
+        </md-list-item>
         <md-divider></md-divider>
         <h3 md-subheader>Providers</h3>
         <md-list-item *ngFor="let provider of providers | async" class="app-list-button" (click)="goTo('provider', provider._id)">
@@ -58,4 +53,4 @@
             <div class="app-list-item-focus-overlay"></div>
         </md-list-item>
     </md-list>
-</md-sidenav>
+</div>

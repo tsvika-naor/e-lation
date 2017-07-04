@@ -8,8 +8,9 @@ var facebook = require('./facebook.service');
 var handleError = require('../routes/utils');
 
 module.exports = {
-    verifyToken: function(req, res, next) {
+    verifyToken: function (req, res, next) {
         var provider = req.get('provider');
+        console.log("Verify " + provider + " token");
         if (provider === 'google') {
             google.verifyToken(req, res, next);
         } else if (provider === 'facebook') {
@@ -18,23 +19,30 @@ module.exports = {
             handleError(res, {
                 name: "InvalidAuthProvider",
                 message: "The Authentication Provider \"" + provider + "\" is not supported."
-            });
+            }, 401);
         }
     },
 
-    verifyUser: function(req, res, next) {
+    verifyUser: function (req, res, next) {
         var provider = req.get('provider');
-        User.findOne({ 'auth_id.kind': provider, 'auth_id.value': req.body.userId })
-            .exec(function(err, user) {
-                if (err) handleError(res, err, 500);
-
+        User.findOne({ 'auth_id.kind': provider, 'auth_id.value': req.body.userId }, function (err, user) {
+            if (err) {
+                handleError(res, err, 401);
+            } else if (user === null) {
+                handleError(res, {
+                    name: "Unauthorized",
+                    message: "The user does not exist."
+                }, 401);
+            } else {
                 req.body.user = user;
                 next();
-            });
+            }
+        });
     },
 
-    getProfile: function(req, res, next) {
+    getProfile: function (req, res, next) {
         var provider = req.get('provider');
+        console.log("Get " + provider + " profile");
         if (provider === 'google') {
             google.getProfile(req, res, next);
         } else if (provider === 'facebook') {
@@ -43,11 +51,11 @@ module.exports = {
             handleError(res, {
                 name: "InvalidAuthProvider",
                 message: "The Authentication Provider \"" + provider + "\" is not supported."
-            });
+            }, 401);
         }
     },
 
-    getUserData: function(req, res, next) {
+    getUserData: function (req, res, next) {
         var userData = {
             user: req.body.user,
             links: {
@@ -64,50 +72,60 @@ module.exports = {
             .then(getProviders)
             .then(getGroups)
             .then(getEvents)
-            .then(function(data) {
+            .then(function (data) {
                 delete data.user.providerId;
                 req.body.userData = data;
                 next();
             })
-            .catch(function(err) {
+            .catch(function (err) {
                 handleError(res, err);
             });
     }
 };
 
 function getProviderId(data) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         // Skip the query if user is not a Provider
-        if (!data.user.isProvider)
+        if (!data.user.isProvider) {
             resolve(data);
-
-        // User's Provider page
-        Provider.findOne({ user: data.user._id }, function(err, provider) {
-            if (err) reject(err);
-
-            data.user.providerId = provider._id;
-            data.links.userLinks.push({ _id: provider._id, type: 'provider', name: 'Provider Page' });
-            resolve(data);
-        });
+        } else {
+            // User's Provider page
+            Provider.findOne({ user: data.user._id }, function (err, provider) {
+                if (err) {
+                    reject(err);
+                } else if (provider === null) {
+                    reject({
+                        name: "ProviderNotFound",
+                        message: "No Provider account found for user."
+                    });
+                } else {
+                    data.user.providerId = provider._id;
+                    data.links.userLinks.push({ _id: provider._id, type: 'provider', name: 'Provider Page' });
+                    resolve(data);
+                }
+            });
+        }
     });
 }
 
 function getProviders(data) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         // Providers that user is a customer of
         Provider.find({ 'fields.customers': { "$in": [data.user._id] } })
             .populate({ path: 'user', select: '_id firstName lastName' })
-            .exec(function(err, providers) {
-                if (err) reject(err);
-
-                data.links.providers = providers;
-                resolve(data);
+            .exec(function (err, providers) {
+                if (err) {
+                    reject(err);
+                } else {
+                    data.links.providers = providers;
+                    resolve(data);
+                }
             });
     });
 }
 
 function getGroups(data) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         // Groups that user is an admin/member/owner/provider of
         Group.find()
             .or([
@@ -116,17 +134,19 @@ function getGroups(data) {
                 { admins: { "$in": [data.user._id] } },
                 { members: { "$in": [data.user._id] } }
             ])
-            .exec(function(err, groups) {
-                if (err) reject(err);
-
-                data.links.groups = groups;
-                resolve(data);
+            .exec(function (err, groups) {
+                if (err) {
+                    reject(err);
+                } else {
+                    data.links.groups = groups;
+                    resolve(data);
+                }
             });
     });
 }
 
 function getEvents(data) {
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         // Events that user is an admin/member/owner/provider of
         Event.find()
             .or([
@@ -135,11 +155,13 @@ function getEvents(data) {
                 { admins: { "$in": [data.user._id] } },
                 { members: { "$in": [data.user._id] } }
             ])
-            .exec(function(err, events) {
-                if (err) reject(err);
-
-                data.links.events = events;
-                resolve(data);
+            .exec(function (err, events) {
+                if (err) {
+                    reject(err);
+                } else {
+                    data.links.events = events;
+                    resolve(data);
+                }
             });
     });
 }

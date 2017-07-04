@@ -9,7 +9,7 @@ import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 
 import * as Group from './group.actions';
-import { HttpService } from '../../shared';
+import { ActionTypes as NavActions} from '../../nav/store';
 import { Http } from '@angular/http';
 import { go } from '@ngrx/router-store';
 
@@ -36,7 +36,7 @@ export class GroupEffects {
 
 
     @Effect() removeMember$ = this.actions$
-        .ofType(Group.ActionTypes.S_ADD_MEMBER)
+        .ofType(Group.ActionTypes.S_REMOVE_MEMBER)
         .map((action: Group.S_RemoveMemberAction) => action.payload)
         .switchMap(payload => this.http$.post('/api/group/member/remove', payload))
         .map(res => ({ type: Group.ActionTypes.L_REMOVE_MEMBER, payload: res.json() }));
@@ -61,6 +61,7 @@ export class GroupEffects {
         // If successful, dispatch success action with result
         .mergeMap(res => Observable.from([
             { type: Group.ActionTypes.L_GET_GROUP, payload: res.json() },
+            { type: NavActions.ADD_GROUP, payload: res.json()},
             go('/group/' + res.json()._id)
         ]));
 

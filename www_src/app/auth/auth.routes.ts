@@ -10,5 +10,9 @@ export const authRoutes: Routes = [
   {
     path: 'register',
     component: RegisterComponent
+  },
+  {
+    path: 'register/:key',
+    component: RegisterComponent
   }
 ];

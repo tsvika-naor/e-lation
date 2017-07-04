@@ -9,8 +9,7 @@ import { State } from '../../app-store.state';
   styleUrls: ['./people-list.component.css']
 })
 export class PeopleListComponent {
-    @Input() members: Array<User>;
-    @Input() admins: Array<User>;
+    @Input() people: Array<User>;
 
     constructor(private store$: Store<State>) { }
 

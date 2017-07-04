@@ -4,7 +4,7 @@ import { go } from '@ngrx/router-store';
 import { Observable } from 'rxjs/Observable';
 
 import { ActionTypes as Actions } from '../store';
-import { FacebookService, GoogleService } from '../providers/sources';
+import { FacebookService, GoogleService } from '../providers';
 import { State } from '../../app-store.state';
 
 @Component({
@@ -45,8 +45,9 @@ export class LoginComponent {
             'https://www.googleapis.com/auth/userinfo.profile'
         })
             .then((googleUser: GoogleUser) => {
-                this.storeToken('google', googleUser.getAuthResponse().id_token);
-                this.store$.dispatch({ type: Actions.REGISTER, payload: googleUser.getAuthResponse().access_token });
+                const response = googleUser.getAuthResponse();
+                this.storeToken('google', response.id_token);
+                this.store$.dispatch({ type: Actions.REGISTER, payload: response.access_token });
             });
     }
 
@@ -77,7 +78,7 @@ export class LoginComponent {
     }
 
     private storeToken(provider: string, token: string) {
-        localStorage.setItem('token', token);
         localStorage.setItem('provider', provider);
+        localStorage.setItem('token', token);
     }
 }

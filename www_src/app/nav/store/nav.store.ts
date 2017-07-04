@@ -4,6 +4,7 @@ import { safeAction } from '../../shared/utils';
 export interface State {
     searchResults: SearchResult;
     userPages: UserPages;
+    showSidebar: boolean;
 };
 
 const initialState: State = {
@@ -16,10 +17,11 @@ const initialState: State = {
     },
     userPages: {
         userLinks: [],
-        providers: [{ _id: '590f477cf36d281fc3b97434', user: { firstName: 'Taylor', lastName: 'Macdonald' } }],
-        groups: [{ _id: '588e2a3f6bb702290088e092', name: 'AngularIL' }],
-        events: [{ _id: '588e2a2630f67d154423b9dd', name: 'AngularUP' }]
-    }
+        providers: [],
+        groups: [],
+        events: []
+    },
+    showSidebar: false
 };
 
 function reducer(state = initialState, action: Actions): State {
@@ -27,6 +29,20 @@ function reducer(state = initialState, action: Actions): State {
         case ActionTypes.CONFIG_PAGES: {
             return safeAction(action, state, (payload: UserPages, newState) => {
                 newState.userPages = payload;
+                return newState;
+            });
+        }
+
+        case ActionTypes.ADD_GROUP: {
+            return safeAction(action, state, (payload: Group, newState) => {
+                newState.userPages.groups.push(payload);
+                return newState;
+            });
+        }
+
+        case ActionTypes.ADD_EVENT: {
+            return safeAction(action, state, (payload: Event, newState) => {
+                newState.userPages.events.push(payload);
                 return newState;
             });
         }

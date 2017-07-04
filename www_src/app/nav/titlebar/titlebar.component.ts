@@ -9,7 +9,6 @@ import { go } from '@ngrx/router-store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { LoginService } from '../../login-service.token';
 import { ActionTypes as actions } from '../store';
 import { State } from '../../app-store.state';
 
@@ -24,7 +23,7 @@ export class TitlebarComponent implements OnInit, OnDestroy {
     searchBar: FormControl;
     sub: Subscription;
 
-    constructor(private store$: Store<State>, protected LoginService: LoginService, iconRegistry: MdIconRegistry, sanitizer: DomSanitizer) {
+    constructor(private store$: Store<State>, iconRegistry: MdIconRegistry, sanitizer: DomSanitizer) {
         this.authenticated = store$.select(state => state.auth.authenticated);
         this.results = store$.select(state => state.nav.searchResults);
         this.searchBar = new FormControl();

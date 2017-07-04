@@ -2,17 +2,15 @@ import { Action } from '@ngrx/store';
 import { type } from '../../shared/utils';
 
 export const ActionTypes = {
-  S_GET_FEED: type('S Get Feed'),
-  S_LIKE_POST: type('S Like Post'),
-  S_LIKE_COMMENT: type('S Like Comment'),
-  S_LIKE_SUBCOMMENT: type('S Like SubComment'),
-  S_POST_COMMENT: type('S Post Comment'),
+  S_GET_FEED: type('[Feed] S Get Feed'),
+  S_GET_POST: type('[Feed] S Get Post'),
 
-  L_GET_FEED: type('L Get Feed'),
-  L_LIKE_POST: type('L Like Post'),
-  L_LIKE_COMMENT: type('L Like Comment'),
-  L_LIKE_SUBCOMMENT: type('L Like SubComment'),
-  L_POST_COMMENT: type('L Post Comment')
+  L_GET_FEED: type('[Feed] L Get Feed'),
+  L_GET_POST: type('[Feed] L Get Post'),
+  L_LIKE_POST: type('[Feed] L Like Post'),
+  L_LIKE_COMMENT: type('[Feed] L Like Comment'),
+  L_LIKE_SUBCOMMENT: type('[Feed] L Like SubComment'),
+  L_POST_COMMENT: type('[Feed] L Post Comment')
 };
 
 export class S_GetFeedAction implements Action {
@@ -21,34 +19,22 @@ export class S_GetFeedAction implements Action {
   constructor(public payload: any) { }
 }
 
-export class S_LikePostAction implements Action {
-  type = ActionTypes.S_LIKE_POST;
+export class S_GetPostAction implements Action {
+  type = ActionTypes.S_GET_POST;
 
-  constructor(public payload: HttpPayload) { }
-}
-
-export class S_LikeCommentAction implements Action {
-  type = ActionTypes.S_LIKE_COMMENT;
-
-  constructor(public payload: HttpPayload) { }
-}
-
-export class S_LikeSubCommentAction implements Action {
-  type = ActionTypes.S_LIKE_SUBCOMMENT;
-
-  constructor(public payload: HttpPayload) { }
-}
-
-export class S_PostCommentAction implements Action {
-  type = ActionTypes.S_POST_COMMENT;
-
-  constructor(public payload: UserComment) { }
+  constructor(public payload: ObjectId) { }
 }
 
 export class L_GetFeedAction implements Action {
   type = ActionTypes.L_GET_FEED;
 
   constructor(public payload: Array<Post>) { }
+}
+
+export class L_GetPostAction implements Action {
+  type = ActionTypes.L_GET_POST;
+
+  constructor(public payload: Post) { }
 }
 
 export class L_LikePostAction implements Action {
@@ -80,10 +66,10 @@ export class L_PostCommentAction implements Action {
  * so that reducers can easily compose action types
  */
 export type Actions =
-  S_LikePostAction |
-  S_LikeCommentAction |
-  S_LikeSubCommentAction |
-  S_PostCommentAction |
+  S_GetFeedAction |
+  S_GetPostAction |
+  L_GetFeedAction |
+  L_GetPostAction |
   L_LikePostAction |
   L_LikeCommentAction |
   L_LikeSubCommentAction |

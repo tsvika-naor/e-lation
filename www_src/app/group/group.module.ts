@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MdChipsModule, MdCardModule, MdInputModule, MdIconModule, MdButtonModule } from '@angular/material';
+import { MdChipsModule, MdCardModule, MdTabsModule, MdInputModule, MdIconModule, MdButtonModule } from '@angular/material';
 import { RouterModule } from '@angular/router';
 import { EditComponent } from './edit/edit.component';
 import { ViewComponent } from './view/view.component';
@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
     FormsModule,
     RouterModule,
     MdCardModule,
+    MdTabsModule,
     MdInputModule,
     MdChipsModule,
     MdButtonModule,

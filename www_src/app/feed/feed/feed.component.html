@@ -1,2 +1,2 @@
-<el-post [post]="post" max=3 (newComment)="postComment($event)" (postLiked)="likePost($event)" (postShared)="sharePost($event)"
-    (commentLiked)="likeComment($event)" (subCommentLiked)="likeSubComment($event)" *ngFor="let post of posts | async"></el-post>
+<el-post-feed [posts]="posts | async" [userId]="userId" [panel]="true" (newPost)="newPost($event)" (newComment)="postComment($event)"
+    (postLiked)="likePost($event)" (commentLiked)="likeComment($event)" (subCommentLiked)="likeSubComment($event)"></el-post-feed>

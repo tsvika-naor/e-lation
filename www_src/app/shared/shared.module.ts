@@ -1,43 +1,40 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MdCardModule, MdListModule, MdChipsModule, MdIconModule, MdButtonModule } from '@angular/material';
+import { FormsModule } from '@angular/forms';
+import {
+    MdCardModule, MdListModule, MdChipsModule, MdIconModule, MdButtonModule,
+    MdInputModule, MdCheckboxModule
+} from '@angular/material';
 import { Http, RequestOptions } from '@angular/http';
-import { AuthHttp, AuthConfig } from 'angular2-jwt';
+import { ShareButtonsModule } from 'ngx-sharebuttons';
 
-export function authHttpServiceFactory(http: Http, options: RequestOptions) {
-  return new AuthHttp(new AuthConfig(), http, options);
-}
-
-import { ValueDirective } from './directives/value.directive';
+import { IfTrimPipe, AddressPipe, GenderPipe, DateOnlyPipe } from './pipes';
+import { FeedService } from './providers';
 import { PostComponent } from './post/post.component';
+import { NewPostComponent } from './new-post/new-post.component';
+import { PostFeedComponent } from './post-feed/post-feed.component';
 import { PeopleListComponent } from './people-list/people-list.component';
-import { IfTrimPipe } from './pipes/if-trim.pipe';
-import { AddressPipe } from './pipes/address.pipe';
-import { GenderPipe } from './pipes/gender.pipe';
-import { HttpService } from './providers/http.service';
-import { DateOnlyPipe } from './pipes/date-only.pipe';
-import { SpreadPipe } from './pipes/spread.pipe';
+import { PeopleDetailListComponent } from './people-detail-list/people-detail-list.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule,
-    MdCardModule,
-    MdButtonModule,
-    MdListModule,
-    MdChipsModule,
-    MdIconModule
-  ],
-  providers: [
-    {
-      provide: AuthHttp,
-      useFactory: authHttpServiceFactory,
-      deps: [Http, RequestOptions]
-    },
-    HttpService
-  ],
-  exports: [ValueDirective, PostComponent, PeopleListComponent, IfTrimPipe, AddressPipe, GenderPipe, DateOnlyPipe, SpreadPipe],
-  declarations: [ValueDirective, PostComponent, PeopleListComponent, IfTrimPipe, AddressPipe, GenderPipe, DateOnlyPipe, SpreadPipe]
+    imports: [
+        CommonModule,
+        RouterModule,
+        FormsModule,
+        MdCardModule,
+        MdButtonModule,
+        MdListModule,
+        MdChipsModule,
+        MdIconModule,
+        MdInputModule,
+        MdCheckboxModule,
+        ShareButtonsModule.forRoot()
+    ],
+    exports: [PostComponent, PeopleListComponent, IfTrimPipe, AddressPipe, GenderPipe,
+        DateOnlyPipe, NewPostComponent, PeopleDetailListComponent, PostFeedComponent],
+    providers: [FeedService],
+    declarations: [PostComponent, PeopleListComponent, IfTrimPipe, AddressPipe, GenderPipe,
+        DateOnlyPipe, NewPostComponent, PeopleDetailListComponent, PostFeedComponent]
 })
 export class SharedModule { }

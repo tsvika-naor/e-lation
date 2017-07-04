@@ -23,7 +23,7 @@ export class RegisterComponent {
     avatar: Observable<MediaObject>;
     address: Observable<Address>;
     friends: Observable<Array<User>>;
-    isProvider: Observable<Boolean>;
+    isProvider: Boolean;
 
     constructor(private store$: Store<State>) {
         this._id = store$.select(state => state.user._id);
@@ -34,7 +34,7 @@ export class RegisterComponent {
         this.gender = store$.select(state => state.user.gender);
         // this.interests = store$.select(state => state.user.interests);
         this.birthday = store$.select(state => state.user.birthday);
-        // this.avatar = store$.select(state => state.user.avatar);
+        this.avatar = store$.select(state => state.user.avatar);
         this.address = store$.select(state => state.user.address);
         // this.friends = store$.select(state => state.user.friends);
         // this.isProvider = store$.select(state => state.user.isProvider);

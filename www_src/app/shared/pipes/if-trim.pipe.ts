@@ -7,7 +7,7 @@ export class IfTrimPipe implements PipeTransform {
             return array;
         }
 
-        if(endNum === null || typeof endNum === "undefined") {
+        if(endNum === null || typeof endNum === 'undefined') {
             endNum = startNum;
             startNum = 0;
         }

@@ -1,26 +1,25 @@
-<div class="background">
-    <md-card *ngIf="(isNewUser | async)" class="login-card">
-        <md-card-title>Sign up</md-card-title>
-        <md-card-content>
-            <p *ngIf="error | async">{{ error | async }}</p>
-            <p></p>
-            <button (click)="fregister()" class="btn wide btn-social facebook"><md-icon fontSet="fa" fontIcon="fa-facebook"></md-icon>Login via Facebook</button>
-            <button (click)="gregister()" class="btn wide btn-social google"><md-icon fontSet="fa" fontIcon="fa-google"></md-icon>Login via Google</button>
-        </md-card-content>
-        <md-card-actions>
-            <p>Already a user? <span (click)="toggleAction()">Sign in</span></p>
-        </md-card-actions>
-    </md-card>
-    <md-card *ngIf="!(isNewUser | async)" class="login-card">
-        <md-card-title>Sign in</md-card-title>
-        <md-card-content>
-            <p *ngIf="error | async">{{ error | async }}</p>
-            <p></p>
-            <button (click)="flogin()" class="btn wide btn-social facebook"><md-icon fontSet="fa" fontIcon="fa-facebook"></md-icon>Login via Facebook</button>
-            <button (click)="glogin()" class="btn wide btn-social google"><md-icon fontSet="fa" fontIcon="fa-google"></md-icon>Login via Google</button>
-        </md-card-content>
-        <md-card-actions>
-            <p>Not a user yet? <span (click)="toggleAction()">Sign up</span></p>
-        </md-card-actions>
-    </md-card>
-</div>
+<div id="background"></div>
+<md-card *ngIf="(isNewUser | async)" class="login-card">
+    <md-card-title>Sign Up</md-card-title>
+    <md-card-content>
+        <p *ngIf="error | async">{{ error | async }}</p>
+        <p></p>
+        <button (click)="fregister()" class="btn wide btn-social facebook"><md-icon fontSet="fa" fontIcon="fa-facebook"></md-icon>Signup via Facebook</button>
+        <button (click)="gregister()" class="btn wide btn-social google"><md-icon fontSet="fa" fontIcon="fa-google"></md-icon>Signup via Google</button>
+    </md-card-content>
+    <md-card-actions>
+        <p>Already a user? <span (click)="toggleAction()">Sign in</span></p>
+    </md-card-actions>
+</md-card>
+<md-card *ngIf="!(isNewUser | async)" class="login-card">
+    <md-card-title>Sign In</md-card-title>
+    <md-card-content>
+        <p *ngIf="error | async">{{ error | async }}</p>
+        <p></p>
+        <button (click)="flogin()" class="btn wide btn-social facebook"><md-icon fontSet="fa" fontIcon="fa-facebook"></md-icon>Login via Facebook</button>
+        <button (click)="glogin()" class="btn wide btn-social google"><md-icon fontSet="fa" fontIcon="fa-google"></md-icon>Login via Google</button>
+    </md-card-content>
+    <md-card-actions>
+        <p>Not a user yet? <span (click)="toggleAction()">Sign up</span></p>
+    </md-card-actions>
+</md-card>

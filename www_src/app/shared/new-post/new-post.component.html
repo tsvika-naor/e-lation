@@ -1,0 +1,30 @@
+  <md-card>
+    <md-card-header>
+      <md-card-title>
+        <h2>New Post</h2>
+      </md-card-title>
+    </md-card-header>
+    <md-card-content>
+      <form #form="ngForm">
+        <div>
+          <md-input-container class="wide">
+            <input type="text" mdInput placeholder="Title" [(ngModel)]="newPost.title" name="title">
+          </md-input-container>
+        </div>
+        <div>
+          <md-input-container class="wide">
+            <input type="text" mdInput placeholder="Tags" [(ngModel)]="newPost.tagString" name="title">
+          </md-input-container>
+        </div>
+        <div>
+          <md-input-container class="wide">
+            <textarea mdInput placeholder="Text" [(ngModel)]="newPost.body" name="body"></textarea>
+          </md-input-container>
+        </div>
+      </form>
+    </md-card-content>
+    <md-card-actions>
+      <span class="app-filler"></span>
+      <button md-raised-button color="primary" (click)="post()">Post</button>
+    </md-card-actions>
+  </md-card>

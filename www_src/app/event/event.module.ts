@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { EditComponent } from './edit/edit.component';
 import { ViewComponent } from './view/view.component';
 import { RouterModule } from '@angular/router';
-import { MdCardModule, MdInputModule, MdCheckboxModule, MdIconModule, MdButtonModule } from '@angular/material';
+import { MdCardModule, MdTabsModule, MdInputModule, MdCheckboxModule, MdIconModule, MdButtonModule } from '@angular/material';
 import { SharedModule } from '../shared';
 import { FormsModule } from '@angular/forms';
 
@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
     RouterModule,
     FormsModule,
     MdCardModule,
+    MdTabsModule,
     MdInputModule,
     MdCheckboxModule,
     MdButtonModule,

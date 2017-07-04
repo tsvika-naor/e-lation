@@ -1,0 +1,9 @@
+<md-card *ngIf="panel && !showNewPost">
+  <md-card-actions>
+    <span class="app-filler"></span>
+    <button md-button (click)="showNewPost = !showNewPost">New Post</button>
+  </md-card-actions>
+</md-card>
+<el-new-post [userId]="userId" (submit)="submitPost($event)" *ngIf="show || showNewPost"></el-new-post>
+<el-post [post]="post" [userId]="userId" max=3 (newComment)="postComment($event)" (postLiked)="likePost($event)" (commentLiked)="likeComment($event)"
+  (subCommentLiked)="likeSubComment($event)" *ngFor="let post of posts | async"></el-post>

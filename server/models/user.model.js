@@ -21,6 +21,8 @@ var userSchema = new Schema({
     country: String
   },
   friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  followers: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  posts: [{ type: Schema.Types.ObjectId, ref: 'Post' }],
   isProvider: { type: Boolean, default: false }
 });
 

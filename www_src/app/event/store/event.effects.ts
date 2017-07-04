@@ -9,7 +9,7 @@ import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 
 import * as Event from './event.actions';
-import { HttpService } from '../../shared';
+import { ActionTypes as NavActions} from '../../nav/store';
 import { Http } from '@angular/http';
 import { go } from '@ngrx/router-store';
 
@@ -72,6 +72,7 @@ export class EventEffects {
         // If successful, dispatch success action with result
         .mergeMap(res => Observable.from([
             { type: Event.ActionTypes.L_GET_EVENT, payload: res.json() },
+            { type: NavActions.ADD_EVENT, payload: res.json()},
             go('/event/' + res.json()._id)
         ]));
 

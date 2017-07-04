@@ -1,28 +1,124 @@
 <md-card>
   <md-card-header>
-    <img md-card-md-image src="{{(user | async).avatar?.data}}">
+    <img md-card-md-image [src]="(user | async).avatar?.data">
+    <input type="hidden" #id [ngModel]="_id | async"  name="_id">
     <md-card-title>
       <h1>{{(user | async)?.firstName }} {{(user | async)?.lastName}}</h1>
       <md-chip-list>
         <md-chip>Rank: {{ rank | async }}</md-chip>
       </md-chip-list>
+      <button md-icon-button (click)="edit(id.value)" disabled><md-icon>mode_edit</md-icon></button>
     </md-card-title>
-    <md-card-subtitle>
-      <p><b>Address:</b> {{ businessAddress | async | address }}</p>
-    </md-card-subtitle>
+  </md-card-header>
+  <md-card-actions>
+    <button md-button (click)="tab(0)" [ngClass]="{'active-tab': activeTab == 0}">Services</button>
+    <button md-button (click)="tab(1)" [ngClass]="{'active-tab': activeTab == 1}">Posts</button>
+    <button md-button (click)="tab(2)" [ngClass]="{'active-tab': activeTab == 2}">About</button>
+    <button md-button (click)="tab(3)" [ngClass]="{'active-tab': activeTab == 3}" *ngIf="(user | async)?._id === userId">Followers</button>
+    <span class="app-filler"></span>
+    <button md-raised-button (click)="post()" *ngIf="(user | async)?._id === userId" [disabled]="writePost">New Post</button>
+    <button md-raised-button (click)="review()" *ngIf="(user | async)?._id !== userId" [disabled]="writeReview">Write Review</button>
+    <button md-raised-button (click)="follow()" *ngIf="(user | async)?._id !== userId" disabled>Follow</button>
+  </md-card-actions>
+</md-card>
+<md-card *ngIf="activeTab == 0">
+  <md-card-header>
+    <md-card-title>
+      <h3>Services</h3>
+    </md-card-title>
   </md-card-header>
   <md-card-content>
-    <button md-raised-button (click)="toggleContact()">{{(showContact | async) ? "Hide" : "Show"}} Contact Details</button>
-    <div *ngIf="showContact | async" >
-      <p>
-        <b>Phone: </b>
-        <span class="line-2">{{(user | async)?.phone}}</span>
-      </p>
-      <p>
-        <b>Email: </b>
-        <span class="line-2">{{(user | async)?.email}}</span>
-      </p>
-    </div>
+    <md-list>
+      <md-list-item *ngFor="let field of fields">
+        <p md-line>{{field.name}}</p>
+        <p md-line class="line-2 multi-line" *ngIf="field.description">{{field.description}}</p>
+        <el-people-list [people]="field.customers"></el-people-list>
+      </md-list-item>
+    </md-list>
+  </md-card-content>
+</md-card>
+<md-card *ngIf="activeTab == 0 && writeReview">
+  <md-card-header>
+    <md-card-title>
+      <h3>New Review</h3>
+    </md-card-title>
+  </md-card-header>
+  <md-card-content>
+    <form #form="ngForm">
+      <!--<div>
+        <md-select placeholder="Service" [(ngModel)]="newReview.field" name="service">
+          <md-option *ngFor="let service of services" [value]="service.name">{{service.name}}</md-option>
+        </md-select>
+      </div>-->
+      <input type="hidden" [ngModel]="_id | async"  name="providerId">
+      <div>
+        <md-select placeholder="Rating" [(ngModel)]="newReview.rating" name="rating">
+          <md-option value=-3>Terrible</md-option>
+          <md-option value=-2>Very Bad</md-option>
+          <md-option value=-1>Bad</md-option>
+          <md-option value=0>Average</md-option>
+          <md-option value=1>Good</md-option>
+          <md-option value=2>Very Good</md-option>
+          <md-option value=3>Excellent</md-option>
+        </md-select>
+      </div>
+      <div>
+        <md-input-container class="wide">
+          <textarea mdInput placeholder="Text" [(ngModel)]="newReview.text" name="text"></textarea>
+        </md-input-container>
+      </div>
+    </form>
+  </md-card-content>
+  <md-card-actions>
+    <button md-raised-button color="primary" (click)="submitReview(form)">Submit</button>
+  </md-card-actions>
+</md-card>
+<md-card *ngIf="activeTab == 0">
+  <md-card-header>
+    <md-card-title>
+      <h3>Reviews</h3>
+    </md-card-title>
+  </md-card-header>
+  <md-card-content>
+    <md-list>
+      <md-list-item *ngFor="let review of reviews | async" class="divided-list">
+        <img md-list-avatar *ngIf="review.user?.avatar" [src]="review.user?.avatar?.data" alt="Image of {{review.user?.firstName}} {{review.user?.lastName}}">
+        <md-icon md-list-icon *ngIf="!(review.user?.avatar)">person_outline</md-icon>
+        <p md-line class="flex-between">
+          <b>
+            <a class="app-link" routerLink="/user/{{review.user?._id}}">{{review.user?.firstName}} {{review.user?.lastName}}</a>
+          </b>
+          <span class="line-2 text-sm">{{review.date | date:'mediumDate' }}</span>
+        </p>
+        <p md-line class="line-2 multi-line">{{review.text}}</p>
+        <p md-line class="flex">
+          <span class="app-filler"></span>
+          <span class="line-2">{{review.rating}}</span>
+        </p>
+      </md-list-item>
+    </md-list>
+  </md-card-content>
+</md-card>
+<md-card *ngIf="activeTab == 1">
+  <md-card-content>
+    <el-post-feed [posts]="(user | async)?.posts" [userId]="userId" [show]="writePost" (newPost)="newPost($event)" (newComment)="postComment($event)"
+    (postLiked)="likePost($event)" (commentLiked)="likeComment($event)" (subCommentLiked)="likeSubComment($event)"></el-post-feed>
+  </md-card-content>
+</md-card>
+<md-card *ngIf="activeTab == 2">
+  <md-card-content>
+    <p>
+      <b>Address: </b>
+      <span>{{ businessAddress | async | address }}</span>
+    </p>
+    <p>
+      <b>Phone: </b>
+      <span>{{(user | async)?.phone}}</span>
+    </p>
+    <p>
+      <b>Email: </b>
+      <span>{{(user | async)?.email}}</span>
+    </p>
     <br>
     <p>
       <b>About:</b>
@@ -30,18 +126,14 @@
     <p>{{bio | async}}</p>
   </md-card-content>
 </md-card>
-<md-card>
-  <md-card-title>Reviews</md-card-title>
+<md-card *ngIf="activeTab == 3">
   <md-card-content>
     <md-list>
-      <md-list-item *ngFor="let review of reviews | async">
-        <p md-line>
-          <em><a routerLink="/user/{{review.user?._id}}">{{review.user?.firstName}} {{review.user?.lastName}}</a></em>
-          <span class="app-filler"></span>
-          <span class="line-2">{{review.date | date:'mediumDate' }}</span>
-        </p>
-        <p md-line>{{review.text}}</p>
-        <p md-line><span class="app-filler"></span><span class="line-2">{{review.rating}}</span></p>
+      <md-list-item *ngFor="let person of (user | async)?.followers" (click)="navigate(person._id)">
+        <img md-list-avatar *ngIf="person?.avatar" [src]="person?.avatar?.data" alt="{{person?.firstName}} {{person?.lastName}}">
+        <md-icon md-list-icon class="avatar-icon" *ngIf="!(person?.avatar)">person</md-icon>
+        <p md-line>{{person?.firstName}} {{person?.lastName}}</p>
+        <div class="app-list-item-focus-overlay"></div>
       </md-list-item>
     </md-list>
   </md-card-content>

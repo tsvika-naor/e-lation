@@ -14,6 +14,7 @@ export class FacebookService {
     }
 
     init(params: InitParams) {
+        console.log('init: ' + params.appId);
         FB.init(params);
     }
 

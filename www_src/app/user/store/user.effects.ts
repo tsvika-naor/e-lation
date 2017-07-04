@@ -9,7 +9,7 @@ import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 
 import * as User from './user.actions';
-import { HttpService } from '../../shared';
+import { getOptions } from '../../shared';
 import { Http } from '@angular/http';
 import { go } from '@ngrx/router-store';
 
@@ -20,7 +20,7 @@ export class UserEffects {
         .ofType(User.ActionTypes.S_GET_USER)
         // Map the payload into JSON to use as the request body
         .map((action: User.S_GetUserAction) => action.payload)
-        .switchMap(payload => this.http$.get('/api/user/' + payload))
+        .switchMap(payload => this.http$.get('/api/user/' + payload, getOptions()))
         // If successful, dispatch success action with result
         .map(res => ({ type: User.ActionTypes.L_GET_USER, payload: res.json() }));
 
@@ -28,7 +28,7 @@ export class UserEffects {
         .ofType(User.ActionTypes.S_USER_UPDATE)
         // Map the payload into JSON to use as the request body
         .map((action: User.S_UserUpdateAction) => action.payload)
-        .switchMap(payload => this.http$.post('/api/user/update', payload))
+        .switchMap(payload => this.http$.post('/api/user/update', payload, getOptions()))
         // If successful, dispatch success action with result
         .mergeMap(res => Observable.from([
             { type: User.ActionTypes.L_USER_UPDATE, payload: res.json() },
@@ -39,11 +39,12 @@ export class UserEffects {
         .ofType(User.ActionTypes.S_NEW_USER)
         // Map the payload into JSON to use as the request body
         .map((action: User.S_NewUserAction) => action.payload)
-        .switchMap(payload => this.http$.post('/api/user/new', payload))
+        .switchMap(payload => this.http$.post('/api/user/new', payload, getOptions()))
         // If successful, dispatch success action with result
         .mergeMap(res => Observable.from([
-            { type: User.ActionTypes.L_GET_USER, payload: res.json() },
-            go('/user/' + res.json()._id)
+            { type: User.ActionTypes.L_GET_USER, payload: res.json().user },
+            { type: User.ActionTypes.L_NEW_USER, payload: { id: res.json().user._id, links: res.json().links } },
+            go('/feed/' + res.json()._id)
         ]));
 
     constructor(private actions$: Actions, private http$: Http) { }

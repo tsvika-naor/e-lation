@@ -34,7 +34,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.sub = this.store$.select(state => state.user._id).subscribe(id => {
-            this.userId = id;
+            this.userId = id || '591b456fac3a880004d698fa';
         });
     }
 

@@ -6,20 +6,30 @@ export interface State {
     authenticated: boolean;
     newUser: boolean;
     err: Error;
+    userId: ObjectId;
 };
 
 const initialState: State = {
     authenticated: false,
     newUser: false,
-    err: null
+    err: null,
+    userId: null
 };
 
 function reducer(state = initialState, action: Actions): State {
     switch (action.type) {
         case ActionTypes.AUTH_SUCCESS: {
-            return safeAction(action, state, (payload: string, newState) => {
+            return safeAction(action, state, (payload: ObjectId, newState) => {
                 newState.authenticated = true;
+                newState.userId = payload;
                 newState.err = null;
+                return newState;
+            });
+        }
+
+        case ActionTypes.SAVE_USER_ID: {
+            return safeAction(action, state, (payload: ObjectId, newState) => {
+                newState.userId = payload;
                 return newState;
             });
         }
@@ -30,6 +40,7 @@ function reducer(state = initialState, action: Actions): State {
 
             return safeAction(action, state, (payload: Error, newState) => {
                 newState.authenticated = false;
+                newState.userId = null;
                 newState.err = payload;
                 return newState;
             });

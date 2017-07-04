@@ -5,14 +5,16 @@ var Event = require('../models/event.model');
 router.get('/:id', function (req, res) {
     Event.findOne({ _id: req.params.id })
         .populate([
-            { path: 'owner admins members', select: '_id firstName lastName' },
-            { path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } },
+            { path: 'owner', select: 'firstName lastName avatar' },
+            { path: 'admins', select: 'firstName lastName avatar' },
+            { path: 'members', select: 'firstName lastName avatar' },
+            { path: 'provider', select: 'user', populate: { path: 'user', select: 'firstName lastName avatar' } },
             {
                 path: 'posts', populate: [
-                    { path: 'user', select: '_id firstName lastName avatar' },
+                    { path: 'user', select: 'firstName lastName avatar' },
                     {
                         path: 'comments', populate: [
-                            { path: 'user', select: '_id firstName lastName' },
+                            { path: 'user', select: 'firstName lastName avatar' },
                             { path: 'comments' }
                         ]
                     }
@@ -32,14 +34,16 @@ router.get('/:id', function (req, res) {
 router.post('/find', function (req, res) {
     Event.find(req.body)
         .populate([
-            { path: 'owner admins members', select: '_id firstName lastName' },
-            { path: 'provider', select: '_id user', populate: { path: 'user', select: '_id firstName lastName' } },
+            { path: 'owner', select: 'firstName lastName avatar' },
+            { path: 'admins', select: 'firstName lastName avatar' },
+            { path: 'members', select: 'firstName lastName avatar' },
+            { path: 'provider', select: 'user', populate: { path: 'user', select: 'firstName lastName avatar' } },
             {
                 path: 'posts', populate: [
-                    { path: 'user', select: '_id firstName lastName avatar' },
+                    { path: 'user', select: 'firstName lastName avatar' },
                     {
                         path: 'comments', populate: [
-                            { path: 'user', select: '_id firstName lastName' },
+                            { path: 'user', select: 'firstName lastName avatar' },
                             { path: 'comments' }
                         ]
                     }
@@ -81,31 +85,45 @@ router.post('/update', function (req, res) {
 
 router.post('/member/add', function (req, res) {
     Event.findOne({ _id: req.body.parent }, function (err, event) {
-        if (err) handleError(err);
+        if (err) {
+            handleError(res, err);
+        } else if (event === null) {
+            handleError(res, {
+                name: "Invalid",
+                message: "The event does not exist."
+            }, 401);
+        } else {
+            User.findOne({ _id: req.body.child._id }, function (err, member) {
+                if (err) {
+                    handleError(res, err);
+                } else if (member === null) {
+                    handleError(res, {
+                        name: "Invalid",
+                        message: "The user does not exist."
+                    }, 401);
+                } else {
+                    event.members.addToSet(member);
+                    event.save(function (err) {
+                        if (err) handleError(res, err);
 
-        User.findOne({ _id: req.body.child._id }, function (err, member) {
-            if (err) handleError(err);
-
-            event.members.addToSet(member);
-            event.save(function (err) {
-                if (err) handleError(err);
-
-                res.json(member);
+                        res.json(member);
+                    });
+                }
             });
-        });
+        }
     });
 });
 
 router.post('/admin/add', function (req, res) {
     Event.findOne({ _id: req.body.parent }, function (err, event) {
-        if (err) handleError(err);
+        if (err) handleError(res, err);
 
         User.findOne({ _id: req.body.child._id }, function (err, admin) {
-            if (err) handleError(err);
+            if (err) handleError(res, err);
 
             event.admins.addToSet(admin);
             event.save(function (err) {
-                if (err) handleError(err);
+                if (err) handleError(res, err);
 
                 res.json(admin);
             });
@@ -115,14 +133,14 @@ router.post('/admin/add', function (req, res) {
 
 router.post('/member/remove', function (req, res) {
     Event.findOne({ _id: req.body.parent }, function (err, event) {
-        if (err) handleError(err);
+        if (err) handleError(res, err);
 
         User.findOne({ _id: req.body.child._id }, function (err, member) {
-            if (err) handleError(err);
+            if (err) handleError(res, err);
 
             event.members.pull(member._id);
             event.save(function (err) {
-                if (err) handleError(err);
+                if (err) handleError(res, err);
 
                 res.json(member);
             });
@@ -132,14 +150,14 @@ router.post('/member/remove', function (req, res) {
 
 router.post('/admin/remove', function (req, res) {
     Event.findOne({ _id: req.body.parent }, function (err, event) {
-        if (err) handleError(err);
+        if (err) handleError(res, err);
 
         User.findOne({ _id: req.body.child._id }, function (err, admin) {
-            if (err) handleError(err);
+            if (err) handleError(res, err);
 
-            event.members.pull(admin._id);
+            event.admins.pull(admin._id);
             event.save(function (err) {
-                if (err) handleError(err);
+                if (err) handleError(res, err);
 
                 res.json(admin);
             });

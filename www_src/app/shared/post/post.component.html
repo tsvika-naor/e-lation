@@ -1,6 +1,6 @@
 <md-card>
     <md-card-header>
-        <img *ngIf="!post.source" md-card-avatar [src]="post.user?.avatar.data">
+        <img *ngIf="!post.source && post.user?.avatar" md-card-avatar [src]="post.user?.avatar.data">
         <md-card-title *ngIf="!post.source"><b>{{post.user?.firstName}} {{post.user?.lastName}}</b></md-card-title>
         <md-card-title *ngIf="post.source"><b>{{post.source}}</b></md-card-title>
         <md-card-subtitle>{{post.date | date:'medium'}}</md-card-subtitle>
@@ -9,11 +9,11 @@
     <md-card-content>
         <h4 *ngIf="!post.source" [ngClass]="{'rtl': post.rtl}">{{post.title}}</h4>
         <p *ngIf="!post.source" [ngClass]="{'rtl': post.rtl}">{{post.body}}</p>
-        <a href="{{post.hyperlink}}" class="app-hypercard-wrapper">
-            <md-card-title-group *ngIf="post.source" [ngClass]="{'app-hypercard': true, 'rtl': post.rtl}">
+        <a href="{{post.hyperlink}}" *ngIf="post.source" class="app-hypercard-wrapper">
+            <md-card-title-group [ngClass]="{'app-hypercard': true, 'rtl': post.rtl}">
                 <md-card-title>{{post.title}}</md-card-title>
                 <md-card-subtitle>{{post.body}}</md-card-subtitle>
-                <img md-card-md-image [src]="post.media[0].data"/>
+                <img md-card-md-image [src]="post.media[0]?.data" />
             </md-card-title-group>
         </a>
         <md-chip-list>
@@ -22,16 +22,34 @@
             </md-chip>
         </md-chip-list>
     </md-card-content>
+    <md-card-actions *ngIf="share" class="app-share-actions">
+        <div class="app-share-wrapper">
+            <button md-button shareButton="twitter" [sbUrl]="urlBase + post?._id" class="twitter">
+                <md-icon fontSet="fa" fontIcon="fa-twitter"></md-icon>
+                <span>Twitter</span>
+            </button>
+            <button md-button shareButton="facebook" [sbUrl]="urlBase + post?._id" [sbImage]="post.media[0]?.data"
+                [sbDescription]="post?.title" [sbTags]="shareText" class="facebook">
+                <md-icon fontSet="fa" fontIcon="fa-facebook"></md-icon>
+                <span>Facebook</span>
+            </button>
+            <button md-button shareButton="googleplus" [sbUrl]="urlBase + post?._id" [sbImage]="post.media[0]?.data"
+                [sbDescription]="post?.title" [sbTags]="shareText" class="google">
+                <md-icon fontSet="fa" fontIcon="fa-google"></md-icon>
+                <span>Google</span>
+            </button>
+        </div>
+    </md-card-actions>
     <md-card-actions>
         <button md-button (click)="showComments()">Comment</button>
-        <button md-button (click)="likePost(post._id)">Like</button>
-        <button md-button (click)="sharePost(post._id)">Share</button>
+        <button md-button (click)="likePost(post._id)" [ngClass]="{'liked': post.likes.indexOf(userId) > -1}">Like</button>
+        <button md-button (click)="sharePost(post._id)" [ngClass]="{'shared': share}">Share</button>
         <span class="app-filler"></span>
-        <button md-button disabled>{{likes}} likes</button>
+        <button md-button disabled>{{post.likes.length}} likes</button>
     </md-card-actions>
-    <md-card-footer *ngIf="!hideComments && post.comments?.length > 0">
+    <md-card-content *ngIf="!hideComments">
         <md-list>
-            <md-list-item *ngFor="let comment of post.comments | ifTrim:trim:max">
+            <md-list-item *ngFor="let comment of post.comments">
                 <p md-line><em><a routerLink="/user/{{comment.user?._id}}">{{comment.user?.firstName}} {{comment.user?.firstName}}</a></em></p>
                 <p md-line>{{comment?.text}}</p>
                 <p md-line>
@@ -41,20 +59,26 @@
                     <span md-button (click)="showChildren(comment._id)" *ngIf="(comment.comments?.length || 0) > 0">{{comment.comments?.length || 0}} Comments</span>
                 </p>
                 <md-list *ngIf="comment.showChildren || !trim">
-                    <md-list-item *ngFor="let subcomment of comment.comments | ifTrim:true:3">
-                        <p md-line><em><a routerLink="/user/{{subcomment.user?._id}}">{{subcomment.user?.firstName}} {{subcomment.user?.firstName}}</a></em></p>
-                        <p md-line>{{subcomment?.text}}</p>
-                        <p md-line>
+                    <md-list-item *ngFor="let subcomment of comment.comments">
+                        <p><em><a routerLink="/user/{{subcomment.user?._id}}">{{subcomment.user?.firstName}} {{subcomment.user?.firstName}}</a></em></p>
+                        <p>{{subcomment?.text}}</p>
+                        <p>
                             <span>{{subcomment?.date | date:'medium'}}</span>
                             <span class="app-filler"></span>
                             <span md-button (click)="likeSubComment(comment._id, subcomment._id)">{{subcomment.likes?.length}} Likes</span>
                         </p>
                     </md-list-item>
-                    <md-list-item>
+                    <!--<md-list-item>
                         <p md-line *ngIf="comment.comments.length > max">See more comments...</p>
-                    </md-list-item>
+                    </md-list-item>-->
                 </md-list>
             </md-list-item>
+            <md-list-item *ngIf="addComment">
+                <md-input-container class="flex-input">
+                    <input type="text" mdInput placeholder="Text" [(ngModel)]="comment.text" name="comment">
+                </md-input-container>
+                <button md-raised-button color="primary" (click)="postComment()">Comment</button>
+            </md-list-item>
         </md-list>
-    </md-card-footer>
+    </md-card-content>
 </md-card>

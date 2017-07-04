@@ -9,7 +9,6 @@ import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 
 import * as Provider from './provider.actions';
-import { HttpService } from '../../shared';
 import { Http } from '@angular/http';
 
 @Injectable()

@@ -1,0 +1,2 @@
+<el-post [post]="post | async" [userId]="userId" (newComment)="postComment($event)" (postLiked)="likePost($event)"
+    (commentLiked)="likeComment($event)" (subCommentLiked)="likeSubComment($event)"></el-post>
