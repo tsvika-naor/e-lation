@@ -5,8 +5,24 @@ var user = require('../services/user.service');
 var handleError = require('./utils');
 
 router.get('/:id', function (req, res) {
-    User.findById(req.params.id, function (err, user) {
-        if (err) handleError(res, err);
+    User.findById(req.params.id)
+        .populate([
+            { path: 'friends', select: 'firstName lastName avatar' },
+            { path: 'followers', select: 'firstName lastName avatar' },
+            {
+                path: 'posts', populate: [
+                    { path: 'user', select: 'firstName lastName avatar' },
+                    {
+                        path: 'comments', populate: [
+                            { path: 'user', select: 'firstName lastName avatar' },
+                            { path: 'comments' }
+                        ]
+                    }
+                ]
+            }
+        ])
+        .exec(function (err, user) {
+        if (err) return handleError(res, err);
 
         res.json(user);
     });
@@ -14,8 +30,23 @@ router.get('/:id', function (req, res) {
 
 router.post('/find', function (req, res) {
     User.find(req.body)
+        .populate([
+            { path: 'friends', select: 'firstName lastName avatar' },
+            { path: 'followers', select: 'firstName lastName avatar' },
+            {
+                path: 'posts', populate: [
+                    { path: 'user', select: 'firstName lastName avatar' },
+                    {
+                        path: 'comments', populate: [
+                            { path: 'user', select: 'firstName lastName avatar' },
+                            { path: 'comments' }
+                        ]
+                    }
+                ]
+            }
+        ])
         .exec(function (err, users) {
-            if (err) handleError(res, err);
+            if (err) return handleError(res, err);
 
             res.json(users);
         });
@@ -40,15 +71,17 @@ router.post('/new', function (req, res, next) {
     };
 
     User.create(req.body.user, function (err, user) {
-        if (err) handleError(res, err);
+        if (err) return handleError(res, err);
 
         req.body.user = user;
         if (!user.isProvider) {
             next();
         } else {
-            //req.body.provider.user = user._id;
-            // Create Provider
-            next();
+            req.body.provider.user = user;
+            Provider.create(req.body.provider, function (err, provider) {
+                if (err) return handleError(res, err);
+                next();
+            });
         }
     });
 }, user.getUserData, function (req, res) {
@@ -56,16 +89,32 @@ router.post('/new', function (req, res, next) {
 });
 
 router.post('/update', function (req, res) {
-    User.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }, function (err, obj) {
-        if (err) handleError(res, err);
+    User.findByIdAndUpdate(req.body._id, req.body, { new: true }, function (err, user) {
+        if (err) return handleError(res, err);
 
-        res.json(obj);
+        res.json(user);
+    });
+});
+
+router.post('/follow', function (req, res) {
+    User.findByIdAndUpdate(req.body.parent, { $addToSet: { followers: req.body.child } }, function (err, user) {
+        if (err) return handleError(res, err);
+
+        res.json(req.body.child);
+    });
+});
+
+router.post('/unfollow', function (req, res) {
+    User.findByIdAndUpdate(req.body.parent, { $pull: { followers: req.body.child } }, function (err, user) {
+        if (err) return handleError(res, err);
+
+        res.json(req.body.child);
     });
 });
 
 router.delete('/:id', function (req, res) {
     User.findByIdAndRemove(req.params._id, function (err) {
-        if (err) handleError(res, err);
+        if (err) return handleError(res, err);
 
         res.send(req.params._id);
     });

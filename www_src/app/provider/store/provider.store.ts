@@ -5,7 +5,7 @@ export interface State {
     _id: ObjectId;
     bio: String;
     rank: Number;
-    fields: Array<Field>;
+    services: Array<Service>;
     reviews: Array<Review>;
     businessAddress: Address;
     user: User;
@@ -15,7 +15,7 @@ const initialState: State = {
     _id: null,
     bio: '',
     rank: 0,
-    fields: [],
+    services: [],
     reviews: [],
     businessAddress: null,
     user: null
@@ -43,6 +43,21 @@ function reducer(state = initialState, action: Actions): State {
         case ActionTypes.L_DELETE_REVIEW: {
             return safeAction(action, state, (payload: Provider, newState) => {
                 return Object.assign(newState, { rank: payload.rank, reviews: payload.reviews });
+            });
+        }
+
+        case ActionTypes.L_FOLLOW_USER: {
+            return safeAction(action, state, (payload: User, newState) => {
+                newState.user.followers.push(payload);
+                return newState;
+            });
+        }
+
+        case ActionTypes.L_UNFOLLOW_USER: {
+            return safeAction(action, state, (payload: User, newState) => {
+                const index = newState.user.followers.findIndex(follower => follower._id === payload._id);
+                newState.user.followers.splice(index, 1);
+                return newState;
             });
         }
 

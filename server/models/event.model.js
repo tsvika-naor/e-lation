@@ -15,6 +15,7 @@ var eventSchema = new Schema({
   media: [{ mediaType: Number,
             mimeType: String,
             data: String }],
+  type: [String],
   private: { type: Boolean, default: false },
   address: { street: String,
              buildingNum: String,

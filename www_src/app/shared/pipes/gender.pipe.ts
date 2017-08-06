@@ -2,7 +2,7 @@ import { Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({name: 'gender'})
 export class GenderPipe implements PipeTransform {
-    transform(gender: Number){
+    transform(gender: Number): String {
         switch(gender) {
             case 0: {
                 return 'Male';

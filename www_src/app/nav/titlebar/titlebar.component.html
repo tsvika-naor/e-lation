@@ -3,17 +3,16 @@
       <i class="material-icons app-toolbar-menu">menu</i>
     </button>
 
-    <!--<md-icon svgIcon="e-logo"></md-icon>-->
     <img src="assets/e-logo.png" style="height: 36px; width: 36px">
     <span class="app-button" (click)="goTo('feed')">lation</span>
 
     <span class="app-filler"></span>
-    <div>
+    <div *ngIf="authenticated | async">
         <md-input-container class="app-search-bar">
             <input type="text" mdInput [formControl]="searchBar" [mdAutocomplete]="auto">
             <span mdSuffix> <md-icon fontSet="glyphicon" fontIcon="glyphicon-search"></md-icon></span>
         </md-input-container>
-        <button md-button (click)="LoginService.logout()">Logout</button>
+        <button md-button (click)="logout()">Logout</button>
     </div>
 </md-toolbar>
 

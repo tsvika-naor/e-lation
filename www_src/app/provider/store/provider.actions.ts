@@ -6,11 +6,15 @@ export const ActionTypes = {
   S_ADD_REVIEW: type('[Provider] S Add Review'),
   S_EDIT_REVIEW: type('[Provider] S Edit Review'),
   S_DELETE_REVIEW: type('[Provider] S Delete Review'),
+  S_FOLLOW_USER: type('[Provider] S Follow User'),
+  S_UNFOLLOW_USER: type('[Provider] S Unfollow User'),
 
   L_GET_PROVIDER: type('[Provider] L Get Provider'),
   L_ADD_REVIEW: type('[Provider] L Add Review'),
   L_EDIT_REVIEW: type('[Provider] L Edit Review'),
   L_DELETE_REVIEW: type('[Provider] L Delete Review'),
+  L_FOLLOW_USER: type('[Provider] L Follow User'),
+  L_UNFOLLOW_USER: type('[Provider] L Unfollow User'),
   L_NEW_POST: type('[Provider] L New Post'),
   L_LIKE_POST: type('[Provider] L Like Post'),
   L_LIKE_COMMENT: type('[Provider] L Like Comment'),
@@ -42,6 +46,18 @@ export class S_DeleteReviewAction implements Action {
   constructor(public payload: ObjectId) { }
 }
 
+export class S_FollowUserAction implements Action {
+  type = ActionTypes.S_FOLLOW_USER;
+
+  constructor(public payload: HttpPayload) { }
+}
+
+export class S_UnfollowUserAction implements Action {
+  type = ActionTypes.S_UNFOLLOW_USER;
+
+  constructor(public payload: HttpPayload) { }
+}
+
 export class L_GetProviderAction implements Action {
   type = ActionTypes.L_GET_PROVIDER;
 
@@ -64,6 +80,18 @@ export class L_DeleteReviewAction implements Action {
   type = ActionTypes.L_DELETE_REVIEW;
 
   constructor(public payload: Provider) { }
+}
+
+export class L_FollowUserAction implements Action {
+  type = ActionTypes.L_FOLLOW_USER;
+
+  constructor(public payload: User) { }
+}
+
+export class L_UnfollowUserAction implements Action {
+  type = ActionTypes.L_UNFOLLOW_USER;
+
+  constructor(public payload: User) { }
 }
 
 export class L_NewPostAction implements Action {
@@ -105,10 +133,14 @@ export type Actions =
   S_AddReviewAction   |
   S_EditReviewAction   |
   S_DeleteReviewAction   |
+  S_FollowUserAction |
+  S_UnfollowUserAction |
   L_GetProviderAction |
   L_AddReviewAction |
   L_EditReviewAction |
   L_DeleteReviewAction |
+  L_FollowUserAction |
+  L_UnfollowUserAction |
   L_NewPostAction |
   L_LikePostAction |
   L_LikeCommentAction |

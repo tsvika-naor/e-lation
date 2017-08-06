@@ -38,6 +38,10 @@ export class TitlebarComponent implements OnInit, OnDestroy {
         this.store$.dispatch(go('/' + page + (object ? '/' + object._id : '')));
     }
 
+    logout() {
+        this.store$.dispatch(go('/logout'));
+    }
+
     goToProvider(provider: Provider) {
         this.store$.dispatch(go('/provider/' + provider._id));
     }

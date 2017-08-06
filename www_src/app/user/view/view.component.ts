@@ -70,8 +70,12 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.writePost = true;
     }
 
-    follow() {
-        //
+    follow(id: ObjectId) {
+        this.store$.dispatch({type: Actions.S_FOLLOW_USER, payload: {parent: id, child: this.userId}});
+    }
+
+    unfollow(id: ObjectId) {
+        this.store$.dispatch({type: Actions.S_UNFOLLOW_USER, payload: {parent: id, child: this.userId}});
     }
 
     newPost(post: Post) {

@@ -7,6 +7,7 @@ export const ActionTypes = {
 
   L_GET_FEED: type('[Feed] L Get Feed'),
   L_GET_POST: type('[Feed] L Get Post'),
+  L_NEW_POST: type('[Feed] L New Post'),
   L_LIKE_POST: type('[Feed] L Like Post'),
   L_LIKE_COMMENT: type('[Feed] L Like Comment'),
   L_LIKE_SUBCOMMENT: type('[Feed] L Like SubComment'),
@@ -33,6 +34,12 @@ export class L_GetFeedAction implements Action {
 
 export class L_GetPostAction implements Action {
   type = ActionTypes.L_GET_POST;
+
+  constructor(public payload: Post) { }
+}
+
+export class L_NewPostAction implements Action {
+  type = ActionTypes.L_NEW_POST;
 
   constructor(public payload: Post) { }
 }
@@ -70,6 +77,7 @@ export type Actions =
   S_GetPostAction |
   L_GetFeedAction |
   L_GetPostAction |
+  L_NewPostAction |
   L_LikePostAction |
   L_LikeCommentAction |
   L_LikeSubCommentAction |

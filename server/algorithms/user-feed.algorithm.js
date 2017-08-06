@@ -1,16 +1,18 @@
+var handleError = require('../routes/utils');
 var router = require('express').Router();
-var Q = require("q");
+var Promise = require("bluebird");
 
 var Post = require('../models/post.model');
 var User = require('../models/user.model');
 var Event = require('../models/event.model');
 var Group = require('../models/group.model');
-var handleError = require('../routes/utils');
+var Provider = require('../models/provider.model');
 
 router.get('/:id', function (req, res) {
     initFeed(req.params.id)
         .spread(getByInterests)
         .spread(getByLikes)
+        .spread(getByProviders)
         .spread(getByEvents)
         .spread(getByGroups)
         .then(function (feed) {
@@ -21,81 +23,163 @@ router.get('/:id', function (req, res) {
         });
 });
 
-module.exports = router;
-
 function initFeed(userId) {
-    var deferred = Q.defer();
-    var feed = [];
+    return new Promise(function (resolve, reject) {
+        var feed = [];
 
-    //get user by id
-    User.findOne({ _id: userId }, function (err, user) {
-        if (err) deferred.reject(err);
-        deferred.resolve([user, feed]);
+        //get user by id
+        User.findById(userId, function (err, user) {
+            if (err) {
+                reject(err);
+            } else {
+                resolve([user, feed]);
+            }
+        });
     });
-
-    return deferred.promise;
 }
 
 function getByInterests(user, feed) {
-    var deferred = Q.defer();
-
-    //post by interest
-    Post.find({ tags: { "$in": user.interests } }, function (err, posts) {
-        if (err) deferred.reject(err);
-        Array.prototype.push.apply(feed, posts);
-        deferred.resolve([user, feed]);
+    return new Promise(function (resolve, reject) {
+        //post by interest
+        Post.find({ tags: { "$in": user.interests } }, function (err, posts) {
+            if (err) {
+                reject(err);
+            } else {
+                Array.prototype.push.apply(feed, posts);
+                resolve([user, feed]);
+            }
+        });
     });
-
-    return deferred.promise;
 }
 
 function getByLikes(user, feed) {
-    var deferred = Q.defer();
-
-    //post that user likes
-    Post.find({ likes: { "$in": [user._id] } }, function (err, posts) {
-        if (err) deferred.reject(err);
-        Array.prototype.push.apply(feed, posts);
-        deferred.resolve([user, feed]);
+    return new Promise(function (resolve, reject) {
+        //posts that user likes
+        Post.find({ likes: user._id }, function (err, posts) {
+            if (err) {
+                reject(err);
+            } else {
+                Array.prototype.push.apply(feed, posts);
+                resolve([user, feed]);
+            }
+        });
     });
+}
 
-    return deferred.promise;
+function getByProviders(user, feed) {
+    return new Promise(function (resolve, reject) {
+        //providers that user follows
+        Providers.find({ "user.followers": user._id })
+            .populate({
+                path: 'user', populate: {
+                    path: 'posts', populate: [
+                        { path: 'user', select: 'firstName lastName avatar' },
+                        {
+                            path: 'comments', populate: [
+                                { path: 'user', select: 'firstName lastName avatar' },
+                                { path: 'comments' }
+                            ]
+                        }
+                    ]
+                }
+            })
+            .exec(function (err, providers) {
+                if (err) {
+                    reject(err);
+                } else {
+                    providers.forEach(function (provider) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            Array.prototype.push.apply(feed, provider.user.posts);
+                        }
+                    });
+                    resolve([user, feed]);
+                }
+            });
+    });
 }
 
 function getByEvents(user, feed) {
-    var deferred = Q.defer();
+    var query = {
+        $or: [
+            { members: user._id },
+            { admins: user._id },
+            { owner: user._id },
+            { "provider.user": user._id }
+        ]
+    };
 
-    //post by event that user is in
-    Event.find({ members: { "$in": [user._id] } }, function (err, events) {
-        if (err) deferred.reject(err);
-
-        events.forEach(function (event) {
-            if (err) deferred.reject(err);
-            Array.prototype.push.apply(feed, event.posts);
-        });
-
-        deferred.resolve([user, feed]);
+    return new Promise(function (resolve, reject) {
+        //post by event that user is in
+        Event.find(query)
+            .populate({
+                path: 'posts', populate: [
+                    { path: 'user', select: 'firstName lastName avatar' },
+                    {
+                        path: 'comments', populate: [
+                            { path: 'user', select: 'firstName lastName avatar' },
+                            { path: 'comments' }
+                        ]
+                    }
+                ]
+            })
+            .exec(function (err, events) {
+                if (err) {
+                    reject(err);
+                } else {
+                    events.forEach(function (event) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            Array.prototype.push.apply(feed, event.posts);
+                        }
+                    });
+                    resolve([user, feed]);
+                }
+            });
     });
-
-    return deferred.promise;
 }
 
 function getByGroups(user, feed) {
-    var deferred = Q.defer();
+    var query = {
+        $or: [
+            { members: user._id },
+            { admins: user._id },
+            { owner: user._id },
+            { "provider.user": user._id }
+        ]
+    };
 
-    //post by group that user is in
-    Group.find({ members: { "$in": [user._id] } }, function (err, groups) {
-        if (err) deferred.reject(err);
-
-        groups.forEach(function (group) {
-            if (err) deferred.reject(err);
-            Array.prototype.push.apply(feed, group.posts);
-        });
-
-        deferred.resolve(feed);
+    return new Promise(function (resolve, reject) {
+        //post by group that user is in
+        Group.find(query)
+            .populate({
+                path: 'posts', populate: [
+                    { path: 'user', select: 'firstName lastName avatar' },
+                    {
+                        path: 'comments', populate: [
+                            { path: 'user', select: 'firstName lastName avatar' },
+                            { path: 'comments' }
+                        ]
+                    }
+                ]
+            })
+            .exec(function (err, groups) {
+                if (err) {
+                    reject(err);
+                } else {
+                    groups.forEach(function (group) {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            Array.prototype.push.apply(feed, group.posts);
+                        }
+                    });
+                    resolve([user, feed]);
+                }
+            });
     });
-
-    return deferred.promise;
 }
 
 
@@ -140,3 +224,5 @@ function dedup(arr) {
         return seen.hasOwnProperty(item._id) ? false : (seen[item._id] = true);
     });
 }
+
+module.exports = router;

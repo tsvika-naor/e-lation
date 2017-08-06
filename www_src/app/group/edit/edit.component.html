@@ -15,13 +15,13 @@
         </div>
         <div>
           <md-input-container>
-            <textarea rows="4" cols="50" mdInput placeholder="Description" [ngModel]="email | async" name="description"></textarea>
+            <textarea rows="4" cols="50" mdInput placeholder="Description" [ngModel]="description | async" name="description"></textarea>
           </md-input-container>
         </div>
         <div>
           <p>List the things the group is about in a comma seperated list</p>
           <md-input-container>
-            <textarea rows="4" cols="50" mdInput placeholder="Group Type" [ngModel]="groupType | async | spread" name="groupType"></textarea>
+            <textarea rows="4" cols="50" mdInput placeholder="Group Type" [ngModel]="type | async | spread" name="type"></textarea>
           </md-input-container>
         </div>
         <fieldset ngModelGroup="address">

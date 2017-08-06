@@ -25,6 +25,7 @@ export class EditComponent implements OnInit, OnDestroy {
     startDate: Observable<Date>;
     endDate: Observable<Date>;
     media: Observable<Array<MediaObject>>;
+    type: Observable<Array<String>>;
     private: Observable<Boolean>;
     address: Observable<Address>;
     posts: Observable<Array<Post>>;
@@ -43,8 +44,9 @@ export class EditComponent implements OnInit, OnDestroy {
         this.startDate = store$.select(state => state.event.startDate);
         this.endDate = store$.select(state => state.event.endDate);
         this.address = store$.select(state => state.event.address);
-        /*this.media = store$.select(state => state.event.media);
-        this.posts = store$.select(state => state.event.posts);*/
+        // this.media = store$.select(state => state.event.media);
+        this.type = store$.select(state => state.group.type);
+        // this.posts = store$.select(state => state.event.posts);
         this.private = store$.select(state => state.event.private);
     }
 
@@ -53,10 +55,15 @@ export class EditComponent implements OnInit, OnDestroy {
     }
 
     save(form: NgForm) {
+        const newEvent = form.value;
+        newEvent.type = (form.value.type || '').split(', ');
+
         if (this.isNew) {
-            this.store$.dispatch({ type: actions.S_NEW_EVENT, payload: form.value });
+            newEvent.owner = this.userId;
+            newEvent.admins.unshift(this.userId);
+            this.store$.dispatch({ type: actions.S_NEW_EVENT, payload: newEvent });
         } else {
-            this.store$.dispatch({ type: actions.S_EDIT_EVENT, payload: form.value });
+            this.store$.dispatch({ type: actions.S_EDIT_EVENT, payload: newEvent });
         }
     }
 

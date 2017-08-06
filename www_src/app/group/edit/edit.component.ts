@@ -22,7 +22,7 @@ export class EditComponent implements OnInit, OnDestroy {
     members: Observable<Array<User>>;*/
     name: Observable<String>;
     description: Observable<String>;
-    groupType: Observable<Array<String>>;
+    type: Observable<Array<String>>;
     address: Observable<Address>;
     // posts: Observable<Array<Post>>;
     sub: Subscription;
@@ -38,7 +38,7 @@ export class EditComponent implements OnInit, OnDestroy {
         this.address = store$.select(state => state.group.address);
         this.description = store$.select(state => state.group.description);
         // this.owner = store$.select(state => state.group.owner);
-        this.groupType = store$.select(state => state.group.groupType);
+        this.type = store$.select(state => state.group.type);
         // this.posts = store$.select(state => state.group.posts);
     }
 
@@ -48,12 +48,11 @@ export class EditComponent implements OnInit, OnDestroy {
 
     save(form: NgForm) {
         const newGroup = form.value;
-        newGroup.groupType = (form.value.groupType || '').split(', ');
-        newGroup.owner = this.userId;
-        newGroup.admins = [this.userId];
-        newGroup.members = [this.userId];
+        newGroup.type = (form.value.type || '').split(', ');
 
         if (this.isNew) {
+            newGroup.owner = this.userId;
+            newGroup.admins.unshift(this.userId);
             this.store$.dispatch({ type: actions.S_NEW_GROUP, payload: newGroup });
         } else {
             this.store$.dispatch({ type: actions.S_UPDATE_GROUP, payload: newGroup });

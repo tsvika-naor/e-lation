@@ -5,7 +5,7 @@ var handleError = require('./utils');
 
 //findOne
 router.get('/:id', function (req, res) {
-    Group.findOne({ _id: req.params.id })
+    Group.findById(req.params.id)
         .populate([
             { path: 'owner', select: 'firstName lastName avatar' },
             { path: 'admins', select: 'firstName lastName avatar' },
@@ -24,7 +24,7 @@ router.get('/:id', function (req, res) {
             }
         ])
         .exec(function (err, groups) {
-            if (err) handleError(res, err);
+            if (err) return handleError(res, err);
 
             res.json(groups);
         });
@@ -50,7 +50,7 @@ router.post('/find', function (req, res) {
             }
         ])
         .exec(function (err, groups) {
-            if (err) handleError(res, err);
+            if (err) return handleError(res, err);
 
             res.json(groups);
         });
@@ -58,105 +58,69 @@ router.post('/find', function (req, res) {
 
 router.post('/new', function (req, res) {
     Group.create(req.body, function (err, doc) {
-        if (err) handleError(res, err);
+        if (err) return handleError(res, err);
 
         res.json(doc);
     });
 });
 
 router.post('/update', function (req, res) {
-    Group.findOneAndUpdate({ _id: req.body._id }, req.body, function (err, obj) {
-        if (err) handleError(res, err);
+    Group.findByIdAndUpdate(req.body._id, req.body, function (err, obj) {
+        if (err) return handleError(res, err);
 
         res.json(obj);
     });
 });
 
 router.post('/member/add', function (req, res) {
-    Group.findOne({ _id: req.body.parent }, function (err, group) {
-        if (err) handleError(res, err);
+    Group.findByIdAndUpdate(req.body.parent, { $addToSet: { members: req.body.child } }, function (err, group) {
+        if (err) return handleError(res, err, 401);
 
-        User.findOne({ _id: req.body.child._id }, function (err, member) {
-            if (err) handleError(res, err);
-
-            group.members.addToSet(member);
-            group.save(function (err) {
-                if (err) handleError(res, err);
-
-                res.json(member);
-            });
-        });
-    });
-});
-
-router.post('/admin/add', function (req, res) {
-    Group.findOne({ _id: req.body.parent }, function (err, group) {
-        if (err) handleError(res, err);
-
-        User.findOne({ _id: req.body.child._id }, function (err, admin) {
-            if (err) handleError(res, err);
-
-            group.admins.addToSet(admin);
-            group.save(function (err) {
-                if (err) handleError(res, err);
-
-                res.json(admin);
-            });
-        });
+        res.json(req.body.child);
     });
 });
 
 router.post('/member/remove', function (req, res) {
-    Group.findOne({ _id: req.body.parent }, function (err, group) {
-        if (err) {
-            handleError(res, err);
-        } else if (group === null) {
-            handleError(res, {
-                name: "Invalid",
-                message: "The group does not exist."
-            }, 401);
-        } else {
-            User.findOne({ _id: req.body.child._id }, function (err, member) {
-                if (err) {
-                    handleError(res, err);
-                } else if (member === null) {
-                    handleError(res, {
-                        name: "Invalid",
-                        message: "The user does not exist."
-                    }, 401);
-                } else {
-                    group.members.pull(member._id);
-                    group.save(function (err) {
-                        if (err) handleError(res, err);
+    Group.findByIdAndUpdate(req.body.parent, { $pull: { members: req.body.child } }, function (err, group) {
+        if (err) return handleError(res, err, 401);
 
-                        res.json(member);
-                    });
-                }
-            });
-        }
+        res.json(req.body.child);
+    });
+});
+
+router.post('/admin/promote', function (req, res) {
+    Group.findByIdAndUpdate(req.body.parent, {
+        $addToSet: { admins: req.body.child },
+        $pull: { members: req.body.child }
+    }, function (err, group) {
+        if (err) return handleError(res, err, 401);
+
+        res.json(req.body.child);
+    });
+});
+
+router.post('/admin/revoke', function (req, res) {
+    Group.findByIdAndUpdate(req.body.parent, {
+        $pull: { admins: req.body.child },
+        $addToSet: { members: req.body.child }
+    }, function (err, group) {
+        if (err) return handleError(res, err, 401);
+
+        res.json(req.body.child);
     });
 });
 
 router.post('/admin/remove', function (req, res) {
-    Group.findOne({ _id: req.body.parent }, function (err, group) {
-        if (err) handleError(res, err);
+    Group.findByIdAndUpdate(req.body.parent, { $pull: { admins: req.body.child } }, function (err, group) {
+        if (err) return handleError(res, err, 401);
 
-        User.findOne({ _id: req.body.child._id }, function (err, admin) {
-            if (err) handleError(res, err);
-
-            group.members.pull(admin._id);
-            group.save(function (err) {
-                if (err) handleError(res, err);
-
-                res.json(admin);
-            });
-        });
+        res.json(req.body.child);
     });
 });
 
 router.delete('/:id', function (req, res) {
     Group.findByIdAndRemove(req.params._id, function (err) {
-        if (err) handleError(res, err);
+        if (err) return handleError(res, err);
 
         res.send(req.params._id);
     });

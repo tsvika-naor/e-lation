@@ -13,7 +13,10 @@
     <button md-button (click)="tab(2)" [ngClass]="{'active-tab': activeTab == 2}" *ngIf="(_id | async) === userId">Followers</button>
     <span class="app-filler"></span>
     <button md-raised-button (click)="post()" *ngIf="(_id | async) === userId" [disabled]="writePost">New Post</button>
-    <button md-raised-button (click)="follow()" *ngIf="(_id | async) !== userId" disabled>Follow</button>
+    <button md-raised-button (click)="follow(id.value)"
+      *ngIf="(_id | async) !== userId && (followers | async)?.indexOf(userId) == -1">Follow</button>
+    <button md-raised-button (click)="unfollow(id.value)"
+      *ngIf="(_id | async) !== userId && (followers | async)?.indexOf(userId) > -1">Unfollow</button>
   </md-card-actions>
 </md-card>
 <md-card *ngIf="activeTab == 0">

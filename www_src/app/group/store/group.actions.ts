@@ -3,19 +3,21 @@ import { type } from '../../shared/utils';
 
 export const ActionTypes = {
   S_GET_GROUP: type('[Group] S Get Group'),
-  S_ADD_MEMBER: type('[Group] S Add Group Member'),
-  S_ADD_ADMIN: type('[Group] S Add Group Admin'),
-  S_REMOVE_MEMBER: type('[Group] S Remove Group Member'),
-  S_REMOVE_ADMIN: type('[Group] S Remove Group Admin'),
   S_UPDATE_GROUP: type('[Group] S Update Group'),
   S_NEW_GROUP: type('[Group] S New Group'),
+  S_ADD_MEMBER: type('[Group] S Add Member'),
+  S_REMOVE_MEMBER: type('[Group] S Remove Member'),
+  S_PROMOTE_ADMIN: type('[Group] S Promote Admin'),
+  S_REVOKE_ADMIN: type('[Group] S Revoke Admin'),
+  S_REMOVE_ADMIN: type('[Group] S Remove Admin'),
 
   L_GET_GROUP: type('[Group] L Get Group'),
-  L_ADD_MEMBER: type('[Group] L Add Group Member'),
-  L_ADD_ADMIN: type('[Group] L Add Group Admin'),
-  L_REMOVE_MEMBER: type('[Group] L Remove Group Member'),
-  L_REMOVE_ADMIN: type('[Group] L Remove Group Admin'),
   L_UPDATE_GROUP: type('[Group] L Change Group Name'),
+  L_ADD_MEMBER: type('[Group] L Add Member'),
+  L_REMOVE_MEMBER: type('[Group] L Remove Member'),
+  L_PROMOTE_ADMIN: type('[Group] L Promote Admin'),
+  L_REVOKE_ADMIN: type('[Group] L Revoke Admin'),
+  L_REMOVE_ADMIN: type('[Group] L Remove Admin'),
   L_NEW_POST: type('[Group] L New Post'),
   L_LIKE_POST: type('[Group] L Like Post'),
   L_LIKE_COMMENT: type('[Group] L Like Comment'),
@@ -27,30 +29,6 @@ export class S_GetGroupAction implements Action {
   type = ActionTypes.S_GET_GROUP;
 
   constructor(public payload: ObjectId) { }
-}
-
-export class S_AddMemberAction implements Action {
-  type = ActionTypes.S_ADD_MEMBER;
-
-  constructor(public payload: HttpPayload) { }
-}
-
-export class S_AddAdminAction implements Action {
-  type = ActionTypes.S_ADD_ADMIN;
-
-  constructor(public payload: HttpPayload) { }
-}
-
-export class S_RemoveMemberAction implements Action {
-  type = ActionTypes.S_REMOVE_MEMBER;
-
-  constructor(public payload: HttpPayload) { }
-}
-
-export class S_RemoveAdminAction implements Action {
-  type = ActionTypes.S_REMOVE_ADMIN;
-
-  constructor(public payload: HttpPayload) { }
 }
 
 export class S_UpdateGroupAction implements Action {
@@ -65,6 +43,35 @@ export class S_NewGroupAction implements Action {
   constructor(public payload: Group) { }
 }
 
+export class S_AddMemberAction implements Action {
+  type = ActionTypes.S_ADD_MEMBER;
+
+  constructor(public payload: HttpPayload) { }
+}
+
+export class S_RemoveMemberAction implements Action {
+  type = ActionTypes.S_REMOVE_MEMBER;
+
+  constructor(public payload: HttpPayload) { }
+}
+
+export class S_PromoteAdminAction implements Action {
+  type = ActionTypes.S_PROMOTE_ADMIN;
+
+  constructor(public payload: HttpPayload) { }
+}
+
+export class S_RevokeAdminAction implements Action {
+  type = ActionTypes.S_REVOKE_ADMIN;
+
+  constructor(public payload: HttpPayload) { }
+}
+
+export class S_RemoveAdminAction implements Action {
+  type = ActionTypes.S_REMOVE_ADMIN;
+
+  constructor(public payload: HttpPayload) { }
+}
 
 export class L_GetGroupAction implements Action {
   type = ActionTypes.L_GET_GROUP;
@@ -78,14 +85,20 @@ export class L_AddMemberAction implements Action {
   constructor(public payload: User) { }
 }
 
-export class L_AddAdminAction implements Action {
-  type = ActionTypes.L_ADD_ADMIN;
+export class L_RemoveMemberAction implements Action {
+  type = ActionTypes.L_REMOVE_MEMBER;
 
   constructor(public payload: User) { }
 }
 
-export class L_RemoveMemberAction implements Action {
-  type = ActionTypes.L_REMOVE_MEMBER;
+export class L_PromoteAdminAction implements Action {
+  type = ActionTypes.L_PROMOTE_ADMIN;
+
+  constructor(public payload: User) { }
+}
+
+export class L_RevokeAdminAction implements Action {
+  type = ActionTypes.L_REVOKE_ADMIN;
 
   constructor(public payload: User) { }
 }
@@ -138,18 +151,20 @@ export class L_PostCommentAction implements Action {
  */
 export type Actions =
   S_GetGroupAction |
-  S_AddMemberAction |
-  S_AddAdminAction |
-  S_RemoveMemberAction |
-  S_RemoveAdminAction |
   S_UpdateGroupAction |
   S_NewGroupAction |
+  S_AddMemberAction |
+  S_RemoveMemberAction |
+  S_PromoteAdminAction |
+  S_RevokeAdminAction |
+  S_RemoveAdminAction |
   L_GetGroupAction |
-  L_AddMemberAction |
-  L_AddAdminAction |
-  L_RemoveMemberAction |
-  L_RemoveAdminAction |
   L_UpdateGroupAction |
+  L_AddMemberAction |
+  L_RemoveMemberAction |
+  L_PromoteAdminAction |
+  L_RevokeAdminAction |
+  L_RemoveAdminAction |
   L_NewPostAction |
   L_LikePostAction |
   L_LikeCommentAction |

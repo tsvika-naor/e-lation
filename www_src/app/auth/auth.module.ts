@@ -7,6 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../shared';
 import { RouterModule } from '@angular/router';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
     imports: [
@@ -22,6 +23,6 @@ import { RouterModule } from '@angular/router';
     ],
     exports: [LoginComponent, RegisterComponent],
     providers: [FacebookService, GoogleService],
-    declarations: [LoginComponent, RegisterComponent]
+    declarations: [LoginComponent, RegisterComponent, LogoutComponent]
 })
 export class AuthModule { }

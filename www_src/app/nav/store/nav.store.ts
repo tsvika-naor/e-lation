@@ -1,5 +1,6 @@
 import { Actions, ActionTypes } from './nav.actions';
 import { safeAction } from '../../shared/utils';
+import { groupReducer } from '../../group/store/group.store';
 
 export interface State {
     searchResults: SearchResult;
@@ -33,6 +34,13 @@ function reducer(state = initialState, action: Actions): State {
             });
         }
 
+        case ActionTypes.ADD_PROVIDER: {
+            return safeAction(action, state, (payload: Provider, newState) => {
+                newState.userPages.providers.push(payload);
+                return newState;
+            });
+        }
+
         case ActionTypes.ADD_GROUP: {
             return safeAction(action, state, (payload: Group, newState) => {
                 newState.userPages.groups.push(payload);
@@ -41,8 +49,32 @@ function reducer(state = initialState, action: Actions): State {
         }
 
         case ActionTypes.ADD_EVENT: {
-            return safeAction(action, state, (payload: Event, newState) => {
+            return safeAction(action, state, (payload: GeoEvent, newState) => {
                 newState.userPages.events.push(payload);
+                return newState;
+            });
+        }
+
+        case ActionTypes.REMOVE_PROVIDER: {
+            return safeAction(action, state, (payload: ObjectId, newState) => {
+                const index = newState.userPages.providers.findIndex(provider => provider._id === payload);
+                newState.userPages.providers.splice(index, 1);
+                return newState;
+            });
+        }
+
+        case ActionTypes.REMOVE_GROUP: {
+            return safeAction(action, state, (payload: ObjectId, newState) => {
+                const index = newState.userPages.groups.findIndex(group => group._id === payload);
+                newState.userPages.groups.splice(index, 1);
+                return newState;
+            });
+        }
+
+        case ActionTypes.REMOVE_EVENT: {
+            return safeAction(action, state, (payload: ObjectId, newState) => {
+                const index = newState.userPages.events.findIndex(event => event._id === payload);
+                newState.userPages.events.splice(index, 1);
                 return newState;
             });
         }

@@ -3,7 +3,7 @@ var Event = require('../models/event.model');
 
 
 router.get('/:id', function (req, res) {
-    Event.findOne({ _id: req.params.id })
+    Event.findById(req.params.id)
         .populate([
             { path: 'owner', select: 'firstName lastName avatar' },
             { path: 'admins', select: 'firstName lastName avatar' },
@@ -22,10 +22,7 @@ router.get('/:id', function (req, res) {
             }
         ])
         .exec(function (err, event) {
-            if (err) {
-                console.error(err);
-                res.status(400).send(err);
-            }
+            if (err) return handleError(res, err);
 
             res.json(event);
         });
@@ -51,126 +48,77 @@ router.post('/find', function (req, res) {
             }
         ])
         .exec(function (err, events) {
-            if (err) {
-                console.error(err);
-                res.status(400).send(err);
-            }
+            if (err) return handleError(res, err);
 
             res.json(events);
         });
 });
 
 router.post('/new', function (req, res) {
-    Event.create(req.body, function (err, doc) {
-        if (err) {
-            console.error(err);
-            res.status(400).send(err);
-        }
+    Event.create(req.body, function (err, event) {
+        if (err) return handleError(res, err);
 
-        if (!doc.isProvider) {
-            res.json(doc);
-        }
+        res.json(event);
     });
 });
 
 router.post('/update', function (req, res) {
-    Event.findOneAndUpdate({ _id: req.body._id }, req.body, function (err, obj) {
-        if (err) {
-            console.error(err);
-            res.status(400).send(err);
-        }
-        res.json(obj);
+    Event.findByIdAndUpdate(req.body._id, req.body, function (err, event) {
+        if (err) return handleError(res, err);
+
+        res.json(event);
     });
 });
 
 router.post('/member/add', function (req, res) {
-    Event.findOne({ _id: req.body.parent }, function (err, event) {
-        if (err) {
-            handleError(res, err);
-        } else if (event === null) {
-            handleError(res, {
-                name: "Invalid",
-                message: "The event does not exist."
-            }, 401);
-        } else {
-            User.findOne({ _id: req.body.child._id }, function (err, member) {
-                if (err) {
-                    handleError(res, err);
-                } else if (member === null) {
-                    handleError(res, {
-                        name: "Invalid",
-                        message: "The user does not exist."
-                    }, 401);
-                } else {
-                    event.members.addToSet(member);
-                    event.save(function (err) {
-                        if (err) handleError(res, err);
+    Event.findByIdAndUpdate(req.body.parent, { $addToSet: { members: req.body.child } }, function (err, event) {
+        if (err) return handleError(res, err, 401);
 
-                        res.json(member);
-                    });
-                }
-            });
-        }
-    });
-});
-
-router.post('/admin/add', function (req, res) {
-    Event.findOne({ _id: req.body.parent }, function (err, event) {
-        if (err) handleError(res, err);
-
-        User.findOne({ _id: req.body.child._id }, function (err, admin) {
-            if (err) handleError(res, err);
-
-            event.admins.addToSet(admin);
-            event.save(function (err) {
-                if (err) handleError(res, err);
-
-                res.json(admin);
-            });
-        });
+        res.json(req.body.child);
     });
 });
 
 router.post('/member/remove', function (req, res) {
-    Event.findOne({ _id: req.body.parent }, function (err, event) {
-        if (err) handleError(res, err);
+    Event.findByIdAndUpdate(req.body.parent, { $pull: { members: req.body.child } }, function (err, event) {
+        if (err) return handleError(res, err, 401);
 
-        User.findOne({ _id: req.body.child._id }, function (err, member) {
-            if (err) handleError(res, err);
+        res.json(req.body.child);
+    });
+});
 
-            event.members.pull(member._id);
-            event.save(function (err) {
-                if (err) handleError(res, err);
+router.post('/admin/promote', function (req, res) {
+    Event.findByIdAndUpdate(req.body.parent, {
+        $addToSet: { admins: req.body.child },
+        $pull: { members: req.body.child }
+    }, function (err, event) {
+        if (err) return handleError(res, err, 401);
 
-                res.json(member);
-            });
-        });
+        res.json(req.body.child);
+    });
+});
+
+router.post('/admin/revoke', function (req, res) {
+    Event.findByIdAndUpdate(req.body.parent, {
+        $pull: { admins: req.body.child },
+        $addToSet: { members: req.body.child }
+    }, function (err, event) {
+        if (err) return handleError(res, err, 401);
+
+        res.json(req.body.child);
     });
 });
 
 router.post('/admin/remove', function (req, res) {
-    Event.findOne({ _id: req.body.parent }, function (err, event) {
-        if (err) handleError(res, err);
+    Event.findByIdAndUpdate(req.body.parent, { $pull: { admins: req.body.child } }, function (err, event) {
+        if (err) return handleError(res, err, 401);
 
-        User.findOne({ _id: req.body.child._id }, function (err, admin) {
-            if (err) handleError(res, err);
-
-            event.admins.pull(admin._id);
-            event.save(function (err) {
-                if (err) handleError(res, err);
-
-                res.json(admin);
-            });
-        });
+        res.json(req.body.child);
     });
 });
 
 router.delete('/:id', function (req, res) {
     Event.findByIdAndRemove(req.params._id, function (err) {
-        if (err) {
-            console.error(err);
-            res.status(400).send(err);
-        }
+        if (err) return handleError(res, err);
 
         res.send(req.params._id);
     });

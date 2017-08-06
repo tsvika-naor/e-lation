@@ -19,7 +19,7 @@ router.post('/get', function (req, res) {
             }
         ])
         .exec(function (err, posts) {
-            if (err) handleError(res, err);
+            if (err) return handleError(res, err);
 
             res.json(posts);
         });
@@ -37,7 +37,7 @@ router.get('/post/:id', function (req, res) {
             }
         ])
         .exec(function (err, post) {
-            if (err) handleError(res, err);
+            if (err) return handleError(res, err);
 
             res.json(post);
         });
@@ -47,7 +47,7 @@ router.post('/post', function (req, res) {
     req.body.child.rtl = lang.isRTL(req.body.child.body);
 
     Post.create(req.body.child, function (err, post) {
-        if (err) handleError(res, err);
+        if (err) return handleError(res, err);
 
         post.populate([
             { path: 'user', select: 'firstName lastName avatar' },
@@ -62,19 +62,19 @@ router.post('/post', function (req, res) {
         if (req.body.parent !== null && typeof req.body.parent !== undefined) {
             if (req.body.type === 'event') {
                 Event.findByIdAndUpdate(req.body.parent, { $addToSet: { posts: post } }, function (err, doc) {
-                    if (err) handleError(res, err);
+                    if (err) return handleError(res, err);
 
                     res.json(post);
                 });
             } else if (req.body.type === 'group') {
                 Group.findByIdAndUpdate(req.body.parent, { $addToSet: { posts: post } }, function (err, doc) {
-                    if (err) handleError(res, err);
+                    if (err) return handleError(res, err);
 
                     res.json(post);
                 });
             } else if (req.body.type === 'user') {
                 User.findByIdAndUpdate(req.body.parent, { $addToSet: { posts: post } }, function (err, doc) {
-                    if (err) handleError(res, err);
+                    if (err) return handleError(res, err);
 
                     res.json(post);
                 });
@@ -97,7 +97,7 @@ router.post('/post/like', function (req, res) {
             }
         ])
         .exec(function (err, post) {
-            if (err) handleError(res, err);
+            if (err) return handleError(res, err);
 
             if (post.likes.indexOf(req.body.child) > -1)
                 post.likes.pull(req.body.child);
@@ -105,7 +105,7 @@ router.post('/post/like', function (req, res) {
                 post.likes.addToSet(req.body.child);
 
             post.save(function (err, doc) {
-                if (err) handleError(res, err);
+                if (err) return handleError(res, err);
 
                 res.json(doc);
             });
@@ -114,7 +114,7 @@ router.post('/post/like', function (req, res) {
 
 router.post('/comment/like', function (req, res) {
     Comment.findByIdAndUpdate(req.body.parent, { $addToSet: { likes: req.body.child } }, { new: true }, function (err, comment) {
-        if (err) handleError(res, err);
+        if (err) return handleError(res, err);
 
         res.json(comment);
     });
@@ -122,17 +122,17 @@ router.post('/comment/like', function (req, res) {
 
 router.post('/comment/post', function (req, res) {
     Comment.create(req.body, function (err, doc) {
-        if (err) handleError(res, err);
+        if (err) return handleError(res, err);
 
         if (req.body.parent === null || typeof req.body.parent === undefined) {
             Post.findByIdAndUpdate(req.body.subject, { $addToSet: { comments: doc } }, function (err, user) {
-                if (err) handleError(res, err);
+                if (err) return handleError(res, err);
 
                 res.json(doc);
             });
         } else {
             Comment.findByIdAndUpdate(req.body.parent, { $addToSet: { comments: doc } }, function (err, comment) {
-                if (err) handleError(res, err);
+                if (err) return handleError(res, err);
 
                 res.json(doc);
             });

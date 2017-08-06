@@ -10,7 +10,7 @@ var groupSchema = new Schema({
   description: String,
   avatar: { mimeType: String,
             data: String },
-  groupType: [String],
+  type: [String],
   address: { street: String,
              buildingNum: String,
              city: String,

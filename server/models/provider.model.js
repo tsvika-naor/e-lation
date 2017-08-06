@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var providerSchema = new Schema({
     bio: String,
     rank: Number,
-    fields: [{
+    services: [{
         name: String,
         description: String,
         customers: [{

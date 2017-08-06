@@ -1,0 +1,7 @@
+.logout-card {
+  width: 400px;
+  height: 200px;
+  position: absolute;
+  box-sizing: border-box;
+  top: 25%;
+}

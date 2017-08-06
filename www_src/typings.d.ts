@@ -49,7 +49,7 @@ declare type Customer = {
     confirmed: Boolean
 }
 
-declare type Field = {
+declare type Service = {
     name: String,
     description: String,
     customers: Array<Customer>
@@ -81,7 +81,7 @@ declare type Provider = {
     _id?: ObjectId,
     bio?: String,
     rank?: Number,
-    fields?: Array<Field>,
+    services?: Array<Service>,
     reviews?: Array<Review>,
     businessAddress?: Address,
     user?: User
@@ -131,7 +131,7 @@ declare type Group = {
     name?: String,
     description?: String,
     avatar?: MediaObject,
-    groupType?: Array<String>,
+    type?: Array<String>,
     address?: Address,
     posts?: Array<Post>
 }
@@ -148,6 +148,7 @@ declare type GeoEvent = {
     startDate?: Date,
     endDate?: Date,
     media?: Array<MediaObject>,
+    type?: Array<String>,
     private?: Boolean,
     address?: Address,
     posts?: Array<Post>

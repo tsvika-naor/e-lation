@@ -1,7 +1,7 @@
 <md-card>
   <md-card-header>
     <img md-card-md-image [src]="(user | async).avatar?.data">
-    <input type="hidden" #id [ngModel]="_id | async"  name="_id">
+    <input type="hidden" #id [ngModel]="_id | async" name="_id">
     <md-card-title>
       <h1>{{(user | async)?.firstName }} {{(user | async)?.lastName}}</h1>
       <md-chip-list>
@@ -18,7 +18,10 @@
     <span class="app-filler"></span>
     <button md-raised-button (click)="post()" *ngIf="(user | async)?._id === userId" [disabled]="writePost">New Post</button>
     <button md-raised-button (click)="review()" *ngIf="(user | async)?._id !== userId" [disabled]="writeReview">Write Review</button>
-    <button md-raised-button (click)="follow()" *ngIf="(user | async)?._id !== userId" disabled>Follow</button>
+    <button md-raised-button (click)="follow(id.value)"
+      *ngIf="(user | async)?._id !== userId && (user | async)?.followers.indexOf(userId) == -1">Follow</button>
+    <button md-raised-button (click)="unfollow(id.value)"
+      *ngIf="(user | async)?._id !== userId && (user | async)?.followers.indexOf(userId) > -1">Unfollow</button>
   </md-card-actions>
 </md-card>
 <md-card *ngIf="activeTab == 0">
@@ -29,10 +32,10 @@
   </md-card-header>
   <md-card-content>
     <md-list>
-      <md-list-item *ngFor="let field of fields">
-        <p md-line>{{field.name}}</p>
-        <p md-line class="line-2 multi-line" *ngIf="field.description">{{field.description}}</p>
-        <el-people-list [people]="field.customers"></el-people-list>
+      <md-list-item *ngFor="let service of services">
+        <p md-line>{{service.name}}</p>
+        <p md-line class="line-2 multi-line" *ngIf="service.description">{{service.description}}</p>
+        <el-people-list [people]="service.customers"></el-people-list>
       </md-list-item>
     </md-list>
   </md-card-content>
@@ -46,11 +49,11 @@
   <md-card-content>
     <form #form="ngForm">
       <!--<div>
-        <md-select placeholder="Service" [(ngModel)]="newReview.field" name="service">
+        <md-select placeholder="Service" [(ngModel)]="newReview.service" name="service">
           <md-option *ngFor="let service of services" [value]="service.name">{{service.name}}</md-option>
         </md-select>
       </div>-->
-      <input type="hidden" [ngModel]="_id | async"  name="providerId">
+      <input type="hidden" [ngModel]="_id | async" name="providerId">
       <div>
         <md-select placeholder="Rating" [(ngModel)]="newReview.rating" name="rating">
           <md-option value=-3>Terrible</md-option>
@@ -102,7 +105,7 @@
 <md-card *ngIf="activeTab == 1">
   <md-card-content>
     <el-post-feed [posts]="(user | async)?.posts" [userId]="userId" [show]="writePost" (newPost)="newPost($event)" (newComment)="postComment($event)"
-    (postLiked)="likePost($event)" (commentLiked)="likeComment($event)" (subCommentLiked)="likeSubComment($event)"></el-post-feed>
+      (postLiked)="likePost($event)" (commentLiked)="likeComment($event)" (subCommentLiked)="likeSubComment($event)"></el-post-feed>
   </md-card-content>
 </md-card>
 <md-card *ngIf="activeTab == 2">

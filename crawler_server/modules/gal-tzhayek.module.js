@@ -38,7 +38,8 @@ module.exports = {
                 media: [{ mediaType: 0, data: image }],
                 hyperlink: link,
                 date: dateObj,
-                body: desc
+                body: desc,
+                tags: ["relationships", "networking", "careers"]
             };
 
             if (siteData.lastDate === null || item.date > siteData.lastDate) {

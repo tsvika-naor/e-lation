@@ -53,6 +53,17 @@ function reducer(state = initialState, action: Actions): State {
             });
         }
 
+        case ActionTypes.LOGOUT: {
+            localStorage.removeItem('token');
+            localStorage.removeItem('provider');
+
+            return safeAction(action, state, (payload: any, newState) => {
+                newState.authenticated = false;
+                newState.userId = null;
+                return newState;
+            });
+        }
+
         default: {
             return state;
         }

@@ -13,10 +13,12 @@
     <button md-button (click)="tab(2)" [ngClass]="{'active-tab': activeTab == 2}">Posts</button>
     <button md-button (click)="tab(3)" [ngClass]="{'active-tab': activeTab == 3}">About</button>
     <span class="app-filler"></span>
-    <button md-raised-button *ngIf="(members | async).indexOf(userId) > -1 || (admins | async).indexOf(userId) > -1"
+    <button md-raised-button *ngIf="(members | async)?.indexOf(userId) > -1 || (admins | async)?.indexOf(userId) > -1"
       (click)="post()" [disabled]="writePost">New Post</button>
-    <button md-raised-button *ngIf="(members | async).indexOf(userId) == -1 && (admins | async).indexOf(userId) == -1"
+    <button md-raised-button *ngIf="(members | async)?.indexOf(userId) == -1 && (admins | async)?.indexOf(userId) == -1"
       (click)="join(id.value)">Join</button>
+    <button md-raised-button *ngIf="(admins | async)?.indexOf(userId) > -1" (click)="leaveAdmin(id.value)">Leave</button>
+    <button md-raised-button *ngIf="(members | async)?.indexOf(userId) > -1" (click)="leaveMember(userId, id.value)">Leave</button>
   </md-card-actions>
 </md-card>
 <md-card *ngIf="activeTab == 0">
@@ -37,7 +39,8 @@
 </md-card>
 <md-card *ngIf="activeTab == 1">
   <md-card-content>
-    <el-people-detail-list [members]="members | async" [admins]="admins | async"></el-people-detail-list>
+    <el-people-detail-list [members]="members | async" [admins]="admins | async" [userId]="userId"
+      (promote)="promoteAdmin($event, id.value)" (revoke)="revokeAdmin($event, id.value)" (remove)="leaveMember($event, id.value)"></el-people-detail-list>
   </md-card-content>
 </md-card>
 <div *ngIf="activeTab == 2">
@@ -54,7 +57,12 @@
       <b>Provider: </b>
       <a class="app-link" routerLink="/provider/{{(provider | async)?._id}}">{{(provider | async)?.user.firstName}} {{(provider | async)?.user.lastName}}</a>
     </p>
-    <br>
+    <p>
+      <b>Topics: </b>
+      <md-chip-list>
+        <md-chip *ngFor="let typeName of type | async">{{ typeName }}</md-chip>
+      </md-chip-list>
+    </p>
     <p>
       <b>Description:</b>
     </p>

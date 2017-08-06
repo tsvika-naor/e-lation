@@ -26,6 +26,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     startDate: Observable<Date>;
     endDate: Observable<Date>;
     media: Observable<Array<MediaObject>>;
+    type: Observable<Array<String>>;
     private: Observable<Boolean>;
     address: Observable<Address>;
     posts: Observable<Array<Post>>;
@@ -48,6 +49,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.endDate = store$.select(state => state.event.endDate);
         this.address = store$.select(state => state.event.address);
         this.media = store$.select(state => state.event.media);
+        this.type = store$.select(state => state.event.type);
         this.posts = store$.select(state => state.event.posts);
         this.private = store$.select(state => state.event.private);
         this.activeTab = 0;
@@ -71,8 +73,20 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.store$.dispatch({ type: Actions.S_ADD_MEMBER, payload: { parent: id, child: this.userId } });
     }
 
-    addAdmin(user: User) {
-        this.store$.dispatch({ type: Actions.S_ADD_ADMIN, payload: user });
+    leaveAdmin(id: ObjectId) {
+        this.store$.dispatch({ type: Actions.S_REMOVE_ADMIN, payload: { parent: id, child: this.userId } });
+    }
+
+    leaveMember(user: User | ObjectId, id: ObjectId) {
+        this.store$.dispatch({ type: Actions.S_REMOVE_MEMBER, payload: { parent: id, child: user } });
+    }
+
+    promoteAdmin(user: User | ObjectId, id: ObjectId) {
+        this.store$.dispatch({ type: Actions.S_PROMOTE_ADMIN, payload: { parent: id, child: user } });
+    }
+
+    revokeAdmin(user: User | ObjectId, id: ObjectId) {
+        this.store$.dispatch({ type: Actions.S_REVOKE_ADMIN, payload: { parent: id, child: user } });
     }
 
     newPost(post: Post, id: ObjectId) {

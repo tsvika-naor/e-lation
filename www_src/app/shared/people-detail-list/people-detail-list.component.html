@@ -1,17 +1,23 @@
 <md-list>
     <h3 md-subheader>Admins</h3>
     <md-list-item *ngFor="let admin of admins" (click)="navigate(admin._id)">
-        <img md-list-avatar *ngIf="admin?.avatar" [src]="admin?.avatar?.data" alt="{{admin?.firstName}} {{admin?.lastName}}">
+        <img md-list-avatar *ngIf="admin.avatar" [src]="admin.avatar?.data" alt="{{admin.firstName}} {{admin.lastName}}">
         <md-icon md-list-icon class="avatar-icon" *ngIf="!(admin?.avatar)">person</md-icon>
-        <p md-line>{{admin?.firstName}} {{admin?.lastName}}</p>
+        <p md-line>{{admin.firstName}} {{admin.lastName}}</p>
+        <button md-raised-button *ngIf="(admins | async).indexOf(userId) > -1 && (admins | async).length > 1"
+            (click)="revokeAdmin(admin._id)">Revoke Admin</button>
         <div class="app-list-item-focus-overlay"></div>
     </md-list-item>
     <md-divider></md-divider>
     <h3 md-subheader>Members</h3>
     <md-list-item *ngFor="let member of members" (click)="navigate(member._id)">
-        <img md-list-avatar *ngIf="member?.avatar" [src]="member?.avatar?.data" alt="{{member?.firstName}} {{member?.lastName}}">
-        <md-icon md-list-icon class="avatar-icon" *ngIf="!(member?.avatar)">person</md-icon>
-        <p md-line>{{member?.firstName}} {{member?.lastName}}</p>
+        <img md-list-avatar *ngIf="member.avatar" [src]="member.avatar?.data" alt="{{member.firstName}} {{member.lastName}}">
+        <md-icon md-list-icon class="avatar-icon" *ngIf="!(member.avatar)">person</md-icon>
+        <p md-line>{{member.firstName}} {{member.lastName}}</p>
+        <button md-raised-button *ngIf="(admins | async).indexOf(userId) > -1"
+            (click)="promoteAdmin(member._id)">Promote Admin</button>
+        <button md-raised-button color="warn" *ngIf="(admins | async).indexOf(userId) > -1"
+            (click)="removeMember(member._id)">Remove Member</button>
         <div class="app-list-item-focus-overlay"></div>
     </md-list-item>
 </md-list>

@@ -21,7 +21,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     rank: Observable<Number>;
     businessAddress: Observable<Address>;
     reviews: Observable<Array<Review>>;
-    fields: Observable<Array<Field>>;
+    services: Observable<Array<Service>>;
     user: Observable<User>;
     userId: ObjectId;
     sub: Subscription;
@@ -36,7 +36,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.rank = store$.select(state => state.provider.rank);
         this.businessAddress = store$.select(state => state.provider.businessAddress);
         this.reviews = store$.select(state => state.provider.reviews);
-        this.fields = store$.select(state => state.provider.fields);
+        this.services = store$.select(state => state.provider.services);
         this.user = store$.select(state => state.provider.user);
         this.activeTab = 0;
         this.writeReview = false;
@@ -66,8 +66,12 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.writePost = true;
     }
 
-    follow() {
-        //
+    follow(id: ObjectId) {
+        this.store$.dispatch({type: Actions.S_FOLLOW_USER, payload: {parent: id, child: this.userId}});
+    }
+
+    unfollow(id: ObjectId) {
+        this.store$.dispatch({type: Actions.S_UNFOLLOW_USER, payload: {parent: id, child: this.userId}});
     }
 
     submitReview(form: NgForm) {

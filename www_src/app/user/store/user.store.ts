@@ -1,5 +1,4 @@
 import { Actions, ActionTypes } from './user.actions';
-import { ActionTypes as authActions } from '../../auth';
 import { safeAction } from '../../shared/utils';
 
 
@@ -51,6 +50,21 @@ function reducer(state = initialState, action: Actions): State {
         case ActionTypes.L_USER_UPDATE: {
             return safeAction(action, state, (payload: User, newState) => {
                 return Object.assign(newState, payload);
+            });
+        }
+
+        case ActionTypes.L_FOLLOW_USER: {
+            return safeAction(action, state, (payload: User, newState) => {
+                newState.followers.push(payload);
+                return newState;
+            });
+        }
+
+        case ActionTypes.L_UNFOLLOW_USER: {
+            return safeAction(action, state, (payload: User, newState) => {
+                const index = newState.followers.findIndex(follower => follower._id === payload._id);
+                newState.followers.splice(index, 1);
+                return newState;
             });
         }
 

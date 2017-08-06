@@ -23,7 +23,7 @@ export class ViewComponent implements OnInit, OnDestroy {
     name: Observable<String>;
     avatar: Observable<MediaObject>;
     description: Observable<String>;
-    groupType: Observable<Array<String>>;
+    type: Observable<Array<String>>;
     address: Observable<Address>;
     posts: Observable<Array<Post>>;
     userId: ObjectId;
@@ -41,7 +41,7 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.avatar = store$.select(state => state.event.avatar);
         this.description = store$.select(state => state.group.description);
         this.owner = store$.select(state => state.group.owner);
-        this.groupType = store$.select(state => state.group.groupType);
+        this.type = store$.select(state => state.group.type);
         this.posts = store$.select(state => state.group.posts);
         this.activeTab = 0;
         this.writePost = false;
@@ -62,6 +62,22 @@ export class ViewComponent implements OnInit, OnDestroy {
 
     join(id: ObjectId) {
         this.store$.dispatch({ type: Actions.S_ADD_MEMBER, payload: { parent: id, child: this.userId } });
+    }
+
+    leaveAdmin(id: ObjectId) {
+        this.store$.dispatch({ type: Actions.S_REMOVE_ADMIN, payload: { parent: id, child: this.userId } });
+    }
+
+    leaveMember(user: User | ObjectId, id: ObjectId) {
+        this.store$.dispatch({ type: Actions.S_REMOVE_MEMBER, payload: { parent: id, child: user } });
+    }
+
+    promoteAdmin(user: User | ObjectId, id: ObjectId) {
+        this.store$.dispatch({ type: Actions.S_PROMOTE_ADMIN, payload: { parent: id, child: user } });
+    }
+
+    revokeAdmin(user: User | ObjectId, id: ObjectId) {
+        this.store$.dispatch({ type: Actions.S_REVOKE_ADMIN, payload: { parent: id, child: user } });
     }
 
     newPost(post: Post, id: ObjectId) {

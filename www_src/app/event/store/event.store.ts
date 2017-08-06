@@ -13,6 +13,7 @@ export interface State {
   startDate: Date;
   endDate: Date;
   media: Array<MediaObject>;
+  type: Array<String>;
   private: Boolean;
   address: Address;
   posts: Array<Post>;
@@ -33,6 +34,7 @@ const initialState: State = {
   startDate: null,
   endDate: null,
   media: [],
+  type: [],
   private: false,
   address: null,
   posts: []
@@ -46,16 +48,15 @@ function reducer(state = initialState, action: Actions): State {
       });
     }
 
-    case ActionTypes.L_ADD_MEMBER: {
-      return safeAction(action, state, (payload: User, newState) => {
-        newState.members.push(payload);
-        return newState;
+    case ActionTypes.L_EDIT_EVENT: {
+      return safeAction(action, state, (payload: GeoEvent, newState) => {
+        return Object.assign(newState, payload);
       });
     }
 
-    case ActionTypes.L_ADD_ADMIN: {
+    case ActionTypes.L_ADD_MEMBER: {
       return safeAction(action, state, (payload: User, newState) => {
-        newState.admins.push(payload);
+        newState.members.push(payload);
         return newState;
       });
     }
@@ -68,17 +69,29 @@ function reducer(state = initialState, action: Actions): State {
       });
     }
 
-    case ActionTypes.L_REMOVE_ADMIN: {
+    case ActionTypes.L_PROMOTE_ADMIN: {
       return safeAction(action, state, (payload: User, newState) => {
-        const index = newState.admins.findIndex(admin => admin._id === payload);
-        newState.admins.splice(index, 1);
+        const index = newState.members.findIndex(member => member._id === payload._id);
+        newState.members.splice(index, 1);
+        newState.admins.push(payload);
         return newState;
       });
     }
 
-    case ActionTypes.L_EDIT_EVENT: {
-      return safeAction(action, state, (payload: GeoEvent, newState) => {
-        return Object.assign(newState, payload);
+    case ActionTypes.L_REVOKE_ADMIN: {
+      return safeAction(action, state, (payload: User, newState) => {
+        const index = newState.admins.findIndex(admin => admin._id === payload._id);
+        newState.admins.splice(index, 1);
+        newState.members.push(payload);
+        return newState;
+      });
+    }
+
+    case ActionTypes.L_REMOVE_ADMIN: {
+      return safeAction(action, state, (payload: User, newState) => {
+        const index = newState.admins.findIndex(admin => admin._id === payload._id);
+        newState.admins.splice(index, 1);
+        return newState;
       });
     }
 

@@ -9,7 +9,7 @@ import {
 import { Http, RequestOptions } from '@angular/http';
 import { ShareButtonsModule } from 'ngx-sharebuttons';
 
-import { IfTrimPipe, AddressPipe, GenderPipe, DateOnlyPipe } from './pipes';
+import { IfTrimPipe, AddressPipe, GenderPipe, DateOnlyPipe, SpreadPipe } from './pipes';
 import { FeedService } from './providers';
 import { PostComponent } from './post/post.component';
 import { NewPostComponent } from './new-post/new-post.component';
@@ -31,10 +31,10 @@ import { PeopleDetailListComponent } from './people-detail-list/people-detail-li
         MdCheckboxModule,
         ShareButtonsModule.forRoot()
     ],
-    exports: [PostComponent, PeopleListComponent, IfTrimPipe, AddressPipe, GenderPipe,
+    exports: [PostComponent, PeopleListComponent, IfTrimPipe, AddressPipe, GenderPipe, SpreadPipe,
         DateOnlyPipe, NewPostComponent, PeopleDetailListComponent, PostFeedComponent],
     providers: [FeedService],
-    declarations: [PostComponent, PeopleListComponent, IfTrimPipe, AddressPipe, GenderPipe,
+    declarations: [PostComponent, PeopleListComponent, IfTrimPipe, AddressPipe, GenderPipe, SpreadPipe,
         DateOnlyPipe, NewPostComponent, PeopleDetailListComponent, PostFeedComponent]
 })
 export class SharedModule { }

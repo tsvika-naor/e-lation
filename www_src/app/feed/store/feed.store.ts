@@ -28,44 +28,74 @@ function reducer(state = initialState, action: Actions): State {
             });
         }
 
+        case ActionTypes.L_NEW_POST: {
+            return safeAction(action, state, (payload: Post, newState) => {
+                newState.posts.unshift(payload);
+                return newState;
+            });
+        }
+
         case ActionTypes.L_LIKE_POST: {
             return safeAction(action, state, (payload: Post, newState) => {
-                const index = newState.posts.findIndex(post => post._id === payload._id);
-                newState.posts[index].likes = payload.likes.slice();
+                if (state.post._id === payload._id) {
+                    newState.post.likes = payload.likes.slice();
+                } else {
+                    const index = newState.posts.findIndex(post => post._id === payload._id);
+                    newState.posts[index].likes = payload.likes.slice();
+                }
                 return newState;
             });
         }
 
         case ActionTypes.L_LIKE_COMMENT: {
             return safeAction(action, state, (payload: UserComment, newState) => {
-                const postIndex = newState.posts.findIndex(post => post._id === payload.subject);
-                const commentIndex = newState.posts[postIndex].comments.findIndex(comment => comment._id === payload._id);
-                newState.posts[postIndex].comments[commentIndex].likes = payload.likes.slice();
+                if (state.post._id === payload.subject) {
+
+                } else {
+                    const postIndex = newState.posts.findIndex(post => post._id === payload.subject);
+                    const commentIndex = newState.posts[postIndex].comments.findIndex(comment => comment._id === payload._id);
+                    newState.posts[postIndex].comments[commentIndex].likes = payload.likes.slice();
+                }
                 return newState;
             });
         }
 
         case ActionTypes.L_LIKE_SUBCOMMENT: {
             return safeAction(action, state, (payload: UserComment, newState) => {
-                const postIndex = newState.posts.findIndex(post => post._id === payload.subject);
-                const commentIndex = newState.posts[postIndex].comments.findIndex(comment => comment._id === payload.parent);
-                const subCommentIndex = newState.posts[postIndex]
-                    .comments[commentIndex].comments.findIndex(comment => comment._id === payload._id);
-                newState.posts[postIndex].comments[commentIndex].comments[subCommentIndex].likes = payload.likes.slice();
+                if (state.post._id === payload.subject) {
+                    const commentIndex = newState.post.comments.findIndex(comment => comment._id === payload.parent);
+                    const subCommentIndex = newState.post.comments[commentIndex].comments
+                        .findIndex(comment => comment._id === payload._id);
+                    newState.post.comments[commentIndex].comments[subCommentIndex].likes = payload.likes.slice();
+                } else {
+                    const postIndex = newState.posts.findIndex(post => post._id === payload.subject);
+                    const commentIndex = newState.posts[postIndex].comments.findIndex(comment => comment._id === payload.parent);
+                    const subCommentIndex = newState.posts[postIndex].comments[commentIndex].comments
+                        .findIndex(comment => comment._id === payload._id);
+                    newState.posts[postIndex].comments[commentIndex].comments[subCommentIndex].likes = payload.likes.slice();
+                }
                 return newState;
             });
         }
 
         case ActionTypes.L_POST_COMMENT: {
             return safeAction(action, state, (payload: UserComment, newState) => {
-                const postIndex = newState.posts.findIndex(post => post._id === payload.subject);
-                if (payload.parent === null || typeof payload.parent === 'undefined') {
-                    newState.posts[postIndex].comments.push(payload);
+                if (state.post._id === payload.subject) {
+                    if (payload.parent === null || typeof payload.parent === 'undefined') {
+                        newState.post.comments.push(payload);
+                    } else {
+                        const commentIndex = newState.post.comments.findIndex(comment => comment._id === payload.parent);
+                        newState.post.comments[commentIndex].comments.push(payload);
+                    }
                 } else {
-                    const commentIndex = newState.posts[postIndex].comments.findIndex(comment => comment._id === payload.parent);
-                    newState.posts[postIndex].comments[commentIndex].comments.push(payload);
+                    const postIndex = newState.posts.findIndex(post => post._id === payload.subject);
+                    if (payload.parent === null || typeof payload.parent === 'undefined') {
+                        newState.posts[postIndex].comments.push(payload);
+                    } else {
+                        const commentIndex = newState.posts[postIndex].comments.findIndex(comment => comment._id === payload.parent);
+                        newState.posts[postIndex].comments[commentIndex].comments.push(payload);
+                    }
                 }
-
                 return newState;
             });
         }

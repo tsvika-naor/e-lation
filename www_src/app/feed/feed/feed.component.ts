@@ -25,7 +25,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     }
 
     newPost(post: Post) {
-        this.feedService.newPost(Actions.S_GET_FEED, post);
+        this.feedService.newPost(Actions.L_NEW_POST, post);
     }
 
     likePost(id: ObjectId) {

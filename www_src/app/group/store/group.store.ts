@@ -10,7 +10,7 @@ export interface State {
   name: String;
   description: String;
   avatar: MediaObject;
-  groupType: Array<String>;
+  type: Array<String>;
   address: Address;
   posts: Array<Post>;
 };
@@ -27,7 +27,7 @@ const initialState: State = {
     mimeType: null,
     data: null
   },
-  groupType: [],
+  type: [],
   address: null,
   posts: []
 };
@@ -38,6 +38,10 @@ function reducer(state = initialState, action: Actions): State {
       return action.payload;
     }
 
+    case ActionTypes.L_UPDATE_GROUP: {
+      return action.payload;
+    }
+
     case ActionTypes.L_ADD_MEMBER: {
       return safeAction(action, state, (payload: User, newState) => {
         newState.members.push(payload);
@@ -45,31 +49,38 @@ function reducer(state = initialState, action: Actions): State {
       });
     }
 
-    case ActionTypes.L_ADD_ADMIN: {
+    case ActionTypes.L_REMOVE_MEMBER: {
       return safeAction(action, state, (payload: User, newState) => {
+        const index = newState.members.findIndex(member => member._id === payload._id);
+        newState.members.splice(index, 1);
+        return newState;
+      });
+    }
+
+    case ActionTypes.L_PROMOTE_ADMIN: {
+      return safeAction(action, state, (payload: User, newState) => {
+        const index = newState.members.findIndex(member => member._id === payload._id);
+        newState.members.splice(index, 1);
         newState.admins.push(payload);
         return newState;
       });
     }
 
-    case ActionTypes.L_REMOVE_MEMBER: {
+    case ActionTypes.L_REVOKE_ADMIN: {
       return safeAction(action, state, (payload: User, newState) => {
-        const index = newState.members.findIndex(member => member._id === payload);
-        newState.members.splice(index, 1);
+        const index = newState.admins.findIndex(admin => admin._id === payload._id);
+        newState.admins.splice(index, 1);
+        newState.members.push(payload);
         return newState;
       });
     }
 
     case ActionTypes.L_REMOVE_ADMIN: {
       return safeAction(action, state, (payload: User, newState) => {
-        const index = newState.admins.findIndex(admin => admin._id === payload);
+        const index = newState.admins.findIndex(admin => admin._id === payload._id);
         newState.admins.splice(index, 1);
         return newState;
       });
-    }
-
-    case ActionTypes.L_UPDATE_GROUP: {
-      return action.payload;
     }
 
     case ActionTypes.L_NEW_POST: {
@@ -116,7 +127,6 @@ function reducer(state = initialState, action: Actions): State {
           const commentIndex = newState.posts[postIndex].comments.findIndex(comment => comment._id === payload.parent);
           newState.posts[postIndex].comments[commentIndex].comments.push(payload);
         }
-
         return newState;
       });
     }
