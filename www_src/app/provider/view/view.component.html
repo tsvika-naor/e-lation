@@ -1,6 +1,6 @@
 <md-card>
   <md-card-header>
-    <img md-card-md-image [src]="(user | async).avatar?.data">
+    <img md-card-md-image [src]="(user | async)?.avatar?.data">
     <input type="hidden" #id [ngModel]="_id | async" name="_id">
     <md-card-title>
       <h1>{{(user | async)?.firstName }} {{(user | async)?.lastName}}</h1>
@@ -10,7 +10,7 @@
       <button md-icon-button (click)="edit(id.value)" disabled><md-icon>mode_edit</md-icon></button>
     </md-card-title>
   </md-card-header>
-  <md-card-actions>
+  <md-card-actions class="app-action-bar">
     <button md-button (click)="tab(0)" [ngClass]="{'active-tab': activeTab == 0}">Services</button>
     <button md-button (click)="tab(1)" [ngClass]="{'active-tab': activeTab == 1}">Posts</button>
     <button md-button (click)="tab(2)" [ngClass]="{'active-tab': activeTab == 2}">About</button>
@@ -18,10 +18,8 @@
     <span class="app-filler"></span>
     <button md-raised-button (click)="post()" *ngIf="(user | async)?._id === userId" [disabled]="writePost">New Post</button>
     <button md-raised-button (click)="review()" *ngIf="(user | async)?._id !== userId" [disabled]="writeReview">Write Review</button>
-    <button md-raised-button (click)="follow(id.value)"
-      *ngIf="(user | async)?._id !== userId && (user | async)?.followers.indexOf(userId) == -1">Follow</button>
-    <button md-raised-button (click)="unfollow(id.value)"
-      *ngIf="(user | async)?._id !== userId && (user | async)?.followers.indexOf(userId) > -1">Unfollow</button>
+    <button md-raised-button (click)="follow(id.value)" *ngIf="(user | async)?._id !== userId && (user | async)?.followers.indexOf(userId) == -1">Follow</button>
+    <button md-raised-button (click)="unfollow(id.value)" *ngIf="(user | async)?._id !== userId && (user | async)?.followers.indexOf(userId) > -1">Unfollow</button>
   </md-card-actions>
 </md-card>
 <md-card *ngIf="activeTab == 0">
@@ -32,7 +30,7 @@
   </md-card-header>
   <md-card-content>
     <md-list>
-      <md-list-item *ngFor="let service of services">
+      <md-list-item *ngFor="let service of services | async" class="divided-list">
         <p md-line>{{service.name}}</p>
         <p md-line class="line-2 multi-line" *ngIf="service.description">{{service.description}}</p>
         <el-people-list [people]="service.customers"></el-people-list>
@@ -48,13 +46,8 @@
   </md-card-header>
   <md-card-content>
     <form #form="ngForm">
-      <!--<div>
-        <md-select placeholder="Service" [(ngModel)]="newReview.service" name="service">
-          <md-option *ngFor="let service of services" [value]="service.name">{{service.name}}</md-option>
-        </md-select>
-      </div>-->
       <input type="hidden" [ngModel]="_id | async" name="providerId">
-      <div>
+      <div [ngClass]="{'input-has-value': newReview.rating}">
         <md-select placeholder="Rating" [(ngModel)]="newReview.rating" name="rating">
           <md-option value=-3>Terrible</md-option>
           <md-option value=-2>Very Bad</md-option>
@@ -65,7 +58,7 @@
           <md-option value=3>Excellent</md-option>
         </md-select>
       </div>
-      <div>
+      <div [ngClass]="{'input-has-value': newReview.text !== ''}">
         <md-input-container class="wide">
           <textarea mdInput placeholder="Text" [(ngModel)]="newReview.text" name="text"></textarea>
         </md-input-container>
@@ -102,10 +95,15 @@
     </md-list>
   </md-card-content>
 </md-card>
-<md-card *ngIf="activeTab == 1">
+<div *ngIf="activeTab == 1">
+  <el-post-feed [posts]="(user | async)?.posts" [userId]="userId" [show]="writePost" (newPost)="newPost($event)" (newComment)="postComment($event)"
+    (postLiked)="likePost($event)" (commentLiked)="likeComment($event)" (subCommentLiked)="likeSubComment($event)"></el-post-feed>
+</div>
+<md-card *ngIf="activeTab == 1 && (user | async)?.posts.length == 0">
   <md-card-content>
-    <el-post-feed [posts]="(user | async)?.posts" [userId]="userId" [show]="writePost" (newPost)="newPost($event)" (newComment)="postComment($event)"
-      (postLiked)="likePost($event)" (commentLiked)="likeComment($event)" (subCommentLiked)="likeSubComment($event)"></el-post-feed>
+    <div class="no-feed-msg">
+      <h3>No Posts Yet!</h3>
+    </div>
   </md-card-content>
 </md-card>
 <md-card *ngIf="activeTab == 2">
@@ -137,6 +135,9 @@
         <md-icon md-list-icon class="avatar-icon" *ngIf="!(person?.avatar)">person</md-icon>
         <p md-line>{{person?.firstName}} {{person?.lastName}}</p>
         <div class="app-list-item-focus-overlay"></div>
+      </md-list-item>
+      <md-list-item>
+        <p md-line>No Followers</p>
       </md-list-item>
     </md-list>
   </md-card-content>

@@ -8,7 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppStoreModule } from './app-store.module';
 import { AppComponent } from './app.component';
 
-import { SharedModule } from './shared';
+import { SharedModule, FeedService } from './shared';
 import { AuthModule } from './auth';
 import { EventModule } from './event';
 import { FeedModule } from './feed';
@@ -49,7 +49,8 @@ const googId = '142084885382-lr0fajuthv25m2oc98107ete22lqe5h2';
     ],
     providers: [
         { provide: GOOG_ID, useValue: googId },
-        { provide: INIT_PARAMS, useValue: fbParams }
+        { provide: INIT_PARAMS, useValue: fbParams },
+        FeedService
     ],
     bootstrap: [AppComponent]
 })

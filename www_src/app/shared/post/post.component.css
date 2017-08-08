@@ -38,6 +38,10 @@ a.app-hypercard-wrapper {
   background-color: rgb(231,223,244);
 }
 
+.app-tags {
+  margin-bottom: 8px;
+}
+
 .shared {
   background-color: rgb(231,223,244);
 }

@@ -16,10 +16,10 @@
         </div>
         <div>
           <md-input-container>
-            <input type="date" mdInput placeholder="Start Time" [ngModel]="startDate | async | dateOnly" name="startDate">
+            <input type="datetime-local" mdInput placeholder="Start Time" [ngModel]="startDate | async | dateOnly" name="startDate">
           </md-input-container>
           <md-input-container>
-            <input type="date" mdInput placeholder="End Time" [ngModel]="endDate | async | dateOnly" name="endDate">
+            <input type="datetime-local" mdInput placeholder="End Time" [ngModel]="endDate | async | dateOnly" name="endDate">
           </md-input-container>
         </div>
         <div>

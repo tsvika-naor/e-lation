@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { FeedService } from '../../shared/providers';
+import { FeedService } from '../../shared/providers/feed/feed.service';
 import { ActionTypes as Actions } from '../store';
 import { State } from '../../app-store.state';
 
@@ -39,7 +39,6 @@ export class ViewComponent implements OnInit, OnDestroy {
         this.services = store$.select(state => state.provider.services);
         this.user = store$.select(state => state.provider.user);
         this.activeTab = 0;
-        this.writeReview = false;
         this.writePost = false;
         this.initReview();
     }
@@ -89,8 +88,9 @@ export class ViewComponent implements OnInit, OnDestroy {
             user: this.userId,
             text: '',
             date: null,
-            rating: 0
+            rating: null
         };
+        this.writeReview = false;
     }
 
     newPost(post: Post) {

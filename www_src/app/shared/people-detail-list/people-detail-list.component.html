@@ -4,7 +4,7 @@
         <img md-list-avatar *ngIf="admin.avatar" [src]="admin.avatar?.data" alt="{{admin.firstName}} {{admin.lastName}}">
         <md-icon md-list-icon class="avatar-icon" *ngIf="!(admin?.avatar)">person</md-icon>
         <p md-line>{{admin.firstName}} {{admin.lastName}}</p>
-        <button md-raised-button *ngIf="(admins | async).indexOf(userId) > -1 && (admins | async).length > 1"
+        <button md-raised-button *ngIf="admins.indexOf(userId) > -1 && admins.length > 1"
             (click)="revokeAdmin(admin._id)">Revoke Admin</button>
         <div class="app-list-item-focus-overlay"></div>
     </md-list-item>
@@ -14,9 +14,9 @@
         <img md-list-avatar *ngIf="member.avatar" [src]="member.avatar?.data" alt="{{member.firstName}} {{member.lastName}}">
         <md-icon md-list-icon class="avatar-icon" *ngIf="!(member.avatar)">person</md-icon>
         <p md-line>{{member.firstName}} {{member.lastName}}</p>
-        <button md-raised-button *ngIf="(admins | async).indexOf(userId) > -1"
+        <button md-raised-button *ngIf="admins.indexOf(userId) > -1"
             (click)="promoteAdmin(member._id)">Promote Admin</button>
-        <button md-raised-button color="warn" *ngIf="(admins | async).indexOf(userId) > -1"
+        <button md-raised-button color="warn" *ngIf="admins.indexOf(userId) > -1"
             (click)="removeMember(member._id)">Remove Member</button>
         <div class="app-list-item-focus-overlay"></div>
     </md-list-item>

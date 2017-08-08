@@ -59,21 +59,32 @@ module.exports = {
         var userData = {
             user: req.body.user,
             links: {
-                userLinks: [
-                    { _id: req.body.user._id, type: 'user', name: 'Profile' }
-                ],
+                userLinks: [],
                 providers: [],
                 groups: [],
                 events: []
             }
         };
 
-        getProviderId(userData)
+        getProfile(userData)
             .then(getProviders)
             .then(getGroups)
             .then(getEvents)
             .then(function (data) {
                 delete data.user.providerId;
+                data.links.providers.push({
+                    _id: "590f477cf36d281fc3b97434",
+                    user: {
+                        _id: "588dabd60e4ae2358cb66265",
+                        firstName: 'Taylor',
+                        lastName: 'Macdonald',
+                        avatar:
+                        {
+                            mimeType: 'image/jpeg',
+                            data: 'http://nebula.wsimg.com/222df23097c95c0a6b1abf48bd9be74d?AccessKeyId=327003D5C8AD17B66399&disposition=0&alloworigin=1'
+                        }
+                    }
+                });
                 req.body.userData = data;
                 next();
             })
@@ -83,10 +94,11 @@ module.exports = {
     }
 };
 
-function getProviderId(data) {
+function getProfile(data) {
     return new Promise(function (resolve, reject) {
         // Skip the query if user is not a Provider
         if (!data.user.isProvider) {
+            data.links.userLinks.push({ _id: data.user._id, type: 'user', name: 'Profile' });
             resolve(data);
         } else {
             // User's Provider page
@@ -100,7 +112,7 @@ function getProviderId(data) {
                     });
                 } else {
                     data.user.providerId = provider._id;
-                    data.links.userLinks.push({ _id: provider._id, type: 'provider', name: 'Provider Page' });
+                    data.links.userLinks.push({ _id: provider._id, type: 'provider', name: 'Profile' });
                     resolve(data);
                 }
             });
@@ -110,13 +122,15 @@ function getProviderId(data) {
 
 function getProviders(data) {
     return new Promise(function (resolve, reject) {
-        // Providers that user is a customer of
-        Provider.find({ 'fields.customers': { "$in": [data.user._id] } })
-            .populate({ path: 'user', select: '_id firstName lastName' })
+        // Providers that user is a follower of
+        Provider.find({ 'user.followers': data.user._id })
+            .populate({ path: 'user', select: '_id firstName lastName avatar followers' })
             .exec(function (err, providers) {
                 if (err) {
                     reject(err);
                 } else {
+                    console.log(data.user._id);
+                    console.log(providers);
                     data.links.providers = providers;
                     resolve(data);
                 }

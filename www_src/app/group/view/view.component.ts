@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 
-import { FeedService } from '../../shared/providers';
+import { FeedService } from '../../shared/providers/feed/feed.service';
 import { ActionTypes as Actions } from '../store';
 import { State } from '../../app-store.state';
 

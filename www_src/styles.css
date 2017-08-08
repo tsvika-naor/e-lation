@@ -110,6 +110,10 @@ fieldset {
   right: 20px;
 }
 
+.app-action-bar {
+  margin-top: 8px;
+}
+
 .app-spinner {
   height: 30px;
   width: 30px;
@@ -146,6 +150,18 @@ fieldset {
 .app-progress {
   margin: 20px;
 }
+
+a.user-link {
+  text-decoration: none;
+  color: #673AB7;
+}
+
+ .no-feed-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #673AB7;
+ }
 
 .mat-card-title {
     display: flex!important;
@@ -225,10 +241,14 @@ fieldset {
   padding-top: 3px!important;
 }
 
-md-raised-button:not(.mat-primary),
-md-raised-button:not(.mat-accent),
-md-raised-button:not(.mat-warn) {
-  background-color: rgb(231,223,244);
+.mat-raised-button:hover .mat-button-focus-overlay {
+  opacity: 1;
+}
+
+.mat-raised-button:not(.mat-primary),
+.mat-raised-button:not(.mat-accent),
+.mat-raised-button:not(.mat-warn) {
+  background-color: rgb(240,237,244);
   color: #673AB7;
 }
 

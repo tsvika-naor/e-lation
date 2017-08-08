@@ -7,7 +7,7 @@
       <button md-icon-button (click)="edit(id.value)"><md-icon>mode_edit</md-icon></button>
     </md-card-title>
   </md-card-header>
-  <md-card-actions>
+  <md-card-actions class="app-action-bar">
     <button md-button (click)="tab(0)" [ngClass]="{'active-tab': activeTab == 0}">Details</button>
     <button md-button (click)="tab(1)" [ngClass]="{'active-tab': activeTab == 1}">Members</button>
     <button md-button (click)="tab(2)" [ngClass]="{'active-tab': activeTab == 2}">Posts</button>
@@ -47,6 +47,13 @@
   <el-post-feed [posts]="posts | async" [userId]="userId" [show]="writePost" (newPost)="newPost($event)" (newComment)="postComment($event)"
     (postLiked)="likePost($event)" (commentLiked)="likeComment($event)" (subCommentLiked)="likeSubComment($event)"></el-post-feed>
 </div>
+<md-card *ngIf="activeTab == 2 && (posts | async)?.length == 0">
+  <md-card-content>
+    <div class="no-feed-msg">
+      <h3>No Posts Yet!</h3>
+    </div>
+  </md-card-content>
+</md-card>
 <md-card *ngIf="activeTab == 3">
   <md-card-content>
     <p>

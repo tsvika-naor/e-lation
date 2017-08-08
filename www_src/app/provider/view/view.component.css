@@ -11,6 +11,10 @@
     border-bottom: 2px solid #673AB7;
 }
 
+.input-has-value, :not(.input-has-value) .mat-focused {
+  margin-top: 16px;
+}
+
 textarea {
    resize: none;
    height: 100px;

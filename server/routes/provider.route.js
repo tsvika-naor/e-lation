@@ -10,7 +10,6 @@ router.get('/:id', function (req, res) {
             { path: 'user', populate: { path: 'friends', select: 'firstName lastName avatar' } },
             { path: 'user', populate: { path: 'followers', select: 'firstName lastName avatar' } },
             { path: 'reviews', populate: { path: 'user', select: 'firstName lastName avatar' } },
-            { path: 'services', populate: { path: 'customers', select: 'firstName lastName avatar' } },
             {
                 path: 'user', populate: {
                     path: 'posts', populate: [
@@ -44,18 +43,18 @@ router.post('/review/new', function (req, res) {
         Provider.findByIdAndUpdate(req.body.parent, {
             $addToSet: { reviews: review },
             $inc: { rank: review.rating }
-        }, { new: true }, function (err, provider) {
-            if (err) return handleError(res, err);
-
-            provider.populate({ path: 'reviews', populate: { path: 'user', select: 'firstName lastName avatar' } });
-
-            Provider.count({ rank: { $gte: provider.rank } }, function (err, count) {
+        }, { new: true })
+            .populate({ path: 'reviews', populate: { path: 'user', select: 'firstName lastName avatar' } })
+            .exec(function (err, provider) {
                 if (err) return handleError(res, err);
 
-                provider.rank = count;
-                res.json(provider);
+                Provider.count({ rank: { $gte: provider.rank } }, function (err, count) {
+                    if (err) return handleError(res, err);
+
+                    provider.rank = count;
+                    res.json(provider);
+                });
             });
-        });
     });
 });
 
@@ -67,18 +66,18 @@ router.post('/review/edit', function (req, res) {
 
         Provider.findByIdAndUpdate(req.body.parent, {
             $inc: { rank: rankDiff }
-        }, { new: true }, function (err, provider) {
-            if (err) return handleError(res, err);
-
-            provider.populate({ path: 'reviews', populate: { path: 'user', select: 'firstName lastName avatar' } });
-
-            Provider.count({ rank: { $gte: provider.rank } }, function (err, count) {
+        }, { new: true })
+            .populate({ path: 'reviews', populate: { path: 'user', select: 'firstName lastName avatar' } })
+            .exec(function (err, provider) {
                 if (err) return handleError(res, err);
 
-                provider.rank = count;
-                res.json(provider);
+                Provider.count({ rank: { $gte: provider.rank } }, function (err, count) {
+                    if (err) return handleError(res, err);
+
+                    provider.rank = count;
+                    res.json(provider);
+                });
             });
-        });
     });
 });
 
@@ -94,25 +93,25 @@ router.delete('/review/:id', function (req, res) {
             Provider.findOneAndUpdate({ reviews: req.params._id }, {
                 $pull: { reviews: review },
                 $inc: { rank: rating }
-            }, { new: true }, function (err, provider) {
-                if (err) {
-                    return handleError(res, err);
-                } else if (provider === null) {
-                    return handleError(res, {
-                        name: "ProviderNotFound",
-                        message: "No Provider account found for user."
-                    });
-                } else {
-                    provider.populate({ path: 'reviews', populate: { path: 'user', select: 'firstName lastName avatar' } });
+            }, { new: true })
+                .populate({ path: 'reviews', populate: { path: 'user', select: 'firstName lastName avatar' } })
+                .exec(function (err, provider) {
+                    if (err) {
+                        return handleError(res, err);
+                    } else if (provider === null) {
+                        return handleError(res, {
+                            name: "ProviderNotFound",
+                            message: "No Provider account found for user."
+                        });
+                    } else {
+                        Provider.count({ rank: { $gte: provider.rank } }, function (err, count) {
+                            if (err) return handleError(res, err);
 
-                    Provider.count({ rank: { $gte: provider.rank } }, function (err, count) {
-                        if (err) return handleError(res, err);
-
-                        provider.rank = count;
-                        res.json(provider);
-                    });
-                }
-            });
+                            provider.rank = count;
+                            res.json(provider);
+                        });
+                    }
+                });
         });
     })
 });

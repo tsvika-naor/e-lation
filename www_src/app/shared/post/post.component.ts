@@ -24,9 +24,9 @@ export class PostComponent {
     constructor() {
         this.max = this.max || 0;
         this.trim = (this.max > 0);
-        console.log(this.hideComments);
+        // console.log(this.hideComments);
         this.hideComments = this.hideComments || !(this.post && this.post.comments.length > 0 && this.max > 0);
-        console.log(this.hideComments);
+        // console.log(this.hideComments);
         this.comment = {
             subject: null,
             text: '',

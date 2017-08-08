@@ -12,7 +12,11 @@
 #app-advert {
   min-width: 200px;
   padding-left: 10px;
-  border-left: 1px solid rgba(0,0,0,0.2);
+}
+
+#app-advert img {
+  width: 100%;
+  height: auto;
 }
 
 .app-col {

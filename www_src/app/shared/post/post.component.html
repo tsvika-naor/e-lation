@@ -1,7 +1,11 @@
 <md-card>
     <md-card-header>
         <img *ngIf="!post.source && post.user?.avatar" md-card-avatar [src]="post.user?.avatar.data">
-        <md-card-title *ngIf="!post.source"><b>{{post.user?.firstName}} {{post.user?.lastName}}</b></md-card-title>
+        <md-card-title *ngIf="!post.source">
+            <a routerLink="/user/{{post.user?._id}}" class="user-link">
+                <b>{{post.user?.firstName}} {{post.user?.lastName}}</b>
+            </a>
+        </md-card-title>
         <md-card-title *ngIf="post.source"><b>{{post.source}}</b></md-card-title>
         <md-card-subtitle>{{post.date | date:'medium'}}</md-card-subtitle>
     </md-card-header>
@@ -16,6 +20,8 @@
                 <img md-card-md-image [src]="post.media[0]?.data" />
             </md-card-title-group>
         </a>
+    </md-card-content>
+    <md-card-content class="app-tags">
         <md-chip-list>
             <md-chip *ngFor="let tag of post.tags">
                 {{tag}}
