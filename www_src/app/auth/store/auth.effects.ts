@@ -25,7 +25,7 @@ export class AuthEffects {
         .mergeMap(res => Observable.from([
             { type: actions.AUTH_SUCCESS, payload: res.json().user._id },
             { type: actions.LOAD_USER_DATA, payload: res.json() },
-            go('/feed/' + res.json().user._id)
+            go('/feed')
         ]))
         // If request fails, dispatch failed action
         .catch(err => Observable.of({ type: actions.AUTH_FAIL, payload: err }));

@@ -64,10 +64,10 @@ router.get('/links/:id', function (req, res, next) {
     res.json(req.body.userData);
 });
 
-router.post('/new', function (req, res, next) {
+router.post('/new', user.verifyToken, function (req, res, next) {
     req.body.user.auth_id = {
         kind: req.get('provider'),
-        value: req.token
+        value: req.body.userId
     };
 
     User.create(req.body.user, function (err, user) {

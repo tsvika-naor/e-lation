@@ -34,32 +34,11 @@ export class TitlebarComponent implements OnInit, OnDestroy {
     }
 
     goTo(page: String, object: DataClass) {
-        console.log('/' + page + (object ? '/' + object._id : ''));
         this.store$.dispatch(go('/' + page + (object ? '/' + object._id : '')));
     }
 
     logout() {
         this.store$.dispatch(go('/logout'));
-    }
-
-    goToProvider(provider: Provider) {
-        this.store$.dispatch(go('/provider/' + provider._id));
-    }
-
-    goToUser(user: User) {
-        this.store$.dispatch(go('/user/' + user._id));
-    }
-
-    goToGroup(group: Group) {
-        this.store$.dispatch(go('/group/' + group._id));
-    }
-
-    goToEvent(event: GeoEvent) {
-        this.store$.dispatch(go('/event/' + event._id));
-    }
-
-    goToPost(post: Post) {
-        this.store$.dispatch(go('/post/' + post._id));
     }
 
     ngOnInit() {

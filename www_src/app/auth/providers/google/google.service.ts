@@ -12,15 +12,15 @@ export class GoogleService {
 
     constructor( @Inject(GOOG_ID) client_id: string) {
         this._client_id = client_id + (client_id.endsWith('.apps.googleusercontent.com') ? '' : '.apps.googleusercontent.com');
-        console.log('init: ' + this._client_id);
         gapi.load('auth2', () => {
             this.GoogleAuth = gapi.auth2.init({ client_id: this._client_id });
+            console.log('init: ' + this._client_id);
         });
     }
 
-    public initCustomLogin(buttonID: string, onSuccess: LoginSuccessCallback, onFailure: FailureCallback) {
+    public initCustomLogin(buttonID: string, options: SignInOptions, onSuccess: LoginSuccessCallback, onFailure: FailureCallback) {
         const btn = document.getElementById(buttonID);
-        this.GoogleAuth.attachClickHandler(btn, {}, onSuccess, onFailure);
+        this.GoogleAuth.attachClickHandler(btn, options || {}, onSuccess, onFailure);
     }
 
     public initLogin(buttonID: string, onSuccess: LoginSuccessCallback, onFailure: FailureCallback) {

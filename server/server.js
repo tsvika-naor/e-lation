@@ -14,7 +14,6 @@ mongoose.connect('mongodb://heroku_7h2r3npw:s4i8a900gf6p41bt1me1gru0u6@ds151228.
 var db = mongoose.connection;
 
 // Load Routes
-require('./algorithms/index')(app);
 require('./routes/index')(app, __dirname);
 
 // Listen to DB Events

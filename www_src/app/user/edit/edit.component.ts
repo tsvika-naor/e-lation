@@ -25,7 +25,6 @@ export class EditComponent implements OnInit, OnDestroy {
     birthday: Observable<Date>;
     avatar: Observable<MediaObject>;
     address: Observable<Address>;
-    friends: Observable<Array<User>>;
     isProvider: Observable<Boolean>;
     sub: Subscription;
     isNew: Boolean;
@@ -41,7 +40,6 @@ export class EditComponent implements OnInit, OnDestroy {
         this.birthday = store$.select(state => state.user.birthday);
         // this.avatar = store$.select(state => state.user.avatar);
         this.address = store$.select(state => state.user.address);
-        // this.friends = store$.select(state => state.user.friends);
         // this.isProvider = store$.select(state => state.user.isProvider);
     }
 

@@ -1,27 +1,27 @@
-var handleError = require('../routes/utils');
+var handleError = require('../utils');
 var router = require('express').Router();
 var Promise = require("bluebird");
 
-var Post = require('../models/post.model');
-var User = require('../models/user.model');
-var Event = require('../models/event.model');
-var Group = require('../models/group.model');
-var Provider = require('../models/provider.model');
+var Post = require('../../models/post.model');
+var User = require('../../models/user.model');
+var Event = require('../../models/event.model');
+var Group = require('../../models/group.model');
+var Provider = require('../../models/provider.model');
 
-router.get('/:id', function (req, res) {
+module.exports = function (req, res) {
     initFeed(req.params.id)
         .spread(getByInterests)
         .spread(getByLikes)
         .spread(getByProviders)
         .spread(getByEvents)
         .spread(getByGroups)
-        .then(function (feed) {
-            res.json({ posts: postweight(dedup(feed)) });
+        .spread(function (user, feed) {
+            res.json(postweight(dedup(feed)));
         })
         .catch(function (err) {
             handleError(res, err);
         });
-});
+};
 
 function initFeed(userId) {
     return new Promise(function (resolve, reject) {
@@ -69,7 +69,7 @@ function getByLikes(user, feed) {
 function getByProviders(user, feed) {
     return new Promise(function (resolve, reject) {
         //providers that user follows
-        Providers.find({ "user.followers": user._id })
+        Provider.find({ "user.followers": user._id })
             .populate({
                 path: 'user', populate: {
                     path: 'posts', populate: [
@@ -183,12 +183,11 @@ function getByGroups(user, feed) {
 }
 
 
-
 function postweight(posts) {
     posts.forEach(function (post) {
         //TODO post that user is in the event get more weight
         //defult weight to posts
-        post.weight = 50 + post.likes.length * 5 + post.comments.length * 3;
+        post.weight = 50 + (post.likes || []).length * 5 + (post.comments || []).length * 3;
         post = decreaseweight(post);
 
     });
@@ -204,6 +203,7 @@ function postweight(posts) {
         return 0;
     });
 }
+
 //needed to run x time
 function decreaseweight(post) {
     var timenow = new Date();
@@ -224,5 +224,3 @@ function dedup(arr) {
         return seen.hasOwnProperty(item._id) ? false : (seen[item._id] = true);
     });
 }
-
-module.exports = router;

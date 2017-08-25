@@ -44,7 +44,7 @@ export class UserEffects {
         .mergeMap(res => Observable.from([
             { type: ActionTypes.L_GET_USER, payload: res.json().user },
             { type: ActionTypes.L_NEW_USER, payload: { id: res.json().user._id, links: res.json().links } },
-            go('/feed/' + res.json()._id)
+            go('/feed')
         ]));
 
     @Effect() followUser$ = this.actions$

@@ -5,7 +5,10 @@ var Group = require('../models/group.model');
 var Event = require('../models/event.model');
 var User = require('../models/user.model');
 var lang = require('../services/lang.service');
+var feedLoader = require('./algorithms/user-feed.algorithm');
 var handleError = require('./utils');
+
+router.get('/:id', feedLoader);
 
 router.post('/get', function (req, res) {
     Post.find(req.body, null, { sort: { date: -1 } })

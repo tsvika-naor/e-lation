@@ -17,14 +17,11 @@ import { go } from '@ngrx/router-store';
 export class EditComponent implements OnInit, OnDestroy {
     _id: Observable<ObjectId>;
     /*owner: Observable<User>;
-    provider: Observable<Provider>;
-    admins: Observable<Array<User>>;
-    members: Observable<Array<User>>;*/
+    provider: Observable<Provider>;*/
     name: Observable<String>;
     description: Observable<String>;
     type: Observable<Array<String>>;
     address: Observable<Address>;
-    // posts: Observable<Array<Post>>;
     sub: Subscription;
     isNew: Boolean;
     userId: ObjectId;
@@ -32,14 +29,11 @@ export class EditComponent implements OnInit, OnDestroy {
     constructor(private store$: Store<State>, private route: ActivatedRoute) {
         this._id = store$.select(state => state.group._id);
         this.name = store$.select(state => state.group.name);
-        /*this.admins = store$.select(state => state.group.admins);
-        this.members = store$.select(state => state.group.members);
-        this.provider = store$.select(state => state.group.provider);*/
+        /*this.provider = store$.select(state => state.group.provider);*/
         this.address = store$.select(state => state.group.address);
         this.description = store$.select(state => state.group.description);
         // this.owner = store$.select(state => state.group.owner);
         this.type = store$.select(state => state.group.type);
-        // this.posts = store$.select(state => state.group.posts);
     }
 
     cancel(form: NgForm) {
@@ -52,6 +46,9 @@ export class EditComponent implements OnInit, OnDestroy {
 
         if (this.isNew) {
             newGroup.owner = this.userId;
+            if (typeof newGroup.admins === 'undefined') {
+                newGroup.admins = [];
+            }
             newGroup.admins.unshift(this.userId);
             this.store$.dispatch({ type: actions.S_NEW_GROUP, payload: newGroup });
         } else {

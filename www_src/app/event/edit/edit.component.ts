@@ -18,8 +18,6 @@ export class EditComponent implements OnInit, OnDestroy {
     _id: Observable<ObjectId>;
     owner: Observable<User>;
     provider: Observable<Provider>;
-    admins: Observable<Array<User>>;
-    members: Observable<Array<User>>;
     name: Observable<String>;
     description: Observable<String>;
     startDate: Observable<Date>;
@@ -28,7 +26,6 @@ export class EditComponent implements OnInit, OnDestroy {
     type: Observable<Array<String>>;
     private: Observable<Boolean>;
     address: Observable<Address>;
-    posts: Observable<Array<Post>>;
     sub: Subscription;
     isNew: Boolean;
     userId: ObjectId;
@@ -36,9 +33,7 @@ export class EditComponent implements OnInit, OnDestroy {
     constructor(private store$: Store<State>, private route: ActivatedRoute) {
         this._id = store$.select(state => state.event._id);
         /*this.owner = store$.select(state => state.event.owner);
-        this.provider = store$.select(state => state.event.provider);
-        this.admins = store$.select(state => state.event.admins);
-        this.members = store$.select(state => state.event.members);*/
+        this.provider = store$.select(state => state.event.provider);*/
         this.name = store$.select(state => state.event.name);
         this.description = store$.select(state => state.event.description);
         this.startDate = store$.select(state => state.event.startDate);
@@ -46,7 +41,6 @@ export class EditComponent implements OnInit, OnDestroy {
         this.address = store$.select(state => state.event.address);
         // this.media = store$.select(state => state.event.media);
         this.type = store$.select(state => state.group.type);
-        // this.posts = store$.select(state => state.event.posts);
         this.private = store$.select(state => state.event.private);
     }
 
@@ -60,6 +54,9 @@ export class EditComponent implements OnInit, OnDestroy {
 
         if (this.isNew) {
             newEvent.owner = this.userId;
+            if (typeof newEvent.admins === 'undefined') {
+                newEvent.admins = [];
+            }
             newEvent.admins.unshift(this.userId);
             this.store$.dispatch({ type: actions.S_NEW_EVENT, payload: newEvent });
         } else {

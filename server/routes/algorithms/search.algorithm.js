@@ -1,12 +1,12 @@
-var handleError = require('../routes/utils');
+var handleError = require('../utils');
 var router = require('express').Router();
 var Promise = require("bluebird");
 
-var Post = require('../models/post.model');
-var User = require('../models/user.model');
-var Event = require('../models/event.model');
-var Group = require('../models/group.model');
-var Provider = require('../models/provider.model');
+var Post = require('../../models/post.model');
+var User = require('../../models/user.model');
+var Event = require('../../models/event.model');
+var Group = require('../../models/group.model');
+var Provider = require('../../models/provider.model');
 
 router.post('/all', function(req, res) {
     init(req.body.query)
@@ -16,7 +16,6 @@ router.post('/all', function(req, res) {
         .spread(groupSearch)
         .spread(eventSearch)
         .spread(function(query, result) {
-            console.log(result);
             res.json(result);
         })
         .catch(function(err) {

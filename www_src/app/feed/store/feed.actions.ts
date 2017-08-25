@@ -17,7 +17,7 @@ export const ActionTypes = {
 export class S_GetFeedAction implements Action {
   type = ActionTypes.S_GET_FEED;
 
-  constructor(public payload: any) { }
+  constructor(public payload: ObjectId) { }
 }
 
 export class S_GetPostAction implements Action {
