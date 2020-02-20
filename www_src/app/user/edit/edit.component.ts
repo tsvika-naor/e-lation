@@ -36,7 +36,7 @@ export class EditComponent implements OnInit, OnDestroy {
         this.email = store$.select(state => state.user.email);
         this.phone = store$.select(state => state.user.phone);
         this.gender = store$.select(state => state.user.gender);
-        // this.interests = store$.select(state => state.user.interests);
+        this.interests = store$.select(state => state.user.interests);
         this.birthday = store$.select(state => state.user.birthday);
         // this.avatar = store$.select(state => state.user.avatar);
         this.address = store$.select(state => state.user.address);
@@ -49,8 +49,10 @@ export class EditComponent implements OnInit, OnDestroy {
     }
 
     save(form: NgForm) {
-        console.log(form.value);
-        this.store$.dispatch({ type: actions.S_USER_UPDATE, payload: form.value });
+        const newUser = form.value;
+        newUser.interests = (form.value.interests || '').split(', ');
+
+        this.store$.dispatch({ type: actions.S_USER_UPDATE, payload: newUser });
     }
 
     ngOnInit() {

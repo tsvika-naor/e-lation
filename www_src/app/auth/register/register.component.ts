@@ -32,7 +32,7 @@ export class RegisterComponent {
         this.email = store$.select(state => state.user.email);
         this.phone = store$.select(state => state.user.phone);
         this.gender = store$.select(state => state.user.gender);
-        // this.interests = store$.select(state => state.user.interests);
+        this.interests = store$.select(state => state.user.interests);
         this.birthday = store$.select(state => state.user.birthday);
         this.avatar = store$.select(state => state.user.avatar);
         this.address = store$.select(state => state.user.address);
@@ -41,7 +41,10 @@ export class RegisterComponent {
     }
 
     register(form: NgForm) {
-        this.store$.dispatch({ type: actions.SAVE_USER, payload: { user: form.value } });
+        const newUser = form.value;
+        newUser.interests = (form.value.interests || '').split(', ');
+
+        this.store$.dispatch({ type: actions.SAVE_USER, payload: { user: newUser } });
         console.log(form.value);
     }
 }

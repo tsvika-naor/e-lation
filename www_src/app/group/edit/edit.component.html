@@ -21,7 +21,7 @@
         <div>
           <p>List the things the group is about in a comma seperated list</p>
           <md-input-container>
-            <textarea rows="4" cols="50" mdInput placeholder="Group Type" [ngModel]="type | async | spread" name="type"></textarea>
+            <input type="text" mdInput placeholder="Group Type" [ngModel]="type | async | spread" name="type">
           </md-input-container>
         </div>
         <fieldset ngModelGroup="address">

@@ -33,6 +33,12 @@
             <input type="date" mdInput placeholder="Birthday" [ngModel]="birthday | async | dateOnly" name="birthday">
           </md-input-container>
         </div>
+        <div>
+          <p>List your interests in a comma seperated list</p>
+          <md-input-container>
+            <input type="text" mdInput placeholder="Interests" [ngModel]="interests | async | spread" name="interests">
+          </md-input-container>
+        </div>
         <fieldset ngModelGroup="address">
           <p>Address:</p>
           <div>

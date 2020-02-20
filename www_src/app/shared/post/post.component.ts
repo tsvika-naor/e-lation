@@ -32,7 +32,8 @@ export class PostComponent {
             text: '',
             date: null,
             likes: [],
-            comments: []
+            comments: [],
+            user: null
         };
         this.share = false;
         this.urlBase = 'https://e-lation.herokuapp.com/post/';
@@ -69,6 +70,7 @@ export class PostComponent {
     postComment() {
         this.comment.date = new Date(Date.now());
         this.comment.subject = this.post._id;
+        this.comment.user = this.userId;
         console.log(this.comment);
         this.newComment.emit(this.comment);
         this.comment.text = '';

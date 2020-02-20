@@ -116,10 +116,18 @@ router.post('/post/like', function (req, res) {
 });
 
 router.post('/comment/like', function (req, res) {
-    Comment.findByIdAndUpdate(req.body.parent, { $addToSet: { likes: req.body.child } }, { new: true }, function (err, comment) {
+    Comment.findById(req.body.parent, function (err, comment) {
         if (err) return handleError(res, err);
 
-        res.json(comment);
+        if (comment.likes.indexOf(req.body.child) > -1)
+            comment.likes.pull(req.body.child);
+        else
+            comment.likes.addToSet(req.body.child);
+
+        comment.save(function (err, doc) {
+            if (err) return handleError(res, err);
+            res.json(doc);
+        });
     });
 });
 
@@ -127,13 +135,17 @@ router.post('/comment/post', function (req, res) {
     Comment.create(req.body, function (err, doc) {
         if (err) return handleError(res, err);
 
-        if (req.body.parent === null || typeof req.body.parent === undefined) {
-            Post.findByIdAndUpdate(req.body.subject, { $addToSet: { comments: doc } }, function (err, user) {
-                if (err) return handleError(res, err);
+        doc.populate({ path: 'user', select: 'firstName lastName avatar' });
 
+        if (req.body.parent === null || typeof req.body.parent === undefined) {
+            console.log("post");
+            Post.findByIdAndUpdate(req.body.subject, { $addToSet: { comments: doc } }, function (err, post) {
+                if (err) return handleError(res, err);
+                
                 res.json(doc);
             });
         } else {
+            console.log("comment");
             Comment.findByIdAndUpdate(req.body.parent, { $addToSet: { comments: doc } }, function (err, comment) {
                 if (err) return handleError(res, err);
 

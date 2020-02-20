@@ -1,0 +1,36 @@
+Error:
+~~~~~~~~~
+TypeError: Cannot read property 'exclude' of undefined
+
+
+Fix:
+~~~~~~~~
+Edit the following file:
+~/node_modules/awesome-typescript-loader/dist/instance.js
+
+Line ~142: Replace the "applyDefaults" method with the following (from master):
+//***********************************************************************************//
+function applyDefaults(configFilePath, compilerConfig, loaderConfig) {
+    _.defaults(compilerConfig.options, {
+        sourceMap: true,
+        verbose: false,
+        skipDefaultLibCheck: true,
+        suppressOutputPathCheck: true
+    });
+    if (loaderConfig.transpileOnly) {
+        compilerConfig.options.isolatedModules = true;
+    }
+    _.defaults(compilerConfig.options, {
+        sourceRoot: compilerConfig.options.sourceMap ? process.cwd() : undefined
+    });
+    _.defaults(loaderConfig, {
+        sourceMap: true,
+        verbose: false,
+    });
+    delete compilerConfig.options.outDir;
+    delete compilerConfig.options.inlineSourceMap;
+    delete compilerConfig.options.outFile;
+    delete compilerConfig.options.out;
+    delete compilerConfig.options.noEmit;
+}
+//***********************************************************************************//
