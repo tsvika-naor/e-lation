@@ -1,6 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MdCardModule, MdInputModule, MdButtonModule, MdIconModule, MdSelectModule } from '@angular/material';
+import {
+  MatCardModule,
+  MatInputModule,
+  MatButtonModule,
+  MatIconModule,
+  MatSelectModule
+} from '@angular/material';
 import { LoginComponent } from './login/login.component';
 import { FacebookService, GoogleService } from './providers';
 import { RegisterComponent } from './register/register.component';
@@ -14,11 +20,11 @@ import { LogoutComponent } from './logout/logout.component';
         CommonModule,
         RouterModule,
         FormsModule,
-        MdCardModule,
-        MdInputModule,
-        MdButtonModule,
-        MdSelectModule,
-        MdIconModule,
+        MatCardModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatSelectModule,
         SharedModule
     ],
     exports: [LoginComponent, RegisterComponent],

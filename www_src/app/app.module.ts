@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MdSidenavModule } from '@angular/material';
+import {MatSidenavModule} from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppStoreModule } from './app-store.module';
@@ -35,7 +35,7 @@ const googId = '142084885382-lr0fajuthv25m2oc98107ete22lqe5h2';
         BrowserModule,
         BrowserAnimationsModule,
         ReactiveFormsModule,
-        MdSidenavModule,
+        MatSidenavModule,
         AppRoutingModule,
         AppStoreModule,
         SharedModule,
