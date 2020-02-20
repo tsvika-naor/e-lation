@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e1d8a62f-70c1-46dd-93af-5595704817ca" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/routes/auth.route.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/auth.route.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/www/assets/background.jpg" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/server/www/assets/e-logo.png" beforeDir="false" />
@@ -145,7 +146,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-12" />
     <option name="width" value="1944" />
     <option name="height" value="1044" />
@@ -294,12 +295,12 @@
       <option name="presentableId" value="Default" />
       <updated>1582213862659</updated>
       <workItem from="1582213864486" duration="1994000" />
-      <workItem from="1582215903389" duration="4594000" />
+      <workItem from="1582215903389" duration="4855000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6588000" />
+    <option name="totallyTimeSpent" value="6849000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="695" extended-state="6" />
