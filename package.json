@@ -36,6 +36,7 @@
     "mongoose": "^5.9.1",
     "ngx-sharebuttons": "^4.1.4",
     "rxjs": "^6.5.4",
+    "yarn-upgrade-all": "^0.5.2",
     "zone.js": "^0.10.2"
   },
   "devDependencies": {
