@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
-import {MatSidenavModule} from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppStoreModule } from './app-store.module';
@@ -17,6 +16,7 @@ import { NavModule } from './nav';
 import { ProviderModule } from './provider';
 import { UserModule } from './user';
 import { INIT_PARAMS, GOOG_ID } from './auth/providers';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 const fbParams = {
     appId: '1246381665456070',
