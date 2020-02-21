@@ -2,32 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="30bed032-2b79-4069-82ed-eebd5889f949" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/e-lation.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/routes/auth.route.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/routes/auth.route.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/assets/background.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/assets/e-logo.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/assets/e-logo.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/assets/glyphicons-halflings-regular.eot" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/assets/glyphicons-halflings-regular.svg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/assets/glyphicons-halflings-regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/assets/glyphicons-halflings-regular.woff" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/assets/glyphicons-halflings-regular.woff2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/favicon.ico" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/inline.bundle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/inline.bundle.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/main.bundle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/main.bundle.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/polyfills.bundle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/polyfills.bundle.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/styles.bundle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/styles.bundle.js.map" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/vendor.bundle.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/www/vendor.bundle.js.map" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/node_modules/reflect-metadata/Reflect.js.map/" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
@@ -42,37 +17,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www_src/app/app-store.state.ts">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#44#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www_src/app/user/edit/edit.component.css">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www_src/app/user/edit/edit.component.html">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www_src/app/event/edit/edit.component.css">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/www_src/app/event/edit/edit.component.html">
-          <provider selected="true" editor-type-id="text-editor" />
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/server/routes/algorithms/search.algorithm.js">
           <provider selected="true" editor-type-id="text-editor" />
@@ -96,15 +40,40 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/www_src/app/app.module.ts">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-510">
+            <state relative-caret-position="110">
+              <caret line="37" column="24" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
               <folding>
                 <element signature="e#0#58#0" expanded="true" />
               </folding>
             </state>
           </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/package-lock.json">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/yarn.lock">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-153" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-357" />
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/init.bat">
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -121,7 +90,18 @@
     </leaf>
   </component>
   <component name="Git.Settings">
+    <option name="ROOT_SYNC" value="SYNC" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/www_src/app/app.module.ts" />
+      </list>
+    </option>
+  </component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/package.json" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-12" />
@@ -213,12 +193,27 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1582243118423</updated>
-      <workItem from="1582243127555" duration="304000" />
+      <workItem from="1582243127555" duration="1329000" />
     </task>
+    <task id="LOCAL-00001" summary="&quot;yarn upgrade&quot;">
+      <created>1582243520557</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1582243520557</updated>
+    </task>
+    <task id="LOCAL-00002" summary="&quot;yarn upgrade&quot;">
+      <created>1582243658734</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1582243658734</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1501000" />
+    <option name="totallyTimeSpent" value="2526000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -238,16 +233,16 @@
       <window_info id="Favorites" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49841017" weight="0.3285968" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49761525" weight="0.3285968" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49761525" weight="0.3285968" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.49602544" weight="0.3285968" />
+      <window_info anchor="bottom" id="Version Control" order="8" sideWeight="0.4936407" weight="0.3285968" />
       <window_info anchor="bottom" id="TypeScript" order="9" sideWeight="0.49682036" weight="0.3285968" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5079491" side_tool="true" visible="true" weight="0.3285968" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.4920509" visible="true" weight="0.3285968" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50953895" side_tool="true" visible="true" weight="0.3285968" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.49046105" visible="true" weight="0.3285968" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -261,6 +256,10 @@
         <option value="$PROJECT_DIR$/www_src/app/auth/providers/google/google.service.d.ts" />
       </list>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="&quot;yarn upgrade&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="&quot;yarn upgrade&quot;" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/www_src/app/app-store.reducers.ts">
@@ -321,11 +320,31 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/www_src/app/app.module.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-510">
+        <state relative-caret-position="110">
+          <caret line="37" column="24" selection-start-line="37" selection-start-column="24" selection-end-line="37" selection-end-column="24" />
           <folding>
             <element signature="e#0#58#0" expanded="true" />
           </folding>
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/package-lock.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/yarn.lock">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-153" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/init.bat">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package-lock.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-357" />
       </provider>
     </entry>
   </component>
